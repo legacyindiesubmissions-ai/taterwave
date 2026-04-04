@@ -3,18 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TaterWave AI by Tater Labs - AI-Powered Radio Station in a Box</title>
-<meta name="description" content="Launch your own AI-powered internet radio station in minutes. AI DJ, voice cloning, smart scheduling, live chat - all in one app. Free 3-day trial.">
+<title>TaterWave AI by Tater Labs — AI-Powered Radio Station in a Box</title>
+<meta name="description" content="Launch your own AI-powered internet radio station in minutes. AI DJ, voice cloning, smart scheduling, live chat, branded listener app — all in one app. Free 3-day trial.">
 <meta name="keywords" content="radio automation software, internet radio station, AI DJ, radio streaming, TaterWave AI, Tater Labs, radio station software, free radio software">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0a0a1a;color:#e0e0e0;line-height:1.6}
 a{color:#4CAF50;text-decoration:none}
 a:hover{text-decoration:underline}
+
 .hero{text-align:center;padding:80px 20px 60px;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%)}
 .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;margin-bottom:12px}
 .hero h1 span{color:#4CAF50}
-.hero .tagline{font-size:clamp(1rem,2.5vw,1.4rem);color:#aaa;max-width:600px;margin:0 auto 32px}
+.hero .tagline{font-size:clamp(1rem,2.5vw,1.4rem);color:#aaa;max-width:600px;margin:0 auto 12px}
+.hero .sub{font-size:.95rem;color:#666;margin-bottom:32px}
 .hero .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .btn{display:inline-block;padding:14px 32px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;border:none;transition:transform .15s,box-shadow .15s}
 .btn-primary{background:#4CAF50;color:#fff}
@@ -22,6 +24,7 @@ a:hover{text-decoration:underline}
 .btn-secondary{background:transparent;color:#4CAF50;border:2px solid #4CAF50}
 .btn-secondary:hover{background:rgba(76,175,80,.1);text-decoration:none}
 .badge{display:inline-block;background:#1a3a1e;color:#4CAF50;padding:6px 14px;border-radius:20px;font-size:13px;margin-bottom:20px}
+
 .features{padding:80px 20px;max-width:1100px;margin:0 auto}
 .features h2{text-align:center;font-size:2rem;margin-bottom:48px}
 .features h2 span{color:#4CAF50}
@@ -31,20 +34,7 @@ a:hover{text-decoration:underline}
 .feature-card .icon{font-size:28px;margin-bottom:12px}
 .feature-card h3{font-size:1.1rem;margin-bottom:8px;color:#fff}
 .feature-card p{font-size:.9rem;color:#999;line-height:1.5}
-.pricing{padding:80px 20px;background:#0d0d22}
-.pricing h2{text-align:center;font-size:2rem;margin-bottom:12px}
-.pricing .subtitle{text-align:center;color:#888;margin-bottom:48px}
-.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1200px;margin:0 auto}
-.price-card{background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:32px;text-align:center}
-.price-card.featured{border-color:#4CAF50;position:relative}
-.price-card.featured::before{content:"MOST POPULAR";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#4CAF50;color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:10px}
-.price-card h3{font-size:1.3rem;margin-bottom:4px}
-.price-card .price{font-size:2.8rem;font-weight:800;color:#fff;margin:12px 0 4px}
-.price-card .price span{font-size:1rem;color:#888;font-weight:400}
-.price-card .period{color:#888;font-size:.9rem;margin-bottom:20px}
-.price-card ul{list-style:none;text-align:left;margin-bottom:24px}
-.price-card li{padding:6px 0;font-size:.9rem;color:#bbb}
-.price-card li::before{content:"\2713  ";color:#4CAF50;font-weight:700}
+
 .how-it-works{padding:80px 20px;max-width:800px;margin:0 auto}
 .how-it-works h2{text-align:center;font-size:2rem;margin-bottom:48px}
 .how-it-works h2 span{color:#4CAF50}
@@ -52,21 +42,244 @@ a:hover{text-decoration:underline}
 .step-num{background:#4CAF50;color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
 .step h3{margin-bottom:4px;color:#fff}
 .step p{color:#999;font-size:.9rem}
+
+.pricing{padding:80px 20px;background:#0d0d22}
+.pricing h2{text-align:center;font-size:2rem;margin-bottom:12px}
+.pricing .subtitle{text-align:center;color:#888;margin-bottom:48px;font-size:.95rem}
+.pricing-wrap{max-width:1000px;margin:0 auto;overflow-x:auto}
+.pricing-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.pricing-table th,.pricing-table td{padding:12px 16px;text-align:center;border-bottom:1px solid #1e1e3a}
+.pricing-table th{color:#fff;font-weight:700;font-size:.95rem}
+.pricing-table th.featured{color:#4CAF50}
+.pricing-table thead tr:first-child th{padding-bottom:4px;font-size:1.1rem}
+.pricing-table .price-row th,.pricing-table .price-row td{padding-top:2px;padding-bottom:16px;border-bottom:2px solid #2a2a4a;font-size:1rem}
+.pricing-table .price-row td{color:#aaa;font-size:.85rem}
+.pricing-table .price-row .amount{font-size:1.6rem;font-weight:800;color:#fff;display:block}
+.pricing-table .feature-name{text-align:left;color:#bbb;padding-left:20px}
+.pricing-table .check{color:#4CAF50;font-weight:700;font-size:1.1rem}
+.pricing-table .dash{color:#333}
+.pricing-table .category{text-align:left;color:#666;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;padding:16px 16px 8px 20px;border-bottom:none;font-weight:600}
+.pricing-table .cta-row td,.pricing-table .cta-row th{border-bottom:none;padding-top:20px}
+.pricing-table .btn{padding:10px 20px;font-size:14px;width:90%}
+.popular-badge{display:inline-block;background:#4CAF50;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:6px;vertical-align:middle}
+
+.download{padding:80px 20px;text-align:center}
+.download h2{font-size:2rem;margin-bottom:12px}
+.download h2 span{color:#4CAF50}
+.download .desc{color:#888;max-width:520px;margin:0 auto 32px;font-size:.95rem}
+.download .trial-note{color:#555;font-size:.85rem;margin-top:16px}
+
 .social-proof{padding:60px 20px;text-align:center;background:#0d0d22}
 .social-proof .stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-bottom:24px}
 .stat{font-size:2rem;font-weight:800;color:#4CAF50}
 .stat span{display:block;font-size:.85rem;font-weight:400;color:#888}
-footer{text-align:center;padding:40px 20px;color:#555;font-size:.85rem}
+
+footer{text-align:center;padding:40px 20px;color:#555;font-size:.85rem;background:#0d0d22}
 footer a{color:#666}
-@media(max-width:600px){.hero{padding:48px 16px 40px}.feature-grid,.price-grid{grid-template-columns:1fr}.social-proof .stats{gap:24px}}
+
+@media(max-width:768px){
+  .hero{padding:48px 16px 40px}
+  .feature-grid{grid-template-columns:1fr}
+  .social-proof .stats{gap:24px}
+  .pricing-table{font-size:.8rem}
+  .pricing-table th,.pricing-table td{padding:8px 6px}
+  .pricing-table .feature-name{padding-left:8px}
+  .pricing-table .price-row .amount{font-size:1.3rem}
+}
 </style>
 </head>
 <body>
-<section class="hero"><div class="badge">by Tater Labs</div><h1><span>TaterWave AI</span></h1><p class="tagline">Your own AI-powered internet radio station in a box. Set up in 5 minutes. No server required. No technical skills needed.</p><div class="cta-group"><a href="#pricing" class="btn btn-primary">Start Free Trial</a><a href="#features" class="btn btn-secondary">See Features</a></div></section>
-<section class="features" id="features"><h2>Everything you need. <span>One app.</span></h2><div class="feature-grid"><div class="feature-card"><div class="icon">&#129302;</div><h3>AI DJ</h3><p>Your station gets its own AI-powered DJ that talks between songs, reacts to the vibe, and keeps listeners engaged.</p></div><div class="feature-card"><div class="icon">&#127897;</div><h3>Voice Cloning</h3><p>Upload a 30-second voice sample and the AI clones it. Your DJ sounds like you or anyone you want.</p></div><div class="feature-card"><div class="icon">&#129504;</div><h3>Smart Scheduling</h3><p>Essentia-powered music analysis detects mood, energy, and BPM. Your station flows naturally.</p></div><div class="feature-card"><div class="icon">&#128172;</div><h3>Live Chat &amp; Requests</h3><p>Built-in listener chat, song requests, and dedications. No third-party tools needed.</p></div><div class="feature-card"><div class="icon">&#128225;</div><h3>One-Click Broadcasting</h3><p>Tailscale gives your station a free public HTTPS URL. No port forwarding, no hosting costs.</p></div><div class="feature-card"><div class="icon">&#128241;</div><h3>Social Auto-Posting</h3><p>Automatically share what is playing to Bluesky, X, Facebook, Mastodon, and TikTok.</p></div><div class="feature-card"><div class="icon">&#128240;</div><h3>News &amp; Shows</h3><p>Schedule podcast feeds, news bulletins, and syndicated shows. 11 news + 21 show + 8 stream slots.</p></div><div class="feature-card"><div class="icon">&#127899;</div><h3>Pro Audio Engine</h3><p>Volume normalization, AGC, 3-band EQ, silence detection, crossfade, and broadcast device capture.</p></div><div class="feature-card"><div class="icon">&#127760;</div><h3>Web Dashboard</h3><p>A beautiful listener dashboard out of the box. Real-time now-playing, chat, and requests.</p></div></div></section>
-<section class="how-it-works" id="how-it-works"><h2>Live in <span>5 minutes</span></h2><div class="step"><div class="step-num">1</div><div><h3>Download &amp; Install</h3><p>One installer, everything included.</p></div></div><div class="step"><div class="step-num">2</div><div><h3>Run the Setup Wizard</h3><p>Name your station, add your music, pick a DJ voice.</p></div></div><div class="step"><div class="step-num">3</div><div><h3>Connect to the Internet</h3><p>Create a free Tailscale account, paste one key, get a public URL.</p></div></div><div class="step"><div class="step-num">4</div><div><h3>Go Live</h3><p>Hit play. Your AI-powered radio station is broadcasting to the world.</p></div></div></section>
-<section class="pricing" id="pricing"><h2>Simple Pricing</h2><p class="subtitle">3-day free trial on monthly plans. No credit card required to download.</p><div class="price-grid"><div class="price-card"><h3>Starter</h3><div class="price">$29<span>/mo</span></div><ul><li>Live MP3 streaming</li><li>Playlist management</li><li>Time-block scheduling</li><li>Web dashboard for listeners</li><li>Song requests &amp; dedications</li><li>Email support</li></ul><a href="https://buy.stripe.com/8x228r3ca2gM3ZwbZ4aR200" class="btn btn-secondary" style="width:100%;text-align:center">Get Starter</a></div><div class="price-card featured"><h3>Pro</h3><div class="price">$59<span>/mo</span></div><ul><li>Everything in Starter</li><li>AI DJ banter</li><li>Voice cloning</li><li>Smart scheduling (mood/energy)</li><li>Live listener chat</li><li>Essentia music analysis</li><li>Cartwall / soundboard</li><li>Priority support</li></ul><a href="https://buy.stripe.com/cNi6oH4ge9JedA61kqaR201" class="btn btn-primary" style="width:100%;text-align:center">Get Pro</a></div><div class="price-card"><h3>Studio</h3><div class="price">$99<span>/mo</span></div><ul><li>Everything in Pro</li><li>Social media auto-posting</li><li>News &amp; show scheduling</li><li>CDN output &amp; stream delivery</li><li>APK generator for listener app</li><li>Broadcast device capture</li><li>Dedicated support</li></ul><a href="https://buy.stripe.com/4gMbJ1aECdZu1Ro1kqaR202" class="btn btn-secondary" style="width:100%;text-align:center">Get Studio</a></div><div class="price-card"><h3>Ultimate</h3><div class="price">$999</div><div class="period">one-time - 3-year license</div><ul><li>Everything in Studio</li><li>3 years of updates included</li><li>White-label support</li><li>Dedicated onboarding</li><li>No monthly fees</li></ul><a href="https://buy.stripe.com/7sYdR9aECdZugMi8MSaR203" class="btn btn-secondary" style="width:100%;text-align:center">Get Ultimate</a></div><div class="price-card"><h3>Lifetime</h3><div class="price">$1,999</div><div class="period">one-time - forever</div><ul><li>Everything in Studio</li><li>Unlimited license - no expiry</li><li>All future updates included</li><li>White-label support</li><li>Dedicated onboarding</li><li>No monthly fees ever</li></ul><a href="https://buy.stripe.com/5kQeVd2868Fa0Nk9QWaR204" class="btn btn-secondary" style="width:100%;text-align:center">Get Lifetime</a></div></div></section>
-<section class="social-proof"><div class="stats"><div class="stat">5 min<span>Setup to live</span></div><div class="stat">0<span>Server cost</span></div><div class="stat">24/7<span>AI-powered automation</span></div></div><p style="color:#666;font-size:.9rem">Built for college radio, community stations, church broadcasts, internet radio, and anyone who wants their own station.</p></section>
-<footer><p>TaterWave AI by <a href="#">Tater Labs</a> - &copy; 2026 All rights reserved.</p><p style="margin-top:8px"><a href="#">Terms</a> - <a href="#">Privacy</a> - <a href="#">Support</a></p><p style="margin-top:8px;color:#444">Powered by Tater Labs</p></footer>
+
+<section class="hero">
+  <div class="badge">by Tater Labs</div>
+  <h1><span>TaterWave AI</span></h1>
+  <p class="tagline">Your own AI-powered internet radio station in a box. No server required. No technical skills needed.</p>
+  <p class="sub">One app. Everything included.</p>
+  <div class="cta-group">
+    <a href="#features" class="btn btn-primary">See What's Inside</a>
+    <a href="#pricing" class="btn btn-secondary">View Plans</a>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <h2>Everything you need. <span>One app.</span></h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="icon">🤖</div>
+      <h3>AI DJ</h3>
+      <p>Your station gets its own AI-powered DJ that talks between songs, reacts to the vibe, and keeps listeners engaged — with a personality you design.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎙️</div>
+      <h3>Voice Cloning</h3>
+      <p>Upload a 30-second voice sample and the AI clones it. Your DJ sounds like you — or anyone you want. Custom station IDs in seconds.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🧠</div>
+      <h3>Smart Scheduling</h3>
+      <p>Essentia-powered music analysis detects mood, energy, BPM, genre, and danceability. Your station flows naturally — chill at night, upbeat in the morning.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💬</div>
+      <h3>Live Chat & Requests</h3>
+      <p>Built-in listener chat, song requests, voting, and dedications. Your audience participates in real time — no third-party tools needed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📡</div>
+      <h3>One-Click Broadcasting</h3>
+      <p>Tailscale gives your station a free public HTTPS URL. No port forwarding, no hosting costs, no server setup. Just click and go live.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🌐</div>
+      <h3>Auto-Generated Station Website</h3>
+      <p>A branded listener website is generated automatically — now playing, chat, requests, and your station's look and feel. Host it anywhere or use the built-in one.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📱</div>
+      <h3>Listener App Builder</h3>
+      <p>Generate a branded Android app for your station with one click. Your logo, your colors, your station — a real app your listeners install from the Play Store.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📺</div>
+      <h3>Multi-Platform Streaming</h3>
+      <p>Broadcast to Icecast, SHOUTcast, HLS, and RTMP simultaneously. Push your stream to YouTube Live, Facebook Live, or any CDN endpoint.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📱</div>
+      <h3>Social Auto-Posting</h3>
+      <p>Automatically share what's playing to Bluesky, X, Facebook, Mastodon, and TikTok. Your station stays active across every platform.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📰</div>
+      <h3>News & Shows</h3>
+      <p>Schedule podcast feeds, news bulletins, and syndicated shows. 11 news slots + 21 show slots + 8 external stream relay slots — all configurable.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎛️</div>
+      <h3>Pro Audio Engine</h3>
+      <p>Volume normalization, AGC, 3-band EQ, silence detection, crossfade, and broadcast device capture for Dante, Livewire, and WheatNet-IP hardware.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔊</div>
+      <h3>12-Slot Cartwall</h3>
+      <p>Instant-play soundboard for jingles, bumpers, sound effects, and station IDs. Load your audio, assign hotkeys, fire during live broadcast.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎤</div>
+      <h3>Remote Mic & Call-Ins</h3>
+      <p>Capture live audio from any input device — microphone, line-in, or remote guest feed. Go live with co-hosts or take caller audio on air.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📊</div>
+      <h3>Listener Analytics</h3>
+      <p>Real-time listener counts, session tracking, peak concurrent listeners, and request voting stats. Know your audience at a glance.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🤖</div>
+      <h3>MCP Server</h3>
+      <p>Built-in Model Context Protocol server lets Claude and other AI tools control your station programmatically. Next-level automation for power users.</p>
+    </div>
+  </div>
+</section>
+
+<section class="how-it-works" id="how-it-works">
+  <h2>Live in <span>5 minutes</span></h2>
+  <div class="step"><div class="step-num">1</div><div><h3>Download & Install</h3><p>One installer, everything included. No separate downloads, no dependencies to manage.</p></div></div>
+  <div class="step"><div class="step-num">2</div><div><h3>Run the Setup Wizard</h3><p>Name your station, add your music, pick a DJ voice. Step-by-step, nothing confusing.</p></div></div>
+  <div class="step"><div class="step-num">3</div><div><h3>Connect to the Internet</h3><p>Create a free Tailscale account (30 seconds), paste one key, and you have a public URL.</p></div></div>
+  <div class="step"><div class="step-num">4</div><div><h3>Go Live</h3><p>Hit play. Your AI-powered radio station is broadcasting to the world.</p></div></div>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2>One App, Five Plans</h2>
+  <p class="subtitle">Every plan runs the same app — your license unlocks the features.</p>
+  <div class="pricing-wrap">
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Starter</th>
+          <th class="featured">Pro <span class="popular-badge">POPULAR</span></th>
+          <th>Studio</th>
+          <th>Ultimate</th>
+          <th>Lifetime</th>
+        </tr>
+        <tr class="price-row">
+          <td></td>
+          <td><span class="amount">$29</span>/mo</td>
+          <td><span class="amount">$59</span>/mo</td>
+          <td><span class="amount">$99</span>/mo</td>
+          <td><span class="amount">$999</span>one-time · 3yr</td>
+          <td><span class="amount">$1,999</span>one-time · forever</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="category" colspan="6">Core</td></tr>
+        <tr><td class="feature-name">Live MP3 streaming</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Playlist management</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Time-block scheduling</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Web dashboard</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Song requests & dedications</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Crossfade & silence detection</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+
+        <tr><td class="category" colspan="6">AI & Audio</td></tr>
+        <tr><td class="feature-name">AI DJ banter</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Voice cloning</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Smart scheduling (mood/energy/BPM)</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Essentia music analysis</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Live listener chat</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">12-slot cartwall / soundboard</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Remote mic & call-ins</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">MCP server (AI automation)</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+
+        <tr><td class="category" colspan="6">Broadcast & Distribution</td></tr>
+        <tr><td class="feature-name">Social media auto-posting</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">News & show scheduling</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">CDN / Icecast / HLS / RTMP output</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Listener app builder (APK)</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Broadcast device capture</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Listener analytics & stats</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+
+        <tr><td class="category" colspan="6">Support & Extras</td></tr>
+        <tr><td class="feature-name">Email support</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Priority support</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">White-label support</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">Dedicated onboarding</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature-name">No monthly fees</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+
+        <tr class="cta-row">
+          <td></td>
+          <td><a href="https://buy.stripe.com/8x228r3ca2gM3ZwbZ4aR200" class="btn btn-secondary">Get Starter</a></td>
+          <td><a href="https://buy.stripe.com/cNi6oH4ge9JedA61kqaR201" class="btn btn-primary">Get Pro</a></td>
+          <td><a href="https://buy.stripe.com/4gMbJ1aECdZu1Ro1kqaR202" class="btn btn-secondary">Get Studio</a></td>
+          <td><a href="https://buy.stripe.com/7sYdR9aECdZugMi8MSaR203" class="btn btn-secondary">Get Ultimate</a></td>
+          <td><a href="https://buy.stripe.com/5kQeVd2868Fa0Nk9QWaR204" class="btn btn-secondary">Get Lifetime</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="download" id="download">
+  <h2>Try it <span>free for 3 days</span></h2>
+  <p class="desc">Download TaterWave AI and get full access to every feature — no credit card, no restrictions, no catch. Just 3 days to see if it's for you.</p>
+  <a href="https://license.taterlabs.shop/download" class="btn btn-primary">Download Free Trial</a>
+  <p class="trial-note">Windows 10/11 &middot; ~800MB &middot; Everything included, nothing extra to install</p>
+</section>
+
+<section class="social-proof">
+  <div class="stats">
+    <div class="stat">5 min<span>Setup to live</span></div>
+    <div class="stat">0<span>Server cost</span></div>
+    <div class="stat">24/7<span>AI-powered automation</span></div>
+  </div>
+  <p style="color:#666;font-size:.9rem">Built for college radio, community stations, church broadcasts, internet radio, and anyone who wants their own station.</p>
+</section>
+
+<footer>
+  <p>TaterWave AI by <a href="#">Tater Labs</a> &mdash; &copy; 2026 All rights reserved.</p>
+  <p style="margin-top:8px"><a href="#">Terms</a> &middot; <a href="#">Privacy</a> &middot; <a href="#">Support</a></p>
+</footer>
+
 </body>
 </html>
