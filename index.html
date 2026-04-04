@@ -278,8 +278,59 @@ footer a{color:#666}
 
 <footer>
   <p>TaterWave AI by <a href="#">Tater Labs</a> &mdash; &copy; 2026 All rights reserved.</p>
-  <p style="margin-top:8px"><a href="#">Terms</a> &middot; <a href="#">Privacy</a> &middot; <a href="#">Support</a></p>
+  <p style="margin-top:8px"><a href="#terms" onclick="document.getElementById('terms').style.display='block'">Terms of Service</a> &middot; <a href="#privacy" onclick="document.getElementById('privacy').style.display='block'">Privacy Policy</a> &middot; <a href="#refund" onclick="document.getElementById('refund').style.display='block'">Refund Policy</a> &middot; <a href="mailto:support@taterlabs.shop">Support</a></p>
 </footer>
+
+<div id="terms" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:9999;overflow-y:auto;padding:40px 20px">
+<div style="max-width:700px;margin:0 auto;background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:40px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px"><h2 style="color:#fff;font-size:1.5rem">Terms of Service</h2><button onclick="document.getElementById('terms').style.display='none'" style="background:none;border:none;color:#888;font-size:24px;cursor:pointer">&times;</button></div>
+<div style="color:#ccc;font-size:.9rem;line-height:1.7">
+<p><strong>Effective Date:</strong> April 1, 2026</p>
+<p style="margin-top:12px">These Terms of Service ("Terms") govern your use of TaterWave AI software ("Software") provided by Tater Labs ("we", "us", "our").</p>
+<p style="margin-top:16px"><strong>1. License Grant</strong><br>Upon purchase, we grant you a non-exclusive, non-transferable license to use the Software on the number of machines permitted by your license tier. The Software is licensed, not sold.</p>
+<p style="margin-top:16px"><strong>2. Free Trial</strong><br>The free trial provides full access to all features for 3 days. No credit card is required. After the trial expires, a paid license is required to continue using the Software.</p>
+<p style="margin-top:16px"><strong>3. Subscriptions & Payments</strong><br>Starter, Pro, and Studio plans are billed monthly. Ultimate and Lifetime plans are one-time purchases. Subscriptions renew automatically unless cancelled before the renewal date. Payments are processed through Stripe.</p>
+<p style="margin-top:16px"><strong>4. License Keys</strong><br>Each license key is tied to one machine ID upon activation. License keys may not be shared, resold, or redistributed. We reserve the right to revoke keys used in violation of these Terms.</p>
+<p style="margin-top:16px"><strong>5. Acceptable Use</strong><br>You agree not to reverse engineer, decompile, or disassemble the Software; circumvent license validation mechanisms; or use the Software for any illegal purpose, including broadcasting copyrighted content without proper licensing.</p>
+<p style="margin-top:16px"><strong>6. Content Responsibility</strong><br>You are solely responsible for the content you broadcast using the Software, including music licensing (ASCAP, BMI, SESAC, etc.), spoken content, and compliance with local broadcasting regulations.</p>
+<p style="margin-top:16px"><strong>7. Limitation of Liability</strong><br>The Software is provided "as is" without warranty of any kind. Tater Labs shall not be liable for any indirect, incidental, or consequential damages arising from use of the Software.</p>
+<p style="margin-top:16px"><strong>8. Termination</strong><br>We may terminate your license if you violate these Terms. Upon termination, you must cease all use of the Software and delete all copies.</p>
+<p style="margin-top:16px"><strong>9. Changes</strong><br>We may update these Terms at any time. Continued use of the Software after changes constitutes acceptance of the updated Terms.</p>
+<p style="margin-top:16px"><strong>10. Contact</strong><br>For questions about these Terms, email <a href="mailto:support@taterlabs.shop" style="color:#4CAF50">support@taterlabs.shop</a>.</p>
+</div>
+</div>
+</div>
+
+<div id="privacy" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:9999;overflow-y:auto;padding:40px 20px">
+<div style="max-width:700px;margin:0 auto;background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:40px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px"><h2 style="color:#fff;font-size:1.5rem">Privacy Policy</h2><button onclick="document.getElementById('privacy').style.display='none'" style="background:none;border:none;color:#888;font-size:24px;cursor:pointer">&times;</button></div>
+<div style="color:#ccc;font-size:.9rem;line-height:1.7">
+<p><strong>Effective Date:</strong> April 1, 2026</p>
+<p style="margin-top:12px">Tater Labs ("we", "us", "our") respects your privacy. This Privacy Policy describes what information we collect and how we use it.</p>
+<p style="margin-top:16px"><strong>1. Information We Collect</strong><br><strong>Account & Purchase Data:</strong> When you purchase a license, Stripe collects your name, email, and payment information. We receive your email and a unique Stripe customer ID — we never see or store your full credit card number.<br><strong>License Data:</strong> We store your license key, license tier, activation status, and a hashed machine identifier to enforce per-device licensing.<br><strong>Usage Data:</strong> The Software contacts our license server periodically to validate your license. These requests include your license key and machine ID. No personal data, listening habits, or broadcast content is transmitted.</p>
+<p style="margin-top:16px"><strong>2. What We Do NOT Collect</strong><br>We do not collect your music library contents, broadcast audio, listener data, chat messages, IP addresses of your listeners, or any content you create or broadcast.</p>
+<p style="margin-top:16px"><strong>3. How We Use Your Information</strong><br>We use your email to deliver your license key and for essential account communications (e.g., subscription renewal notices). We use machine IDs solely for license activation and validation.</p>
+<p style="margin-top:16px"><strong>4. Third Parties</strong><br><strong>Stripe:</strong> Processes payments. Subject to <a href="https://stripe.com/privacy" style="color:#4CAF50">Stripe's Privacy Policy</a>.<br><strong>Cloudflare:</strong> Provides DNS and tunnel services for our license server. Subject to <a href="https://www.cloudflare.com/privacypolicy/" style="color:#4CAF50">Cloudflare's Privacy Policy</a>.<br>We do not sell, rent, or share your personal information with any other third parties.</p>
+<p style="margin-top:16px"><strong>5. Data Retention</strong><br>We retain license and purchase data for as long as your license is active. If you request deletion of your data, email us and we will remove your records within 30 days.</p>
+<p style="margin-top:16px"><strong>6. Security</strong><br>License keys are cryptographically signed using Ed25519. All communication with our license server uses HTTPS (TLS 1.3). Your data is stored in an encrypted database on our servers.</p>
+<p style="margin-top:16px"><strong>7. Contact</strong><br>For privacy questions or data deletion requests, email <a href="mailto:support@taterlabs.shop" style="color:#4CAF50">support@taterlabs.shop</a>.</p>
+</div>
+</div>
+</div>
+
+<div id="refund" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:9999;overflow-y:auto;padding:40px 20px">
+<div style="max-width:700px;margin:0 auto;background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:40px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px"><h2 style="color:#fff;font-size:1.5rem">Refund Policy</h2><button onclick="document.getElementById('refund').style.display='none'" style="background:none;border:none;color:#888;font-size:24px;cursor:pointer">&times;</button></div>
+<div style="color:#ccc;font-size:.9rem;line-height:1.7">
+<p><strong>Effective Date:</strong> April 1, 2026</p>
+<p style="margin-top:16px"><strong>30-Day Money-Back Guarantee</strong><br>If you are not satisfied with TaterWave AI, you may request a full refund within 30 days of purchase — no questions asked.</p>
+<p style="margin-top:16px"><strong>How to Request a Refund</strong><br>Email <a href="mailto:support@taterlabs.shop" style="color:#4CAF50">support@taterlabs.shop</a> with your license key or the email address used at checkout. Refunds are typically processed within 5-7 business days via Stripe.</p>
+<p style="margin-top:16px"><strong>Subscriptions</strong><br>Monthly subscriptions (Starter, Pro, Studio) can be cancelled at any time. After cancellation, your license remains active through the end of the current billing period. Refunds for the current billing cycle are available within the 30-day window from the most recent charge.</p>
+<p style="margin-top:16px"><strong>One-Time Purchases</strong><br>Ultimate and Lifetime plans are eligible for the same 30-day refund policy. After 30 days, one-time purchases are non-refundable.</p>
+<p style="margin-top:16px"><strong>After Refund</strong><br>Upon refund, your license key will be deactivated. You may continue using the free trial if days remain, or purchase a new license at any time.</p>
+</div>
+</div>
+</div>
 
 </body>
 </html>
