@@ -103,24 +103,24 @@ footer a{color:#666}
 
 <section class="live-demo" id="demo" style="padding:80px 20px;text-align:center;background:linear-gradient(180deg,#0d0d22 0%,#0a0a1a 100%)">
   <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:8px;color:#fff">This is <span style="color:#4CAF50">real</span>. This is <span style="color:#4CAF50">running</span>.</h2>
-  <p style="color:#999;font-size:1.05rem;max-width:600px;margin:0 auto 32px">Not a mockup. Not a render. A full AI radio station cold-starting on a $140 computer and going live in minutes.</p>
+  <p style="color:#999;font-size:1.05rem;max-width:600px;margin:0 auto 32px">Not a mockup. Not a concept. Watch a full AI radio station go from cold start to live broadcast.</p>
   <div style="max-width:800px;margin:0 auto 48px;border-radius:12px;overflow:hidden;border:2px solid #2a2a4a;box-shadow:0 0 60px rgba(76,175,80,.15)">
     <div style="position:relative;padding-bottom:56.25%;height:0"><iframe src="https://www.youtube.com/embed/qzbHZyWnPKQ" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
   </div>
 
-  <div style="max-width:700px;margin:0 auto;background:#12122a;border:2px solid #4CAF50;border-radius:16px;padding:32px;box-shadow:0 0 40px rgba(76,175,80,.2)">
-    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px">
-      <span style="display:inline-block;width:12px;height:12px;background:#4CAF50;border-radius:50%;animation:pulse 2s infinite"></span>
-      <span style="color:#4CAF50;font-weight:700;font-size:1.1rem;text-transform:uppercase;letter-spacing:1px">Live Right Now</span>
+  <div style="max-width:800px;margin:0 auto;background:linear-gradient(135deg,#0d1a0d 0%,#12122a 50%,#0d1a0d 100%);border:2px solid #4CAF50;border-radius:20px;padding:48px 32px;box-shadow:0 0 80px rgba(76,175,80,.25),inset 0 0 60px rgba(76,175,80,.05)">
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px">
+      <span style="display:inline-block;width:16px;height:16px;background:#4CAF50;border-radius:50%;animation:pulse 1.5s infinite;box-shadow:0 0 12px rgba(76,175,80,.6)"></span>
+      <span style="color:#4CAF50;font-weight:800;font-size:clamp(1.1rem,2.5vw,1.4rem);text-transform:uppercase;letter-spacing:2px">On Air Now</span>
     </div>
-    <p style="color:#fff;font-size:1.3rem;font-weight:700;margin-bottom:4px">Legacy Indie Radio</p>
-    <p style="color:#888;font-size:.9rem;margin-bottom:20px">Powered by TaterWave AI &mdash; running 24/7 on the same $140 machine</p>
-    <div style="margin-bottom:16px">
+    <p style="color:#fff;font-size:clamp(1.5rem,3vw,2rem);font-weight:800;margin-bottom:4px">Legacy Indie Radio</p>
+    <p style="color:#aaa;font-size:1rem;margin-bottom:28px">A live station powered entirely by TaterWave AI &mdash; broadcasting 24/7, fully automated</p>
+    <div id="nowPlaying" style="color:#4CAF50;font-size:clamp(1rem,2vw,1.2rem);font-weight:600;min-height:28px;margin-bottom:28px"></div>
+    <div style="margin-bottom:20px">
       <audio id="livePlayer" style="display:none" preload="none"></audio>
-      <button onclick="var a=document.getElementById('livePlayer');if(a.paused){a.src='https://legacyindieradio.tailc6f66c.ts.net/stream';a.play();this.textContent='Stop Listening';this.style.background='#c62828'}else{a.pause();a.src='';this.textContent='Listen Live';this.style.background='#4CAF50'}" style="background:#4CAF50;color:#fff;border:none;padding:14px 48px;border-radius:40px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px">Listen Live</button>
+      <button id="playBtn" onclick="var a=document.getElementById('livePlayer'),b=document.getElementById('playBtn');if(a.paused){a.src='https://legacyindieradio.tailc6f66c.ts.net/stream';a.play();b.textContent='Stop Listening';b.style.background='#c62828';b.style.boxShadow='0 0 30px rgba(198,40,40,.4)'}else{a.pause();a.src='';b.textContent='Listen Live';b.style.background='#4CAF50';b.style.boxShadow='0 0 30px rgba(76,175,80,.4)'}" style="background:#4CAF50;color:#fff;border:none;padding:18px 64px;border-radius:40px;font-size:clamp(1rem,2vw,1.2rem);font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:1px;box-shadow:0 0 30px rgba(76,175,80,.4)">Listen Live</button>
     </div>
-    <div id="nowPlaying" style="color:#aaa;font-size:.85rem;min-height:20px"></div>
-    <p style="color:#555;font-size:.75rem;margin-top:12px">Yes, this is a real station. Yes, it's running right now. Yes, one app does all of this.</p>
+    <p style="color:#666;font-size:.85rem">You're hearing TaterWave AI right now. Same software you're buying.</p>
   </div>
 </section>
 
