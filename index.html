@@ -180,9 +180,9 @@ body>*:not(#bgCanvas):not(.cursor-dot):not(.cursor-ring){position:relative;z-ind
 /* === SOCIAL PROOF === */
 .social-proof{padding:80px 20px;text-align:center;background:rgba(13,13,34,.5)}
 .social-proof .stats{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;margin-bottom:24px}
-.stat{font-size:clamp(2rem,4vw,2.8rem);font-weight:900}
-.stat .num{background:linear-gradient(135deg,#4CAF50,#81C784);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat span{display:block;font-size:.85rem;font-weight:400;color:#666;margin-top:4px}
+.stat{text-align:center}
+.stat-value{display:block;font-size:clamp(2rem,4vw,2.8rem);font-weight:900;background:linear-gradient(135deg,#4CAF50,#81C784);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;margin-bottom:6px}
+.stat-label{display:block;font-size:.9rem;font-weight:500;color:#666;text-transform:uppercase;letter-spacing:1px}
 
 /* === FOOTER === */
 footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-top:1px solid rgba(255,255,255,.03)}
@@ -347,9 +347,9 @@ footer a:hover{color:#4CAF50}
 
 <section class="social-proof">
   <div class="stats">
-    <div class="stat reveal"><span class="num" data-target="5">0</span> min<span>Setup to live</span></div>
-    <div class="stat reveal"><span class="num" data-target="0">0</span><span>Server cost</span></div>
-    <div class="stat reveal"><span class="num">24/7</span><span>AI automation</span></div>
+    <div class="stat reveal"><span class="stat-value">5 Minutes</span><span class="stat-label">Setup to Live</span></div>
+    <div class="stat reveal"><span class="stat-value">$0</span><span class="stat-label">Server Cost</span></div>
+    <div class="stat reveal"><span class="stat-value">24/7</span><span class="stat-label">AI Automation</span></div>
   </div>
   <p style="color:#555;font-size:.9rem" class="reveal">Built for college radio, community stations, church broadcasts, and anyone who wants their own station.</p>
 </section>
