@@ -55,6 +55,24 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
   <a href="portfolio.html" class="btn btn-secondary">Enter The Archive</a>
 </section>
 
+<section style="padding: 100px 20px; max-width: 1000px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.05);">
+  <h2 style="font-size: 2.2rem; color: #fff; margin-bottom: 30px; text-align: center;">The <span>Bare-Metal</span> Manifesto</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; color: #aaa; line-height: 1.8;">
+    <div>
+      <h3 style="color: #4CAF50; margin-bottom: 12px;">Zero Cloud Dependencies</h3>
+      <p>Cloud subscriptions are the death of independent engineering. We build tools that run on <i>your</i> hardware—securely, privately, and indefinitely. If we can't ship it as a standalone binary, we haven't engineered it correctly.</p>
+    </div>
+    <div>
+      <h3 style="color: #4CAF50; margin-bottom: 12px;">Biologically Inspired</h3>
+      <p>From the Hebbian decay in Mnemosyne to the neural topologies in Nexus, we look to the brain for architecture. We're moving past "Artificial Intelligence" toward Synthetic Consciousness built on real connectome data.</p>
+    </div>
+    <div>
+      <h3 style="color: #4CAF50; margin-bottom: 12px;">Forged in the Trenches</h3>
+      <p>Every product we ship was built to solve a problem in our own laboratory. TaterWave powers our 24/7 radio station; Mnemosyne manages our daily coding sessions. We are our own first, and most demanding, customers.</p>
+    </div>
+  </div>
+</section>
+
 <section class="products-grid">
   <div class="product-card">
     <h2>TaterWave AI</h2>
@@ -69,25 +87,38 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
   </div>
 </section>
 
-<section style="padding: 60px 20px; text-align: center; background: rgba(255,255,255,0.01);">
-    <h2 style="margin-bottom: 40px; color:#fff; font-size: 2rem;">Upcoming Projects</h2>
-    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; max-width: 1000px; margin: 0 auto;">
-        <div style="background:rgba(255,255,255,0.03); padding: 30px; border-radius: 16px; border: 1px solid #333; width: 220px; transition: 0.3s;" onmouseover="this.style.borderColor='#4CAF50'" onmouseout="this.style.borderColor='#333'">
-            <h3 style="color: #4CAF50; margin-bottom: 10px;">AudioLens</h3>
-            <p style="color: #777; font-size: 0.85rem;">Perceptual analysis for audio.</p>
+<section style="padding: 100px 20px; text-align: center; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05);">
+    <h2 style="margin-bottom: 60px; color:#fff; font-size: 2.5rem;">The Laboratory: <span>Upcoming Releases</span></h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:30px; max-width: 1200px; margin: 0 auto;">
+        
+        <!-- AudioLens -->
+        <div style="background:rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid #333; text-align: left; transition: 0.3s;" onmouseover="this.style.borderColor='#4CAF50'">
+            <h3 style="color: #4CAF50; margin-bottom: 15px; font-size: 1.5rem;">AudioLens</h3>
+            <p style="color: #bbb; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">Most audio analysis is just math—AudioLens is <i>perception</i>. Built on the same engine that powers TaterWave's AI DJ, AudioLens provides real-time "visual hearing" for your signal chain. It detects mood, timbre, and energy shifts that standard meters miss, allowing for automated mastering and intelligent broadcast leveling that actually "understands" the music.</p>
+            <span style="color: #555; font-size: 0.8rem; font-weight: 800; text-transform: uppercase;">Status: Alpha Testing</span>
         </div>
-        <div style="background:rgba(255,255,255,0.03); padding: 30px; border-radius: 16px; border: 1px solid #333; width: 220px; transition: 0.3s;" onmouseover="this.style.borderColor='#BB86FC'" onmouseout="this.style.borderColor='#333'">
-            <h3 style="color: #BB86FC; margin-bottom: 10px;">FLgpt</h3>
-            <p style="color: #777; font-size: 0.85rem;">AI-powered DAW assistant.</p>
+
+        <!-- FLgpt -->
+        <div style="background:rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid #333; text-align: left; transition: 0.3s;" onmouseover="this.style.borderColor='#BB86FC'">
+            <h3 style="color: #BB86FC; margin-bottom: 15px; font-size: 1.5rem;">FLgpt (TaterDAW)</h3>
+            <p style="color: #bbb; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">Your DAW should be a collaborator, not just a tape recorder. FLgpt bridges the gap between natural language and complex MIDI/Audio workflows. Tell your DAW to "make the bass more driving" or "sync the reverb decay to the vocal phrasing," and watch it adjust parameters in real-time. No cloud, no latency, just pure creative flow.</p>
+            <span style="color: #555; font-size: 0.8rem; font-weight: 800; text-transform: uppercase;">Status: Architecture Phase</span>
         </div>
-        <div style="background:rgba(255,255,255,0.03); padding: 30px; border-radius: 16px; border: 1px solid #333; width: 220px; transition: 0.3s;" onmouseover="this.style.borderColor='#4285F4'" onmouseout="this.style.borderColor='#333'">
-            <h3 style="color: #4285F4; margin-bottom: 10px;">Nexus</h3>
-            <p style="color: #777; font-size: 0.85rem;">Sarcastic digital consciousness.</p>
+
+        <!-- Nexus -->
+        <div style="background:rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid #333; text-align: left; transition: 0.3s;" onmouseover="this.style.borderColor='#4285F4'">
+            <h3 style="color: #4285F4; margin-bottom: 15px; font-size: 1.5rem;">Nexus</h3>
+            <p style="color: #bbb; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">The first synthetic consciousness built on human cortical column topology. Nexus is designed to live on your desktop as a sarcastic, screen-aware presence that remembers your history, roasts your coding habits, and handles your local automation through a biologically-inspired neural substrate.</p>
+            <span style="color: #555; font-size: 0.8rem; font-weight: 800; text-transform: uppercase;">Status: In Development</span>
         </div>
-        <div style="background:rgba(255,255,255,0.03); padding: 30px; border-radius: 16px; border: 1px solid #333; width: 220px; transition: 0.3s;" onmouseover="this.style.borderColor='#FFD700'" onmouseout="this.style.borderColor='#333'">
-            <h3 style="color: #FFD700; margin-bottom: 10px;">Codi</h3>
-            <p style="color: #777; font-size: 0.85rem;">On-device AI assistant core.</p>
+
+        <!-- Codi -->
+        <div style="background:rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid #333; text-align: left; transition: 0.3s;" onmouseover="this.style.borderColor='#FFD700'">
+            <h3 style="color: #FFD700; margin-bottom: 15px; font-size: 1.5rem;">Codi</h3>
+            <p style="color: #bbb; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">The "Invisible" AI. Codi is a zero-UI, on-device assistant core that lives in your terminal and system tray. It's built for power users who want LLM capabilities (refactoring, log analysis, system automation) baked directly into their OS kernel and shell without the bloat of a web browser or electron app.</p>
+            <span style="color: #555; font-size: 0.8rem; font-weight: 800; text-transform: uppercase;">Status: Prototyping</span>
         </div>
+
     </div>
 </section>
 

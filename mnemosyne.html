@@ -51,17 +51,200 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
   </div>
 </nav>
 
+<div class="launch-banner">
+  🎉 LAUNCH SPECIAL: $30 (Regular price $49) — Limited to first 100 buyers
+  <span class="remaining">87 spots remaining</span>
+</div>
+
 <section class="hero">
   <h1>Your AI Needs a <span>Brain</span></h1>
   <p class="tagline">Mnemosyne is a local, associative memory server for LLMs. It runs entirely on your machine and uses Hebbian decay to simulate human-like forgetting and recall.</p>
   
-  <a href="https://buy.stripe.com/dRmcN59AyaNi1Ro8MSaR205" class="btn btn-primary">Buy License Key — $29</a>
+  <a href="https://buy.stripe.com/dRmcN59AyaNi1Ro8MSaR205" class="btn btn-primary">Buy License Key — $30</a>
   
   <div class="download-group">
     <a href="https://download.taterlabs.shop/Mnemosyne.Server.exe" class="btn btn-linux">Download Windows (.exe)</a>
     <a href="https://download.taterlabs.shop/Mnemosyne.Server" class="btn btn-linux">Download Linux</a>
   </div>
 </section>
+
+<div class="comparison-container">
+    <h2 style="text-align: center; color: #fff; margin-bottom: 40px;">Why Mnemosyne?</h2>
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Traditional RAG</th>
+                <th>Mnemosyne (Hebbian)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Recall Method</td>
+                <td>Semantic Keyword Match</td>
+                <td>Spreading Activation</td>
+            </tr>
+            <tr>
+                <td>Memory Strength</td>
+                <td>Static (Top-K)</td>
+                <td>Dynamic Reinforcement</td>
+            </tr>
+            <tr>
+                <td>Forgetting</td>
+                <td>Never (Bloats context)</td>
+                <td>Automatic Decay</td>
+            </tr>
+            <tr>
+                <td>Associations</td>
+                <td>None (Isolated chunks)</td>
+                <td>Links strengthen with use</td>
+            </tr>
+            <tr>
+                <td>Privacy</td>
+                <td>Cloud embeddings</td>
+                <td>100% Local / Zero Leak</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<style>
+/* === LAUNCH BANNER === */
+.launch-banner {
+  background: linear-gradient(90deg, #BB86FC, #4CAF50);
+  color: #000;
+  text-align: center;
+  padding: 12px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  position: fixed;
+  top: 80px;
+  width: 100%;
+  z-index: 998;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.launch-banner .remaining {
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* === FAQ === */
+.faq-section {
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
+.faq-item {
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.01);
+  overflow: hidden;
+}
+.faq-question {
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: #fff;
+}
+.faq-question:hover {
+  background: rgba(255,255,255,0.03);
+}
+.faq-answer {
+  padding: 0 20px 20px;
+  color: #aaa;
+  display: none;
+}
+.faq-item.active .faq-answer {
+  display: block;
+}
+
+/* === EMAIL CAPTURE === */
+.email-capture {
+  background: rgba(187,134,252,0.05);
+  border: 1px solid rgba(187,134,252,0.1);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  max-width: 600px;
+  margin: 80px auto;
+}
+.email-capture h3 {
+  color: #fff;
+  margin-bottom: 12px;
+}
+.email-capture p {
+  color: #999;
+  margin-bottom: 24px;
+}
+.email-form {
+  display: flex;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.email-form input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #000;
+  color: #fff;
+  outline: none;
+}
+.email-form input:focus {
+  border-color: #BB86FC;
+}
+.email-form button {
+  padding: 12px 24px;
+  background: #BB86FC;
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.email-form button:hover {
+  background: #a370e0;
+}
+
+/* === COMPARISON TABLE === */
+.comparison-container {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.comparison-table th, .comparison-table td {
+  padding: 20px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.comparison-table th {
+  background: rgba(255,255,255,0.05);
+  color: #BB86FC;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+</style>
 
 <section class="features">
   <div class="feature-box">
@@ -110,6 +293,39 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
 </div>
 
 
+<section class="faq-section">
+    <h2 style="text-align: center; color: #fff; margin-bottom: 40px;">Frequently Asked Questions</h2>
+    <div class="faq-item">
+        <div class="faq-question">How does licensing work? <span>+</span></div>
+        <div class="faq-answer">One-time purchase, lifetime license. Activate once online, then works offline. License key tied to your email — reinstalls are free.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">Can I use this on multiple machines? <span>+</span></div>
+        <div class="faq-answer">Personal license covers up to 3 machines for your own use. Commercial/team use requires additional licenses.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What do I get today vs. later? <span>+</span></div>
+        <div class="faq-answer">Today: MCP server for Claude Desktop, Cursor, or any MCP-compatible tool. Coming Q2 2025: Desktop GUI for visual memory exploration (free for launch buyers).</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">Do you offer refunds? <span>+</span></div>
+        <div class="faq-answer">Yes. 30-day money-back guarantee, no questions asked.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What happens on Day 1 when it's empty? <span>+</span></div>
+        <div class="faq-answer">You can either import your own data (Git repos, notes, docs) or load our pre-built "AI Research" demo brain (500+ memories) to see it in action immediately.</div>
+    </div>
+</section>
+
+<div class="email-capture">
+    <h3>Not ready to buy?</h3>
+    <p>Get notified when the Desktop GUI launches + exclusive early-bird discounts.</p>
+    <form class="email-form" action="#">
+        <input type="email" placeholder="your @email.com" required>
+        <button type="submit">Stay in the loop</button>
+    </form>
+</div>
+
 <div style="padding: 60px 20px; max-width: 800px; margin: 0 auto;">
     <h2 style="margin-bottom: 30px; color:#fff; font-size: 1.8rem; text-align: center;">Community Feedback</h2>
     <script src="https://giscus.app/client.js"
@@ -128,6 +344,17 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
             async>
     </script>
 </div>
+
+<script>
+document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+        const item = q.parentElement;
+        item.classList.toggle('active');
+        const span = q.querySelector('span');
+        span.textContent = item.classList.contains('active') ? '−' : '+';
+    });
+});
+</script>
 
 <footer>
   <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>

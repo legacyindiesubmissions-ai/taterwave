@@ -359,8 +359,27 @@ footer a:hover{color:#4CAF50}
     <div class="feature-card reveal"><div class="icon">🎛️</div><h3>Pro Audio Engine</h3><p>Volume normalization, AGC, 3-band EQ, silence detection, crossfade, and broadcast device capture for Dante, Livewire, WheatNet-IP.</p></div>
     <div class="feature-card reveal"><div class="icon">🔊</div><h3>12-Slot Cartwall</h3><p>Instant-play soundboard for jingles, bumpers, sound effects, and station IDs. Load, assign hotkeys, fire during live broadcast.</p></div>
     <div class="feature-card reveal"><div class="icon">🎤</div><h3>Remote Mic & Call-Ins</h3><p>Capture live audio from any input device — microphone, line-in, or remote guest feed. Go live with co-hosts or take callers.</p></div>
-    <div class="feature-card reveal"><div class="icon">📊</div><h3>Listener Analytics</h3><p>Real-time listener counts, session tracking, peak concurrent listeners, and request voting stats. Know your audience at a glance.</p></div>
-    <div class="feature-card reveal"><div class="icon">🤖</div><h3>MCP Server</h3><p>Built-in Model Context Protocol server lets Claude and other AI tools control your station programmatically. Next-level automation.</p></div>
+    <div class="feature-card reveal"><h3>📊 Listener Analytics</h3><p>Real-time listener counts, session tracking, peak concurrent listeners, and request voting stats. Know your audience at a glance.</p></div>
+    <div class="feature-card reveal"><h3>🤖 MCP Server</h3><p>Built-in Model Context Protocol server lets Claude and other AI tools control your station programmatically. Next-level automation.</p></div>
+  </div>
+</section>
+
+<section style="padding: 100px 20px; max-width: 900px; margin: 0 auto; background: rgba(255,255,255,0.01); border-radius: 24px; border: 1px solid rgba(76,175,80,0.1);">
+  <h2 style="text-align: center; color: #fff; font-size: 2.5rem; margin-bottom: 40px;">The Story of <span>TaterWave</span></h2>
+  
+  <div style="margin-bottom: 40px;">
+    <h3 style="color: #4CAF50; margin-bottom: 12px;">Built for Battle</h3>
+    <p style="color: #aaa; line-height: 1.8;">TaterWave AI wasn't designed in a vacuum. It was forged in the trenches of <strong>Legacy Indie Radio</strong>. We needed a way to broadcast high-quality indie music 24/7 without a full-time staff or a $200/month cloud hosting bill. We needed a DJ that didn't sleep, and a broadcast pipe that didn't break.</p>
+  </div>
+
+  <div style="margin-bottom: 40px;">
+    <h3 style="color: #4CAF50; margin-bottom: 12px;">The "Zero-Cloud" Philosophy</h3>
+    <p style="color: #aaa; line-height: 1.8;">Why pay for a server when you already own a powerful PC? TaterWave leverages your local hardware for everything—audio processing, AI generation, and music storage. By using <strong>Tailscale</strong>, we create a secure, direct tunnel to your listeners. You own the signal; you own the hardware; you own the data.</p>
+  </div>
+
+  <div>
+    <h3 style="color: #4CAF50; margin-bottom: 12px;">How the Brain Works</h3>
+    <p style="color: #aaa; line-height: 1.8;">Most radio software is just a fancy playlist. TaterWave uses the <strong>Essentia</strong> perceptual engine to "listen" to your music, extracting BPM, mood, and energy. When the AI DJ speaks, it isn't reading a random script—it's analyzing the transition. If you're moving from a high-energy anthem to a late-night acoustic set, the DJ acknowledges the vibe shift, making your station feel alive and intentional.</p>
   </div>
 </section>
 
@@ -530,38 +549,6 @@ window.addEventListener('scroll',function(){
           ctx.lineTo(particles[j].x,particles[j].y);
           ctx.strokeStyle='rgba(76,175,80,'+((.12-dist/1000))+')';
           ctx.lineWidth=.5;ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// Now playing
-(function(){
-  var np=document.getElementById('nowPlaying');if(!np)return;
-  function update(){fetch('https://legacyindieradio.tailc6f66c.ts.net/nowplaying').then(function(r){return r.json()}).then(function(d){np.textContent='Now Playing: '+d.title}).catch(function(){np.textContent=''})}
-  update();setInterval(update,10000);
-})();
-
-// Play button
-function togglePlay(){
-  var a=document.getElementById('livePlayer'),b=document.getElementById('playBtn');
-  if(a.paused){
-    a.src='https://legacyindieradio.tailc6f66c.ts.net/stream';a.play();
-    b.textContent='Stop Listening';b.classList.add('playing');
-  }else{
-    a.pause();a.src='';
-    b.textContent='Listen Live';b.classList.remove('playing');
-  }
-}
-</script>
-
-</body>
-</html>
-<script>
-dth=.5;ctx.stroke();
         }
       }
     }
