@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zackery Michael Sayers - Architect Showcase</title>
+    <style>
+        :root {
+            --bg: #0a192f;
+            --text: #ccd6f6;
+            --accent: #64ffda;
+            --secondary: #8892b0;
+            --card-bg: #112240;
+            --nav-bg: rgba(10, 25, 47, 0.85);
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            margin: 0;
+            color: var(--text);
+            font-weight: 800;
+        }
+        h2 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-top: 0.5rem;
+            font-weight: 400;
+        }
+        h3 {
+            color: var(--text);
+            font-size: 1.8rem;
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        h3::after {
+            content: "";
+            display: block;
+            position: relative;
+            width: 300px;
+            height: 1px;
+            margin-left: 20px;
+            background-color: var(--secondary);
+        }
+        .summary {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+        }
+        .research-blurb {
+            background: rgba(100, 255, 218, 0.05);
+            padding: 1.5rem;
+            border-radius: 4px;
+            border-left: 3px solid var(--accent);
+            margin-bottom: 2rem;
+            font-style: italic;
+            color: var(--text);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .project-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+        }
+        .project-card h4 {
+            margin: 0 0 1rem 0;
+            font-size: 1.4rem;
+            color: var(--text);
+        }
+        .project-card h4 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .project-card h4 a:hover {
+            color: var(--accent);
+        }
+        .project-card p {
+            font-size: 0.95rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        .result-tag {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-family: 'SF Mono', monospace;
+            margin-top: 1rem;
+            display: block;
+        }
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--secondary);
+        }
+        .tech-list li {
+            margin-right: 15px;
+        }
+        .section-label {
+            color: var(--accent);
+            font-family: 'SF Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .pub-list {
+            list-style: none;
+            padding: 0;
+        }
+        .pub-item {
+            margin-bottom: 2rem;
+            border-left: 2px solid #233554;
+            padding-left: 1.5rem;
+        }
+        .pub-title {
+            font-size: 1.2rem;
+            color: var(--text);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .pub-title:hover {
+            color: var(--accent);
+        }
+        .pub-meta {
+            font-family: 'SF Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+        .pub-desc {
+            font-size: 0.95rem;
+            color: var(--secondary);
+            margin-top: 0.5rem;
+        }
+        footer {
+            margin-top: 8rem;
+            padding-bottom: 4rem;
+            text-align: center;
+            color: var(--secondary);
+            font-family: 'SF Mono', monospace;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Zackery Michael Sayers</h1>
+            <h2>Systems Architect | Mechanistic Interpretability Researcher</h2>
+        </header>
+
+        <div class="summary">
+            I deconstruct and rebuild complex cognitive environments from the "bare metal" up. My work focuses on reverse-engineering the "internal algorithms" of intelligence, applying insights from biological neural topology to the mechanistic interpretability of frontier transformer models.
+        </div>
+
+        <div class="research-blurb">
+            "I am applying my experience in biological neural topology to the reverse-engineering of frontier transformer models. My current focus is identifying functional circuits—such as memory retrieval loops and sensory-gating mechanisms—using insights from from-scratch simulations (Nexus) and Hebbian memory systems (Mnemosyne)."
+        </div>
+
+        <div class="scale-badge">Steering a local development environment of nearly 600,000 files</div>
+
+        <h3>Mechanistic Interpretability & Model Internals</h3>
+        <p style="color: var(--secondary); margin-bottom: 2rem;">
+            My research methodology centers on <strong>Structural Priors</strong>. I believe that understanding how specific neural topologies (like the Thalamus or Basal Ganglia) drive goal-directed behavior provides a roadmap for reverse-engineering analogous high-level control circuits in large-scale transformers.
+        </p>
+
+        <h3>Selected Publications</h3>
+        <div class="pub-list">
+            <div class="pub-item">
+                <a href="https://zenodo.org/records/11059529" class="pub-title">Nexus v2: A Zero-Pretrain Synthetic Brain That Learns to Vocalize Through Biological Mechanisms on Consumer Hardware</a>
+                <div class="pub-meta">Zenodo Preprint | April 2026</div>
+                <div class="pub-desc">Experimental study on emergent behavioral circuits. Demonstrates how 10,240 synfire chains with STDP can resolve competing motor pathways without pretrained language representations.</div>
+            </div>
+            <div class="pub-item">
+                <a href="https://zenodo.org/records/11029273" class="pub-title">Nexus: A Biologically-Grounded Synthetic Brain Architecture Running on Consumer Hardware</a>
+                <div class="pub-meta">Zenodo Preprint | April 2026</div>
+                <div class="pub-desc">Architectural deconstruction of metabolic gating and neural topology, focusing on the circuit-level logic of attention and threat detection.</div>
+            </div>
+            <div class="pub-item">
+                <a href="https://zenodo.org/records/10957545" class="pub-title">A $140 Computer, a Fly Brain, and Claude: Evidence for Latent Embodiment in Large Language Models</a>
+                <div class="pub-meta">Zenodo Publication | April 2026</div>
+                <div class="pub-desc">Mechanistic probe into latent representations within LLMs when grounded in low-fidelity biological simulations.</div>
+            </div>
+        </div>
+
+        <h3>Foundational Research</h3>
+        <div class="grid">
+            <div class="project-card">
+                <span class="section-label">Memory Circuits</span>
+                <h4><a href="https://github.com/legacyindiesubmissions-ai/Mnemosyne">Mnemosyne</a></h4>
+                <p>An MCP-native memory layer implementing Hebbian dynamics. Designed as a testbed for studying "Contextual Retrieval Circuits" and associative memory consolidation in agentic workflows.</p>
+                <span class="result-tag">Finding: Identified interpretable "salience markers" that prevent contextual drift across multi-session builds.</span>
+                <ul class="tech-list">
+                    <li>Python</li>
+                    <li>Hebbian</li>
+                    <li>Interpretability</li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <span class="section-label">Embodied Intelligence</span>
+                <h4><a href="https://github.com/legacyindiesubmissions-ai/nexus">Nexus</a></h4>
+                <p>A fully embodied synthetic mind featuring an 83M synapse connectome integrated with a complete 3D body architecture. Features functional analogs for the Thalamus and Amygdala, driven by sensory-to-action loops.</p>
+                <span class="result-tag">Finding: Emergent behavioral loops and sensory-to-action grounding in simulated environments.</span>
+                <ul class="tech-list">
+                    <li>C++ / TorchSharp</li>
+                    <li>Godot Integration</li>
+                    <li>Embodied AI</li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <span class="section-label">Systems Reliability</span>
+                <h4><a href="https://github.com/legacyindiesubmissions-ai/TaterTOS64">TaterTOS64v3</a></h4>
+                <p>400k+ line custom kernel build. Provides the high-performance, deterministic environment required for large-scale neural probes and kernel-level browser isolation research.</p>
+                <span class="result-tag">Impact: Baseline for "Bare-Metal" safety research into OS-integrated model orchestration.</span>
+                <ul class="tech-list">
+                    <li>C</li>
+                    <li>Systems</li>
+                    <li>Safety</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Specialized Products & Engineering</h3>
+        <div class="grid">
+            <div class="project-card">
+                <span class="section-label">Audio Intelligence</span>
+                <h4>AudioLens</h4>
+                <p>Structured perceptual translation for LLMs. Converts raw audio signals into high-fidelity "listening reports" covering BPM, key, and spectral density.</p>
+                <ul class="tech-list">
+                    <li>Python</li>
+                    <li>NumPy</li>
+                    <li>Librosa</li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <span class="section-label">SaaS & Media</span>
+                <h4>RadioStudioCS / TaterWave</h4>
+                <p>AI-powered radio station suite featuring AI DJs, voice cloning, and autonomous multi-agent orchestration. Managed via a high-performance C#/.NET 8 backend.</p>
+                <ul class="tech-list">
+                    <li>C#</li>
+                    <li>.NET 8</li>
+                    <li>Avalonia</li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <span class="section-label">Digital Audio Workstation</span>
+                <h4>TaterDAW / FLgpt</h4>
+                <p>Modern DAW specialized for AI-assisted music production. Features natural language control workflows and high-performance audio I/O via NAudio.</p>
+                <ul class="tech-list">
+                    <li>C#</li>
+                    <li>NAudio</li>
+                    <li>LLM Fine-Tuning</li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <span class="section-label">Web Engine</span>
+                <h4>TaterSurf</h4>
+                <p>Native web browser for TaterTOS. Features a custom HTML5 tokenizer, CSS3 selector engine, and a DOM/WebAPI bridge via QuickJS.</p>
+                <ul class="tech-list">
+                    <li>C</li>
+                    <li>QuickJS</li>
+                    <li>DOM Parser</li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <span class="section-label">Embodied AI</span>
+                <h4>EmbodiedLLM</h4>
+                <p>Research into grounding large language models within simulated and physical environments, focusing on sensory-to-action pipelines.</p>
+                <ul class="tech-list">
+                    <li>AI Research</li>
+                    <li>Action Pipelines</li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <span class="section-label">Hardware & Firmware</span>
+                <h4>p33-firmware / LegacyMaster</h4>
+                <p>Low-level firmware and system management tools for specialized hardware builds and kernel optimization.</p>
+                <ul class="tech-list">
+                    <li>C</li>
+                    <li>Low-Level I/O</li>
+                    <li>Firmware</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            Built in the Lab. | sayerszack11@gmail.com | Forest City, IA | 2026
+        </footer>
+    </div>
+</body>
+</html>
