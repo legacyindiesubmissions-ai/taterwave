@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mnemosyne MCP by Tater Labs — Persistent Memory for Claude & Cursor</title>
+<meta name="description" content="Mnemosyne is a local, associative memory server for LLMs. Connect it to Claude Desktop or Cursor via the Model Context Protocol (MCP).">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0d0d1a;color:#e0e0e0;line-height:1.6;overflow-x:hidden;cursor:default;padding-top:80px;}
+
+/* === NAVIGATION === */
+.global-nav{position:fixed;top:0;width:100%;background:rgba(5,5,16,0.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.05);z-index:999;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+.nav-brand{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:1px;}
+.nav-brand span{color:#4CAF50;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-links a{color:#999;text-decoration:none;font-weight:600;font-size:0.95rem;transition:color 0.3s;}
+.nav-links a:hover{color:#fff;}
+
+.hero{text-align:center;padding:100px 20px 60px;position:relative;}
+.hero h1{font-size:clamp(2.5rem,5vw,4.5rem);font-weight:900;margin-bottom:16px;letter-spacing:-1px;}
+.hero h1 span{color:#BB86FC;}
+.hero .tagline{font-size:clamp(1.1rem,2vw,1.5rem);color:#aaa;max-width:700px;margin:0 auto 40px;}
+
+.btn{display:inline-block;padding:16px 36px;border-radius:10px;font-size:1.1rem;font-weight:700;text-decoration:none;transition:all 0.3s;}
+.btn-primary{background:#BB86FC;color:#111;box-shadow:0 4px 20px rgba(187,134,252,0.3);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(187,134,252,0.5);}
+
+.features{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding:60px 20px;}
+.feature-box{flex:1;min-width:300px;max-width:400px;background:rgba(255,255,255,0.02);padding:32px;border-radius:16px;border:1px solid rgba(255,255,255,0.05);}
+.feature-box h3{color:#fff;margin-bottom:12px;font-size:1.4rem;}
+.feature-box p{color:#999;}
+
+.code-block{background:#000;padding:24px;border-radius:12px;font-family:monospace;color:#4CAF50;text-align:left;max-width:600px;margin:40px auto;border:1px solid #333;overflow-x:auto;}
+
+footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-top:1px solid rgba(255,255,255,.03)}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <a href="index.html" class="nav-brand">🥔 Tater<span>Labs</span></a>
+  <div class="nav-links">
+    <a href="taterwave.html">TaterWave AI</a>
+    <a href="mnemosyne.html" style="color: #fff;">Mnemosyne MCP</a>
+    <a href="https://github.com/legacyindiesubmissions-ai">GitHub</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Your AI Needs a <span>Brain</span></h1>
+  <p class="tagline">Mnemosyne is a local, associative memory server for LLMs. It runs entirely on your machine and uses Hebbian decay to simulate human-like forgetting and recall.</p>
+  
+  <a href="#download" class="btn btn-primary">Get Early Access — $29</a>
+</section>
+
+<section class="features">
+  <div class="feature-box">
+    <h3>Standard MCP Support</h3>
+    <p>Works out of the box with Claude Desktop, Cursor, and Windsurf. Just point your config file at the binary and your AI instantly gains long-term memory tools.</p>
+  </div>
+  <div class="feature-box">
+    <h3>Spreading Activation</h3>
+    <p>It's not just vector search. When you ask a question, Mnemosyne traverses a localized SQLite graph, strengthening active memories and naturally forgetting unused trivia.</p>
+  </div>
+</section>
+
+<div style="text-align:center; padding: 0 20px;">
+  <h2 style="margin-bottom:16px; color:#fff;">Just add it to your config:</h2>
+  <div class="code-block">
+{
+  "mcpServers": {
+    "mnemosyne": {
+      "command": "C:\\path\\to\\Mnemosyne.Server.exe",
+      "args": []
+    }
+  }
+}
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>
+</footer>
+
+</body>
+</html>
