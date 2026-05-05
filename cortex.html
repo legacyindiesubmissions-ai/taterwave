@@ -253,9 +253,9 @@
         </div>
 
         <div class="composer">
-            <textarea placeholder="Transmit a signal... (Supports markdown code blocks)"></textarea>
+            <textarea id="composer-text" placeholder="Transmit a signal... (Supports markdown code blocks)"></textarea>
             <div class="composer-actions">
-                <button class="btn-small">Post</button>
+                <button id="post-signal" class="btn-small">Post</button>
             </div>
         </div>
 
@@ -341,19 +341,43 @@
 </div>
 
 <script>
-    // Fetch live stats from the Go Sidecar
-    fetch('/api/stats')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('api-status').innerText = 'ONLINE';
-            document.getElementById('api-status').style.color = '#4CAF50';
-            document.getElementById('api-feedback').innerText = data.feedback_count;
+    // Stats Fetch
+    function refreshStats() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('api-status').innerText = 'ONLINE';
+                document.getElementById('api-status').style.color = '#4CAF50';
+                document.getElementById('api-feedback').innerText = data.feedback_count;
+            })
+            .catch(err => {
+                document.getElementById('api-status').innerText = 'OFFLINE';
+                document.getElementById('api-status').style.color = '#f44336';
+            });
+    }
+
+    refreshStats();
+
+    // Feedback Submission
+    document.getElementById('post-signal').addEventListener('click', () => {
+        const content = document.getElementById('composer-text').value;
+        if (!content) return;
+
+        fetch('/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product: 'Cortex', title: 'New Post', description: content })
         })
-        .catch(err => {
-            document.getElementById('api-status').innerText = 'OFFLINE';
-            document.getElementById('api-status').style.color = '#f44336';
-            console.error('Vitals check failed:', err);
+        .then(response => {
+            if (response.ok) {
+                alert('Signal Transmitted');
+                document.getElementById('composer-text').value = '';
+                refreshStats();
+            } else {
+                alert('Signal Failed');
+            }
         });
+    });
 </script>
 
 </body>
