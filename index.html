@@ -154,7 +154,7 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
 </div>
 
 <script>
-    fetch('https://legacyindieradio.tailc6f66c.ts.net/api/stats')
+    fetch('/api/stats')
         .then(response => response.json())
         .then(data => {
             document.getElementById('lab-status').innerHTML = 
