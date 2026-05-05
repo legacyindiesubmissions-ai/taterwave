@@ -149,24 +149,5 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
   <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>
 </footer>
 
-<div id="lab-status" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); border: 1px solid #4CAF50; padding: 10px 15px; border-radius: 8px; font-size: 0.8rem; color: #4CAF50; z-index: 1000; font-family: monospace;">
-    Connecting to Lab...
-</div>
-
-<script>
-    fetch('/api/stats')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('lab-status').innerHTML = 
-                `Lab API: ONLINE<br>Feedback Entries: ${data.feedback_count}`;
-        })
-        .catch(err => {
-            document.getElementById('lab-status').innerHTML = 'Lab API: OFFLINE';
-            document.getElementById('lab-status').style.borderColor = '#f44336';
-            document.getElementById('lab-status').style.color = '#f44336';
-            console.error('Lab API connection failed:', err);
-        });
-</script>
-
 </body>
 </html>
