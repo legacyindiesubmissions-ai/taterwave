@@ -44,6 +44,7 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
   <div class="nav-links">
     <a href="taterwave.html">TaterWave AI</a>
     <a href="mnemosyne.html">Mnemosyne MCP</a>
+    <a href="#guides">Guides</a>
     <a href="portfolio.html">Portfolio</a>
     <a href="https://github.com/legacyindiesubmissions-ai">GitHub</a>
   </div>
@@ -122,7 +123,7 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
     </div>
 </section>
 
-<section style="padding: 100px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+<section id="guides" style="padding: 100px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
     <h2 style="margin-bottom: 40px; color:#fff; font-size: 2.2rem;">Expert <span>Guides</span> & Research</h2>
     <div style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap; max-width: 1100px; margin: 0 auto;">
         
@@ -147,6 +148,25 @@ footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-to
 <footer>
   <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>
 </footer>
+
+<div id="lab-status" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); border: 1px solid #4CAF50; padding: 10px 15px; border-radius: 8px; font-size: 0.8rem; color: #4CAF50; z-index: 1000; font-family: monospace;">
+    Connecting to Lab...
+</div>
+
+<script>
+    fetch('https://legacyindieradio.tailc6f66c.ts.net/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('lab-status').innerHTML = 
+                `Lab API: ONLINE<br>Feedback Entries: ${data.feedback_count}`;
+        })
+        .catch(err => {
+            document.getElementById('lab-status').innerHTML = 'Lab API: OFFLINE';
+            document.getElementById('lab-status').style.borderColor = '#f44336';
+            document.getElementById('lab-status').style.color = '#f44336';
+            console.error('Lab API connection failed:', err);
+        });
+</script>
 
 </body>
 </html>
