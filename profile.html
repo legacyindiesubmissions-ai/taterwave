@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Cortex | Tater Labs</title>
+    <style>
+        body { background: #050510; color: #e0e0e0; font-family: monospace; padding: 40px; }
+        .signal { background: #111; border: 1px solid #333; padding: 20px; margin-bottom: 10px; border-radius: 8px; }
+        .header { margin-bottom: 30px; border-bottom: 1px solid #444; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>My Signals</h1>
+        <a href="cortex.html">← Back to Stream</a>
+    </div>
+    <div id="profile-feed"></div>
+
+    <script>
+        const token = localStorage.getItem('tater_token');
+        if (!token) window.location.href = 'cortex.html';
+
+        fetch('/api/user/posts', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+        .then(res => res.ok ? res.json() : [])
+        .then(posts => {
+            const container = document.getElementById('profile-feed');
+            posts.forEach(post => {
+                container.innerHTML += `
+                    <article class="signal">
+                        <h3>${post.title}</h3>
+                        <p>${post.content}</p>
+                        <small>${post.created_at}</small>
+                    </article>`;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -247,7 +247,7 @@
             <button class="nav-item" onclick="showAuthModal('register')">Register</button>
         </div>
         <div id="user-section" style="display:none;">
-            <p id="user-handle" class="nav-item"></p>
+            <a href="profile.html" class="nav-item" id="user-handle"></a>
             <button class="nav-item" onclick="logout()">Logout</button>
         </div>
         <button class="btn-signal">Broadcast</button>
@@ -438,20 +438,29 @@
     // Feedback Submission
     document.getElementById('post-signal').addEventListener('click', () => {
         const content = document.getElementById('composer-text').value;
+        const token = localStorage.getItem('tater_token');
+        
         if (!content) return;
+        if (!token) {
+            alert('Please login to post signals.');
+            return;
+        }
 
         fetch('/api/feedback', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
             body: JSON.stringify({ product: 'Cortex', title: 'New Post', description: content })
         })
         .then(response => {
             if (response.ok) {
-                alert('Signal Transmitted');
                 document.getElementById('composer-text').value = '';
                 refreshStats();
+                loadPosts(); // Reload feed
             } else {
-                alert('Signal Failed');
+                alert('Signal Failed: Unauthorized');
             }
         });
     });
