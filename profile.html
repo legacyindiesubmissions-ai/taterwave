@@ -35,10 +35,13 @@
         .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .history-section h2 { font-size: 1.2rem; margin-bottom: 20px; }
-        .synapse { background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; margin-bottom: 15px; }
-        .synapse h3 { font-size: 1.1rem; margin-bottom: 8px; }
-        .synapse p { color: #ccc; margin-bottom: 10px; }
-        .synapse small { color: var(--text-muted); font-size: 0.8rem; }
+        .synapse { background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; gap: 15px; }
+        .synapse-avatar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; background: #111; flex-shrink: 0; }
+        .synapse-content { flex: 1; }
+        .synapse-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .synapse-content h3 { font-size: 1rem; margin-bottom: 5px; color: var(--accent-blue); }
+        .synapse-content p { color: #ccc; margin-bottom: 10px; line-height: 1.4; }
+        .synapse-content small { color: var(--text-muted); font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -103,12 +106,21 @@
                 container.innerHTML = '<p style="color:var(--text-muted);">No synapse activity recorded.</p>';
                 return;
             }
-            container.innerHTML = posts.map(p => `
-                <article class="synapse">
-                    <h3>${p.title}</h3>
-                    <p>${p.content}</p>
-                    <small>${new Date(p.created_at).toLocaleString()}</small>
-                </article>`).join('');
+            container.innerHTML = posts.map(p => {
+                const avatarSrc = p.avatar ? (p.avatar.startsWith('/') ? '/api' + p.avatar : p.avatar) : '';
+                const avatarHtml = avatarSrc ? `<img src="${avatarSrc}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
+                return `
+                    <article class="synapse">
+                        ${avatarHtml}
+                        <div class="synapse-content">
+                            <div class="synapse-header">
+                                <small style="color:var(--text-muted);">${new Date(p.created_at).toLocaleString()}</small>
+                            </div>
+                            <h3>${p.title}</h3>
+                            <p>${p.content}</p>
+                        </div>
+                    </article>`;
+            }).join('');
         }
 
         function previewAvatar(event) {

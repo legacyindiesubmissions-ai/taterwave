@@ -31,7 +31,13 @@
     .composer { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; }
     .composer textarea { background: transparent; border: none; color: var(--text-main); font-size: 1.1rem; outline: none; min-height: 60px; font-family: inherit; width: 100%; }
     .btn-small { background: var(--accent-blue); color: #fff; border: none; border-radius: 20px; padding: 8px 20px; font-weight: 700; cursor: pointer; align-self: flex-end; }
-    .synapse { padding: 20px; border-bottom: 1px solid var(--border-color); }
+    .synapse { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; gap: 15px; }
+    .synapse-avatar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; background: #111; flex-shrink: 0; }
+    .synapse-content { flex: 1; }
+    .synapse-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .author-name { font-weight: 700; color: #fff; }
+    .synapse-content h3 { font-size: 1rem; margin-bottom: 5px; color: var(--accent-blue); }
+    .synapse-content p { line-height: 1.4; color: #ccc; }
     
     .stream-profile-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px; background: rgba(255, 255, 255, 0.01); }
     .user-avatar-med { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-blue); background: #111; }
@@ -264,14 +270,22 @@
             feed.innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-muted);">No synapses detected in this sector yet.</div>';
             return;
         }
-        feed.innerHTML = posts.map(p => `
-            <article class="synapse">
-                <div class="synapse-header">
-                    <span class="author-name">@${p.author_handle || 'anonymous'}</span>
-                </div>
-                <h3>${p.title}</h3>
-                <p>${p.content}</p>
-            </article>`).join('');
+        feed.innerHTML = posts.map(p => {
+            const avatarSrc = p.avatar ? (p.avatar.startsWith('/') ? '/api' + p.avatar : p.avatar) : '';
+            const avatarHtml = avatarSrc ? `<img src="${avatarSrc}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
+            return `
+                <article class="synapse">
+                    ${avatarHtml}
+                    <div class="synapse-content">
+                        <div class="synapse-header">
+                            <span class="author-name">@${p.author_handle || 'anonymous'}</span>
+                            <small style="color:var(--text-muted);">${new Date(p.created_at).toLocaleDateString()}</small>
+                        </div>
+                        <h3>${p.title}</h3>
+                        <p>${p.content}</p>
+                    </div>
+                </article>`;
+        }).join('');
     }
 
     async function checkSession() {
