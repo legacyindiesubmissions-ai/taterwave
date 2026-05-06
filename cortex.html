@@ -112,6 +112,7 @@
         <button class="nav-item nav-pulse" onclick="showNotifications()">
             Pulse <span class="pulse-dot"></span>
         </button>
+        <a href="messages.html" class="nav-item">Messages</a>
         <a href="taterwave.html" class="nav-item">TaterWave</a>
         <a href="mnemosyne.html" class="nav-item">Mnemosyne</a>
         <div id="auth-section">
@@ -456,9 +457,10 @@
             resultsEl.innerHTML = '<div class="search-item"><small>No neural matches found.</small></div>';
         } else {
             const usersHtml = data.users.map(u => `
-                <div class="search-item" onclick="viewUser('@${u.handle}')">
+                <div class="search-item">
                     <img src="${u.avatar ? '/api' + u.avatar : ''}" class="synapse-avatar" style="width:24px; height:24px;">
-                    <span>@${u.handle}</span>
+                    <span style="flex:1;">@${u.handle}</span>
+                    <button onclick="startDM('${u.handle}')" style="background:var(--accent-blue); color:#fff; border:none; border-radius:4px; padding:4px 8px; font-size:0.7rem; cursor:pointer;">Message</button>
                 </div>`).join('');
             
             const synapseHtml = data.synapses.map(s => `
@@ -478,6 +480,10 @@
         document.getElementById('neural-search').value = '#' + tag;
         document.getElementById('search-results').style.display = 'none';
         // Future: Filter the actual feed by tag
+    }
+
+    function startDM(handle) {
+        window.location.href = `messages.html?with=${handle}`;
     }
 
     async function loadPosts() {
@@ -664,9 +670,19 @@
             container.innerHTML = '<p style="color:var(--text-muted); text-align:center;">No new synaptic pulses.</p>';
         } else {
             container.innerHTML = alerts.map(a => {
-                const typeText = a.type === 'resonate' ? 'resonated with your synapse' : 'replied to you';
+                let typeText = '';
+                let link = '#';
+                if (a.type === 'resonate') {
+                    typeText = 'resonated with your synapse';
+                } else if (a.type === 'reply') {
+                    typeText = 'replied to you';
+                } else if (a.type === 'dm') {
+                    typeText = 'sent you a private synapse';
+                    link = `messages.html?with=${a.source}`;
+                }
+                
                 return `
-                    <div style="padding:15px 0; border-bottom:1px solid #222;">
+                    <div style="padding:15px 0; border-bottom:1px solid #222; cursor:pointer;" onclick="window.location.href='${link}'">
                         <span style="font-weight:700; color:var(--accent-blue);">@${a.source}</span> ${typeText}
                         <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">${timeAgo(a.created_at)}</div>
                     </div>`;

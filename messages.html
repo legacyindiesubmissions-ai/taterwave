@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Synapses | Tater Labs</title>
+<style>
+    :root {
+        --bg-color: #050510;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --text-main: #e0e0e0;
+        --text-muted: #888;
+        --accent-blue: #4285F4;
+        --hover-bg: rgba(255, 255, 255, 0.03);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+    .cortex-container { display: flex; width: 100%; max-width: 1200px; height: 100%; }
+    
+    .sidebar-left { width: 275px; padding: 20px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+    .brand { font-size: 1.5rem; font-weight: 900; color: #fff; text-decoration: none; margin-bottom: 40px; }
+    .brand span { color: var(--accent-blue); }
+    .nav-item { display: flex; align-items: center; padding: 15px 20px; color: var(--text-main); text-decoration: none; font-size: 1.2rem; font-weight: 600; border-radius: 30px; margin-bottom: 10px; transition: background 0.2s; cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; }
+    .nav-item:hover { background: var(--hover-bg); }
+    .nav-item.active { color: var(--accent-blue); }
+
+    .messenger-container { flex: 1; display: flex; height: 100%; }
+    
+    .inbox-list { width: 350px; border-right: 1px solid var(--border-color); overflow-y: auto; }
+    .inbox-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+    .inbox-item { padding: 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 12px; }
+    .inbox-item:hover { background: var(--hover-bg); }
+    .inbox-item.active { background: rgba(66, 133, 244, 0.1); border-right: 3px solid var(--accent-blue); }
+    .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #111; border: 1px solid var(--border-color); }
+
+    .chat-window { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.01); }
+    .chat-header { padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
+    
+    .messages-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+    .msg { max-width: 70%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.4; }
+    .msg.sent { align-self: flex-end; background: var(--accent-blue); color: #fff; border-bottom-right-radius: 4px; }
+    .msg.received { align-self: flex-start; background: #222; color: #eee; border-bottom-left-radius: 4px; }
+    .msg-time { font-size: 0.7rem; opacity: 0.7; margin-top: 5px; display: block; text-align: right; }
+
+    .chat-input-area { padding: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+    .chat-input { flex: 1; background: #111; border: 1px solid #333; border-radius: 24px; padding: 12px 20px; color: #fff; outline: none; }
+    .chat-input:focus { border-color: var(--accent-blue); }
+    .btn-send { background: var(--accent-blue); color: #fff; border: none; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+<div class="cortex-container">
+    <nav class="sidebar-left">
+        <a href="index.html" class="brand">The <span>Cortex</span></a>
+        <a href="cortex.html" class="nav-item">Stream</a>
+        <a href="#" class="nav-item active">Messages</a>
+        <a href="profile.html" class="nav-item">Profile</a>
+    </nav>
+    
+    <main class="messenger-container">
+        <div class="inbox-list">
+            <div class="inbox-header"><h2>Private Synapses</h2></div>
+            <div id="contacts"></div>
+        </div>
+        
+        <div class="chat-window">
+            <div id="chat-header" class="chat-header" style="display:none;">
+                <div class="user-avatar" id="active-avatar"></div>
+                <h3 id="active-handle">Select a researcher</h3>
+            </div>
+            
+            <div id="messages" class="messages-area">
+                <div style="margin: auto; color: var(--text-muted); text-align: center;">
+                    Select a connection to begin private transmission.
+                </div>
+            </div>
+            
+            <div class="chat-input-area" id="input-area" style="display:none;">
+                <input type="text" id="msg-input" class="chat-input" placeholder="Initiate private synapse..." onkeypress="if(event.key==='Enter') sendDM()">
+                <button class="btn-send" onclick="sendDM()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const token = localStorage.getItem('tater_token');
+    if (!token) window.location.href = 'cortex.html';
+
+    let activeHandle = '';
+    let myHandle = '';
+
+    async function checkSession() {
+        const res = await fetch('/api/me', { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.ok) {
+            const data = await res.json();
+            myHandle = data.handle;
+        } else {
+            window.location.href = 'cortex.html';
+        }
+    }
+
+    async function loadContacts() {
+        const res = await fetch('/api/messages', { headers: { 'Authorization': `Bearer ${token}` } });
+        let contacts = await res.json() || [];
+        
+        // Handle incoming "with" query param
+        const urlParams = new URLSearchParams(window.location.search);
+        const withHandle = urlParams.get('with');
+        if (withHandle && !contacts.includes(withHandle)) {
+            contacts.unshift(withHandle);
+        }
+
+        const container = document.getElementById('contacts');
+        if (contacts.length === 0) {
+            container.innerHTML = '<div style="padding:20px; color:var(--text-muted);">No active synaptic channels.</div>';
+            return;
+        }
+
+        container.innerHTML = contacts.map(h => `
+            <div class="inbox-item ${h === activeHandle ? 'active' : ''}" onclick="selectContact('${h}')">
+                <div class="user-avatar"></div>
+                <div style="flex:1;">
+                    <div style="font-weight:700;">@${h}</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">Active interface</div>
+                </div>
+            </div>
+        `).join('');
+
+        if (withHandle && !activeHandle) {
+            selectContact(withHandle);
+        }
+    }
+
+    async function selectContact(handle) {
+        activeHandle = handle;
+        document.getElementById('chat-header').style.display = 'flex';
+        document.getElementById('active-handle').innerText = '@' + handle;
+        document.getElementById('input-area').style.display = 'flex';
+        
+        loadContacts(); // Refresh selection visual
+        loadHistory();
+    }
+
+    async function loadHistory() {
+        if (!activeHandle) return;
+        const res = await fetch(`/api/messages/history?with=${activeHandle}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const msgs = await res.json();
+        const container = document.getElementById('messages');
+        
+        container.innerHTML = msgs.map(m => `
+            <div class="msg ${m.sender === myHandle ? 'sent' : 'received'}">
+                ${m.content}
+                <small class="msg-time">${new Date(m.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+            </div>
+        `).join('');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    async function sendDM() {
+        const input = document.getElementById('msg-input');
+        const content = input.value.trim();
+        if (!content || !activeHandle) return;
+
+        const res = await fetch('/api/messages/send', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ receiver: activeHandle, content })
+        });
+
+        if (res.ok) {
+            input.value = '';
+            loadHistory();
+        }
+    }
+
+    checkSession();
+    loadContacts();
+    setInterval(loadHistory, 5000); // Polling for new messages
+</script>
+</body>
+</html>
