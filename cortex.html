@@ -72,6 +72,10 @@
 
     .sidebar-right { width: 320px; padding: 20px; position: sticky; top: 0; height: 100vh; }
     .vitals-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+    .vitals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+    .vitals-metric { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; text-align: center; }
+    .vitals-metric small { color: var(--text-muted); font-size: 0.7rem; display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .vitals-metric span { font-weight: 700; color: #fff; font-size: 1rem; }
     
     .search-container { position: relative; margin-bottom: 20px; }
     .search-input { width: 100%; padding: 12px 15px; background: #111; border: 1px solid var(--border-color); border-radius: 30px; color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
@@ -629,11 +633,12 @@
         try {
             const res = await fetch('/api/vitals');
             const data = await res.json();
-            document.getElementById('api-status').innerText = 'ONLINE';
             
             const vitalsBox = document.querySelector('.vitals-box');
-            const feedbackCount = data.total_synapses || 0;
             const latestUser = data.latest_member || 'None';
+            const totalResearchers = data.total_members || 0;
+            const totalSynapses = data.total_synapses || 0;
+            const latency = data.latency || 'Checking...';
 
             const greetings = [
                 `New neural node established: Welcome @${latestUser} to the laboratory.`,
@@ -644,15 +649,32 @@
             const greeting = latestUser !== 'None' ? greetings[Math.floor(Math.random() * greetings.length)] : 'Waiting for new neural connections...';
 
             vitalsBox.innerHTML = `
-                <h3>Laboratory Vitals</h3>
-                <p id="api-status">ONLINE</p>
-                <div style="margin-top: 15px; padding: 12px; background: rgba(66, 133, 244, 0.1); border-radius: 8px; border: 1px solid rgba(66, 133, 244, 0.2); font-size: 0.85rem; line-height: 1.4;">
+                <h3 style="margin-bottom:15px;">Laboratory Vitals</h3>
+                <div style="padding: 12px; background: rgba(66, 133, 244, 0.05); border-radius: 8px; border: 1px solid rgba(66, 133, 244, 0.1); font-size: 0.85rem; line-height: 1.4; margin-bottom: 20px;">
                     ${greeting}
                 </div>
-                <p style="margin-top: 15px;">Synapses Fired: <span id="api-feedback">${feedbackCount}</span></p>
+                
+                <div class="vitals-grid">
+                    <div class="vitals-metric">
+                        <small>Researchers</small>
+                        <span>${totalResearchers}</span>
+                    </div>
+                    <div class="vitals-metric">
+                        <small>Synapses</small>
+                        <span>${totalSynapses}</span>
+                    </div>
+                    <div class="vitals-metric">
+                        <small>Pulse</small>
+                        <span>${latency}</span>
+                    </div>
+                    <div class="vitals-metric">
+                        <small>Status</small>
+                        <span style="color:var(--accent-green);">ACTIVE</span>
+                    </div>
+                </div>
             `;
         } catch (e) {
-            document.getElementById('api-status').innerText = 'OFFLINE';
+            document.querySelector('.vitals-box').innerHTML = '<h3>Laboratory Vitals</h3><p style="color:#ff4b2b;">CONNECTION LOST</p>';
         }
     }
 
