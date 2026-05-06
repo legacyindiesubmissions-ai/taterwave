@@ -199,6 +199,9 @@
     let currentChallengeId = '';
     let clickX = null;
     let clickY = null;
+    let currentUserHandle = '';
+    let userRole = 'user';
+    let replyParentId = 0;
 
     async function loadChallenge() {
         try {
@@ -218,7 +221,6 @@
                 clickX = e.clientX - rect.left;
                 clickY = e.clientY - rect.top;
                 
-                // Visual feedback for click
                 const dot = document.createElement('div');
                 dot.style.position = 'absolute';
                 dot.style.left = (e.clientX - rect.left + container.offsetLeft - 2) + 'px';
@@ -254,7 +256,6 @@
     async function submitAuth() {
         const btn = event.target;
         const originalText = btn.innerText;
-        
         const handle = document.getElementById('auth-handle').value;
         const password = document.getElementById('auth-password').value;
         const email = document.getElementById('auth-email').value;
@@ -278,14 +279,10 @@
         btn.disabled = true;
 
         const hash = CryptoJS.SHA256(password).toString();
-        
         const endpoint = authMode === 'login' ? '/api/login' : '/api/register';
         const body = { 
-            handle, 
-            hash, 
-            challenge_id: currentChallengeId, 
-            x: Math.round(clickX), 
-            y: Math.round(clickY) 
+            handle, hash, challenge_id: currentChallengeId, 
+            x: Math.round(clickX), y: Math.round(clickY) 
         };
         if (authMode === 'register') body.email = email;
 
@@ -333,16 +330,10 @@
 
     async function resonate(id) {
         const token = localStorage.getItem('tater_token');
-        if (!token) {
-            showAuthModal('login');
-            return;
-        }
+        if (!token) { showAuthModal('login'); return; }
         const res = await fetch('/api/resonate', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ synapse_id: id })
         });
         if (res.ok) loadPosts();
@@ -354,17 +345,12 @@
         if (!content && mediaInput.files.length === 0) return;
         
         const token = localStorage.getItem('tater_token');
-        if (!token) {
-            showAuthModal('login');
-            return;
-        }
+        if (!token) { showAuthModal('login'); return; }
 
         const formData = new FormData();
         formData.append('content', content);
         formData.append('parent_id', replyParentId);
-        if (mediaInput.files.length > 0) {
-            formData.append('media', mediaInput.files[0]);
-        }
+        if (mediaInput.files.length > 0) formData.append('media', mediaInput.files[0]);
 
         const res = await fetch('/api/synapse', {
             method: 'POST',
@@ -382,8 +368,6 @@
         }
     }
 
-    document.getElementById('fire-synapse').addEventListener('click', fireSynapse);
-
     function timeAgo(dateParam) {
         if (!dateParam) return null;
         const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
@@ -400,17 +384,12 @@
         return date.toLocaleDateString();
     }
 
-    let currentUserHandle = '';
-    let replyParentId = 0;
-
     function replySynapse(id, handle) {
         replyParentId = id;
         const composer = document.getElementById('composer-text');
         composer.value = handle + ' ';
         composer.focus();
         document.getElementById('fire-synapse').innerText = 'Reply';
-        
-        // Visual indicator for replying
         const header = document.querySelector('.feed-header h2');
         header.innerHTML = `Replying to ${handle} <span style="font-size:0.8rem; color:var(--accent-blue); cursor:pointer;" onclick="cancelReply()">(Cancel)</span>`;
     }
@@ -419,30 +398,22 @@
         replyParentId = 0;
         document.getElementById('composer-text').value = '';
         document.getElementById('fire-synapse').innerText = 'Fire';
-        let currentUserHandle = '';
-        let userRole = 'user';
-        let replyParentId = 0;
+        document.querySelector('.feed-header h2').innerText = 'Synaptic Stream';
+    }
 
-        async function checkSession() {
-            const token = localStorage.getItem('tater_token');
-            if (!token) {
-                document.getElementById('stream-profile-header').style.display = 'none';
-                return;
-            }
+    async function checkSession() {
+        const token = localStorage.getItem('tater_token');
+        if (!token) { document.getElementById('stream-profile-header').style.display = 'none'; return; }
 
-            const res = await fetch('/api/me', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (res.ok) {
-                const data = await res.json();
-                currentUserHandle = data.handle;
-                userRole = data.role || 'user';
-                document.getElementById('auth-section').style.display = 'none';
-
+        const res = await fetch('/api/me', { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.ok) {
+            const data = await res.json();
+            currentUserHandle = data.handle;
+            userRole = data.role || 'user';
+            document.getElementById('auth-section').style.display = 'none';
             document.getElementById('user-section').style.display = 'block';
             document.getElementById('user-handle').innerText = '@' + data.handle;
             
-            // Update Stream Header
             document.getElementById('stream-profile-header').style.display = 'flex';
             document.getElementById('header-handle').innerText = '@' + data.handle;
             if (data.avatar) {
@@ -464,10 +435,7 @@
 
     async function neuralSearch(query) {
         const resultsEl = document.getElementById('search-results');
-        if (query.length < 2) {
-            resultsEl.style.display = 'none';
-            return;
-        }
+        if (query.length < 2) { resultsEl.style.display = 'none'; return; }
 
         const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         const data = await res.json();
@@ -481,7 +449,6 @@
                     <span style="flex:1;">@${u.handle}</span>
                     <button onclick="startDM('${u.handle}')" style="background:var(--accent-blue); color:#fff; border:none; border-radius:4px; padding:4px 8px; font-size:0.7rem; cursor:pointer;">Message</button>
                 </div>`).join('');
-            
             const synapseHtml = data.synapses.map(s => `
                 <div class="search-item" onclick="filterByTag('${query}')">
                     <div style="flex:1;">
@@ -489,7 +456,6 @@
                         <div style="font-size:0.75rem; color:var(--text-muted);">${s.content.substring(0, 40)}...</div>
                     </div>
                 </div>`).join('');
-            
             resultsEl.innerHTML = usersHtml + synapseHtml;
         }
         resultsEl.style.display = 'block';
@@ -498,12 +464,9 @@
     function filterByTag(tag) {
         document.getElementById('neural-search').value = '#' + tag;
         document.getElementById('search-results').style.display = 'none';
-        // Future: Filter the actual feed by tag
     }
 
-    function startDM(handle) {
-        window.location.href = `messages.html?with=${handle}`;
-    }
+    function startDM(handle) { window.location.href = `messages.html?with=${handle}`; }
 
     async function loadPosts() {
         const res = await fetch('/api/posts');
@@ -516,15 +479,10 @@
 
         const postMap = {};
         const roots = [];
+        posts.forEach(p => { postMap[p.id] = { ...p, children: [] }; });
         posts.forEach(p => {
-            postMap[p.id] = { ...p, children: [] };
-        });
-        posts.forEach(p => {
-            if (p.parent_id && postMap[p.parent_id]) {
-                postMap[p.parent_id].children.push(postMap[p.id]);
-            } else {
-                roots.push(postMap[p.id]);
-            }
+            if (p.parent_id && postMap[p.parent_id]) { postMap[p.parent_id].children.push(postMap[p.id]); }
+            else { roots.push(postMap[p.id]); }
         });
 
         function renderSynapse(p, depth = 0) {
@@ -533,7 +491,6 @@
             const imageSrc = p.image ? (p.image.startsWith('/') ? '/api' + p.image : p.image) : '';
             const imageHtml = imageSrc ? `<img src="${imageSrc}" class="synapse-image">` : '';
             const displayTime = timeAgo(p.created_at);
-            
             const isAuthor = currentUserHandle && p.author_handle === currentUserHandle;
             const isAdmin = userRole === 'admin';
             
@@ -582,11 +539,8 @@
                         </div>
                     </div>
                 </article>`;
-            
-            const childrenHtml = p.children.map(c => renderSynapse(c, depth + 1)).join('');
-            return synapseHtml + childrenHtml;
+            return synapseHtml + p.children.map(c => renderSynapse(c, depth + 1)).join('');
         }
-
         feed.innerHTML = roots.map(r => renderSynapse(r)).join('');
     }
 
@@ -595,188 +549,94 @@
         const isShown = el.style.display === 'block';
         document.querySelectorAll('.actions-dropdown').forEach(d => d.style.display = 'none');
         if (!isShown) el.style.display = 'block';
-        
-        // Close on outside click
-        window.onclick = (e) => {
-            if (!e.target.closest('.synapse-actions')) {
-                document.querySelectorAll('.actions-dropdown').forEach(d => d.style.display = 'none');
-            }
-        };
+        window.onclick = (e) => { if (!e.target.closest('.synapse-actions')) document.querySelectorAll('.actions-dropdown').forEach(d => d.style.display = 'none'); };
     }
 
     async function banNode(handle) {
-        if (!confirm(`Are you sure you want to deactivate neural node @${handle}? This will erase their presence from the laboratory.`)) return;
-        
+        if (!confirm(`Deactivate neural node @${handle}?`)) return;
         const token = localStorage.getItem('tater_token');
         const res = await fetch('/api/admin/ban', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ handle })
         });
-        
-        if (res.ok) {
-            alert('Node deactivated.');
-            loadPosts();
-        } else {
-            alert('Governance action failed.');
-        }
+        if (res.ok) { alert('Node deactivated.'); loadPosts(); }
     }
+
     async function deleteSynapse(id) {
-        if (!confirm('Are you sure you want to delete this synapse? This neural erasure is permanent.')) return;
-        
+        if (!confirm('Neural erasure?')) return;
         const token = localStorage.getItem('tater_token');
         const res = await fetch('/api/synapse/delete', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ id })
         });
-        
-        if (res.ok) {
-            loadPosts();
-        } else {
-            alert('Failed to delete synapse.');
-        }
+        if (res.ok) loadPosts();
     }
 
     async function editSynapse(id, oldContent) {
-        const newContent = prompt('Edit your synapse:', oldContent);
+        const newContent = prompt('Edit synapse:', oldContent);
         if (newContent === null || newContent === oldContent) return;
-
         const token = localStorage.getItem('tater_token');
         const res = await fetch('/api/synapse/edit', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ id, content: newContent })
         });
-        
-        if (res.ok) {
-            loadPosts();
-        } else {
-            alert('Failed to edit synapse.');
-        }
+        if (res.ok) loadPosts();
     }
 
-    function logout() {
-        localStorage.removeItem('tater_token');
-        location.reload();
-    }
+    function logout() { localStorage.removeItem('tater_token'); location.reload(); }
 
     async function loadVitals() {
         try {
             const res = await fetch('/api/vitals');
             const data = await res.json();
-            
-            const vitalsBox = document.querySelector('.vitals-box');
             const latestUser = data.latest_member || 'None';
-            const totalResearchers = data.total_members || 0;
-            const totalSynapses = data.total_synapses || 0;
-            const latency = data.latency || 'Checking...';
-
-            const greetings = [
-                `New neural node established: Welcome @${latestUser} to the laboratory.`,
-                `Cognitive sync complete: @${latestUser} has entered the Cortex.`,
-                `Neural interface active: @${latestUser} is now online.`,
-                `Welcome, researcher @${latestUser}. Synaptic connection verified.`
-            ];
-            const greeting = latestUser !== 'None' ? greetings[Math.floor(Math.random() * greetings.length)] : 'Waiting for new neural connections...';
-
-            vitalsBox.innerHTML = `
+            const greeting = latestUser !== 'None' ? `New neural node established: Welcome @${latestUser} to the laboratory.` : 'Waiting for new neural connections...';
+            document.querySelector('.vitals-box').innerHTML = `
                 <h3 style="margin-bottom:15px;">Laboratory Vitals</h3>
-                <div style="padding: 12px; background: rgba(66, 133, 244, 0.05); border-radius: 8px; border: 1px solid rgba(66, 133, 244, 0.1); font-size: 0.85rem; line-height: 1.4; margin-bottom: 20px;">
-                    ${greeting}
-                </div>
-                
+                <div style="padding:12px; background:rgba(66,133,244,0.05); border-radius:8px; border:1px solid rgba(66,133,244,0.1); font-size:0.85rem; line-height:1.4; margin-bottom:20px;">${greeting}</div>
                 <div class="vitals-grid">
-                    <div class="vitals-metric">
-                        <small>Researchers</small>
-                        <span>${totalResearchers}</span>
-                    </div>
-                    <div class="vitals-metric">
-                        <small>Synapses</small>
-                        <span>${totalSynapses}</span>
-                    </div>
-                    <div class="vitals-metric">
-                        <small>Pulse</small>
-                        <span>${latency}</span>
-                    </div>
-                    <div class="vitals-metric">
-                        <small>Status</small>
-                        <span style="color:var(--accent-green);">ACTIVE</span>
-                    </div>
-                </div>
-            `;
-        } catch (e) {
-            document.querySelector('.vitals-box').innerHTML = '<h3>Laboratory Vitals</h3><p style="color:#ff4b2b;">CONNECTION LOST</p>';
-        }
+                    <div class="vitals-metric"><small>Researchers</small><span>${data.total_members || 0}</span></div>
+                    <div class="vitals-metric"><small>Synapses</small><span>${data.total_synapses || 0}</span></div>
+                    <div class="vitals-metric"><small>Pulse</small><span>${data.latency || 'Checking...'}</span></div>
+                    <div class="vitals-metric"><small>Status</small><span style="color:var(--accent-green);">ACTIVE</span></div>
+                </div>`;
+        } catch (e) { document.querySelector('.vitals-box').innerHTML = '<h3>Laboratory Vitals</h3><p style="color:#ff4b2b;">CONNECTION LOST</p>'; }
     }
 
     async function showNotifications() {
         const token = localStorage.getItem('tater_token');
         if (!token) return;
-
-        const res = await fetch('/api/notifications', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch('/api/notifications', { headers: { 'Authorization': `Bearer ${token}` } });
         const alerts = await res.json();
         const container = document.getElementById('notifications-list');
-        
-        if (alerts.length === 0) {
-            container.innerHTML = '<p style="color:var(--text-muted); text-align:center;">No new synaptic pulses.</p>';
-        } else {
+        if (alerts.length === 0) { container.innerHTML = '<p style="color:var(--text-muted); text-align:center;">No new synaptic pulses.</p>'; }
+        else {
             container.innerHTML = alerts.map(a => {
-                let typeText = '';
-                let link = '#';
-                if (a.type === 'resonate') {
-                    typeText = 'resonated with your synapse';
-                } else if (a.type === 'reply') {
-                    typeText = 'replied to you';
-                } else if (a.type === 'dm') {
-                    typeText = 'sent you a private synapse';
-                    link = `messages.html?with=${a.source}`;
-                }
-                
-                return `
-                    <div style="padding:15px 0; border-bottom:1px solid #222; cursor:pointer;" onclick="window.location.href='${link}'">
+                let typeText = a.type === 'resonate' ? 'resonated with your synapse' : a.type === 'reply' ? 'replied to you' : 'sent you a private synapse';
+                let link = a.type === 'dm' ? `messages.html?with=${a.source}` : '#';
+                return `<div style="padding:15px 0; border-bottom:1px solid #222; cursor:pointer;" onclick="window.location.href='${link}'">
                         <span style="font-weight:700; color:var(--accent-blue);">@${a.source}</span> ${typeText}
-                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">${timeAgo(a.created_at)}</div>
-                    </div>`;
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">${timeAgo(a.created_at)}</div></div>`;
             }).join('');
         }
-        
         document.getElementById('notifications-modal').style.display = 'flex';
         document.querySelector('.nav-pulse').classList.remove('active');
     }
 
-    function closeNotifications() {
-        document.getElementById('notifications-modal').style.display = 'none';
-    }
+    function closeNotifications() { document.getElementById('notifications-modal').style.display = 'none'; }
 
     async function checkNotifications() {
         const token = localStorage.getItem('tater_token');
         if (!token) return;
-
-        const res = await fetch('/api/notifications', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch('/api/notifications', { headers: { 'Authorization': `Bearer ${token}` } });
         const alerts = await res.json();
-        if (alerts.length > 0) {
-            document.querySelector('.nav-pulse').classList.add('active');
-        }
+        if (alerts.length > 0) document.querySelector('.nav-pulse').classList.add('active');
     }
 
-    loadPosts();
-    checkSession();
-    loadVitals();
-    setInterval(checkNotifications, 30000); // Check every 30s
+    loadPosts(); checkSession(); loadVitals(); setInterval(checkNotifications, 30000);
 </script>
 </body>
-</html><!-- Build: manual -->
+</html>
