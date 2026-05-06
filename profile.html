@@ -75,6 +75,7 @@
 
         <div class="settings-section dashboard-panel active" data-panel="profile">
             <h2>User Profile</h2>
+            <div id="email-verification-warning" class="owner-badge" style="border-color:rgba(245,158,11,0.45); color:#fbbf24; background:rgba(245,158,11,0.08);">Email verification is required before profile edits, posting, or messaging.</div>
             <img id="avatar-preview" class="avatar-preview" src="" alt="Avatar Preview" style="display:none;">
             <div class="form-group">
                 <label>Handle</label>
@@ -234,9 +235,10 @@
                     const list = document.getElementById('user-role-list');
                     list.innerHTML = users.map(u => {
                         const banned = u.is_banned ? ' [BANNED]' : '';
+                        const verified = u.email_verified ? ' [VERIFIED]' : ' [UNVERIFIED]';
                         const perms = u.permissions ? ` (${escapeHTML(u.permissions)})` : '';
                         const email = u.email ? ` &lt;${escapeHTML(u.email)}&gt;` : '';
-                        return `@${escapeHTML(u.handle)}${email} - ${escapeHTML(u.role)}${perms}${banned}`;
+                        return `@${escapeHTML(u.handle)}${email} - ${escapeHTML(u.role)}${verified}${perms}${banned}`;
                     }).join('<br>');
                 }
             } catch (e) { console.error('User role load failed', e); }
@@ -256,6 +258,7 @@
                     const isStaff = data.is_owner || role === 'admin' || role === 'moderator' || perms.trim() !== '';
 
                     document.getElementById('profile-handle').value = '@' + data.handle;
+                    document.getElementById('email-verification-warning').style.display = data.email_verified === false ? 'block' : 'none';
                     if (data.bio) document.getElementById('profile-bio').value = data.bio;
                     if (data.avatar) {
                         const preview = document.getElementById('avatar-preview');

@@ -144,6 +144,10 @@
                 <p>Authorized Neural Interface</p>
             </div>
         </div>
+        <div id="verification-banner" style="display:none; margin:0 20px 15px; padding:12px 14px; border:1px solid rgba(245,158,11,0.45); border-radius:12px; background:rgba(245,158,11,0.08); color:#fbbf24; font-size:0.88rem;">
+            Email verification required before posting, messaging, or editing your profile.
+            <button onclick="showVerifyModal(currentUserHandle)" style="margin-left:10px; background:transparent; color:#fff; border:1px solid #fbbf24; border-radius:999px; padding:5px 10px; cursor:pointer;">Enter Code</button>
+        </div>
         <div class="composer">
             <textarea id="composer-text" placeholder="Initiate a synapse..."></textarea>
             <img id="media-preview" src="">
@@ -190,6 +194,12 @@
             <label for="tos-checkbox">I accept the <a href="terms.html" target="_blank" style="color:var(--accent-blue);">Neural Interface Agreement</a> and laboratory protocols.</label>
         </div>
         <button onclick="submitAuth()" style="width:100%; padding:10px; background:#4285F4; color:#fff; border:none; border-radius:8px; cursor:pointer;">Submit</button>
+        <div id="verify-panel" style="display:none;">
+            <p style="color:#bbb; font-size:0.82rem; line-height:1.4; margin-bottom:12px;">Enter the 6-digit code sent to your email. If email sending is not configured yet, the code is logged by the API.</p>
+            <input type="text" id="verify-code" inputmode="numeric" maxlength="6" placeholder="Verification code" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
+            <button onclick="submitVerification()" style="width:100%; padding:10px; background:#22c55e; color:#fff; border:none; border-radius:8px; cursor:pointer;">Verify Email</button>
+            <button onclick="resendVerification()" style="width:100%; padding:10px; margin-top:8px; background:transparent; color:#4285F4; border:1px solid #333; border-radius:8px; cursor:pointer;">Resend Code</button>
+        </div>
         <button onclick="closeModal()" style="width:100%; padding:10px; margin-top:10px; background:transparent; color:#888; border:none; cursor:pointer;">Cancel</button>
     </div>
 </div>
@@ -203,6 +213,7 @@
     let currentUserHandle = '';
     let userRole = 'user';
     let replyParentId = 0;
+    let pendingVerifyHandle = '';
 
     async function loadChallenge() {
         try {
@@ -246,14 +257,32 @@
     function showAuthModal(mode) {
         authMode = mode;
         document.getElementById('modal-title').innerText = mode.toUpperCase();
+        document.getElementById('auth-handle').style.display = 'block';
+        document.getElementById('auth-password').style.display = 'block';
         document.getElementById('auth-email').style.display = mode === 'register' ? 'block' : 'none';
         document.getElementById('email-help').style.display = mode === 'register' ? 'block' : 'none';
         document.getElementById('auth-agreement').style.display = mode === 'register' ? 'flex' : 'none';
+        document.getElementById('verify-panel').style.display = 'none';
+        document.querySelector('#auth-modal button[onclick="submitAuth()"]').style.display = 'block';
         if (mode === 'register') document.getElementById('tos-checkbox').checked = false;
         document.getElementById('auth-modal').style.display = 'flex';
         loadChallenge();
     }
     function closeModal() { document.getElementById('auth-modal').style.display = 'none'; }
+
+    function showVerifyModal(handle) {
+        pendingVerifyHandle = handle.replace('@', '').trim().toLowerCase();
+        document.getElementById('modal-title').innerText = 'VERIFY EMAIL';
+        document.getElementById('captcha-container').innerHTML = '';
+        document.getElementById('auth-handle').style.display = 'none';
+        document.getElementById('auth-password').style.display = 'none';
+        document.getElementById('auth-email').style.display = 'none';
+        document.getElementById('email-help').style.display = 'none';
+        document.getElementById('auth-agreement').style.display = 'none';
+        document.querySelector('#auth-modal button[onclick="submitAuth()"]').style.display = 'none';
+        document.getElementById('verify-panel').style.display = 'block';
+        document.getElementById('auth-modal').style.display = 'flex';
+    }
 
     function escapeHTML(value) {
         return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -319,8 +348,8 @@
                     localStorage.setItem('tater_token', data.token);
                     location.reload();
                 } else {
-                    alert('Registered. Please login.');
-                    showAuthModal('login');
+                    alert('Registered. Check your email for the verification code.');
+                    showVerifyModal(handle);
                 }
             } else {
                 const err = await res.text();
@@ -332,6 +361,44 @@
         } finally {
             btn.innerText = originalText;
             btn.disabled = false;
+        }
+    }
+
+    async function submitVerification() {
+        const code = document.getElementById('verify-code').value.trim();
+        if (!pendingVerifyHandle || !/^\d{6}$/.test(code)) {
+            alert('Enter the 6-digit verification code.');
+            return;
+        }
+        try {
+            const res = await fetch('/api/verify-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ handle: pendingVerifyHandle, code })
+            });
+            if (res.ok) {
+                alert('Email verified. You can log in now.');
+                document.getElementById('verify-code').value = '';
+                showAuthModal('login');
+            } else {
+                alert('Verification failed: ' + await res.text());
+            }
+        } catch (e) {
+            alert('Network error.');
+        }
+    }
+
+    async function resendVerification() {
+        if (!pendingVerifyHandle) return;
+        try {
+            const res = await fetch('/api/resend-verification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ handle: pendingVerifyHandle })
+            });
+            alert(res.ok ? 'Verification code resent.' : 'Could not resend verification code.');
+        } catch (e) {
+            alert('Network error.');
         }
     }
 
@@ -384,7 +451,8 @@
             document.getElementById('media-preview').style.display = 'none';
             loadPosts();
         } else {
-            alert('Transmission failed. Ensure login is active.');
+            const err = await res.text();
+            alert(err.includes('Email verification') ? 'Verify your email before posting.' : 'Transmission failed. Ensure login is active.');
         }
     }
 
@@ -435,6 +503,7 @@
             document.getElementById('user-handle').innerText = '@' + data.handle;
             
             document.getElementById('stream-profile-header').style.display = 'flex';
+            document.getElementById('verification-banner').style.display = data.email_verified === false ? 'block' : 'none';
             document.getElementById('header-handle').innerText = '@' + data.handle;
             if (data.avatar) {
                 const headerAvatar = document.getElementById('header-avatar');
@@ -446,6 +515,7 @@
         } else {
             localStorage.removeItem('tater_token');
             document.getElementById('stream-profile-header').style.display = 'none';
+            document.getElementById('verification-banner').style.display = 'none';
         }
     }
 
