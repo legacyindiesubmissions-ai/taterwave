@@ -81,14 +81,46 @@
 
         <div class="settings-section" id="admin-hub" style="display:none; border-color: var(--accent-purple);">
             <h2 style="color: var(--accent-purple);">Administrative Command Center</h2>
-            <div class="form-group">
+            <div class="form-group ban-permission" style="display:none;">
                 <label>Deactivate Researcher (Ban)</label>
                 <div style="display: flex; gap: 10px;">
                     <input type="text" id="ban-handle" placeholder="@handle">
                     <button class="btn-save" style="background: var(--accent-purple);" onclick="banNode()">Execute Ban</button>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group role-permission" style="display:none;">
+                <label>Add Administrator or Moderator</label>
+                <div style="display: grid; grid-template-columns: 1fr 160px auto; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" id="role-handle" placeholder="@handle">
+                    <select id="role-value" style="padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px;">
+                        <option value="admin">Administrator</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="user">Standard User</option>
+                    </select>
+                    <button class="btn-save" style="background: var(--accent-purple);" onclick="setUserRole()">Grant Role</button>
+                </div>
+                <div id="permissions-toggles" style="display: flex; gap: 15px; flex-wrap: wrap; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #222;">
+                    <label style="display:flex; align-items:center; gap:5px; font-size:0.8rem; cursor:pointer;">
+                        <input type="checkbox" value="MANAGE_ROLES"> Manage Roles
+                    </label>
+                    <label style="display:flex; align-items:center; gap:5px; font-size:0.8rem; cursor:pointer;">
+                        <input type="checkbox" value="BAN_USERS"> Ban Users
+                    </label>
+                    <label style="display:flex; align-items:center; gap:5px; font-size:0.8rem; cursor:pointer;">
+                        <input type="checkbox" value="VIEW_AUDIT"> View Audit
+                    </label>
+                    <label style="display:flex; align-items:center; gap:5px; font-size:0.8rem; cursor:pointer;">
+                        <input type="checkbox" value="DELETE_POSTS"> Delete Posts
+                    </label>
+                </div>
+            </div>
+            <div class="form-group role-permission" style="display:none;">
+                <label>Known Researchers</label>
+                <div id="user-role-list" style="background:#000; padding:15px; border-radius:8px; font-size:0.85rem; color:#ddd; font-family:monospace; max-height:180px; overflow-y:auto;">
+                    User directory restricted to Administrator access.
+                </div>
+            </div>
+            <div class="form-group audit-permission" style="display:none;">
                 <label>System Audit Log</label>
                 <div id="audit-log" style="background:#000; padding:15px; border-radius:8px; font-size:0.8rem; color:#0f0; font-family:monospace; height:150px; overflow-y:auto;">
                     System audits restricted to Administrator access.
@@ -135,6 +167,23 @@
             } catch (e) { console.error('Audit log failed', e); }
         }
 
+        async function loadUserRoles() {
+            try {
+                const res = await fetch('/api/admin/users', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (res.ok) {
+                    const users = await res.json();
+                    const list = document.getElementById('user-role-list');
+                    list.innerHTML = users.map(u => {
+                        const banned = u.is_banned ? ' [BANNED]' : '';
+                        const perms = u.permissions ? ` (${u.permissions})` : '';
+                        return `@${u.handle} — ${u.role}${perms}${banned}`;
+                    }).join('<br>');
+                }
+            } catch (e) { console.error('User role load failed', e); }
+        }
+
         async function loadProfile() {
             try {
                 // Load user identity
@@ -143,6 +192,11 @@
                 });
                 if (meRes.ok) {
                     const data = await meRes.json();
+                    const perms = data.permissions || '';
+                    const role = (data.role || '').toLowerCase();
+                    const hasPerm = (p) => data.is_owner || perms.split(',').map(x => x.trim()).includes(p);
+                    const isStaff = data.is_owner || role === 'admin' || role === 'moderator' || perms.trim() !== '';
+
                     document.getElementById('profile-handle').value = '@' + data.handle;
                     if (data.bio) document.getElementById('profile-bio').value = data.bio;
                     if (data.avatar) {
@@ -150,9 +204,19 @@
                         preview.src = data.avatar.startsWith('/') ? '/api' + data.avatar : data.avatar;
                         preview.style.display = 'block';
                     }
-                    if (data.role === 'admin') {
+                    if (isStaff) {
                         document.getElementById('admin-hub').style.display = 'block';
+                    }
+                    if (hasPerm('BAN_USERS')) {
+                        document.querySelectorAll('.ban-permission').forEach(el => el.style.display = 'block');
+                    }
+                    if (hasPerm('VIEW_AUDIT')) {
+                        document.querySelectorAll('.audit-permission').forEach(el => el.style.display = 'block');
                         loadAuditLogs();
+                    }
+                    if (hasPerm('MANAGE_ROLES')) {
+                        document.querySelectorAll('.role-permission').forEach(el => el.style.display = 'block');
+                        loadUserRoles();
                     }
                 }
 
@@ -207,6 +271,39 @@
                     loadAuditLogs();
                 } else {
                     alert('Governance action failed.');
+                }
+            } catch (e) { alert('Network error.'); }
+        }
+
+        async function setUserRole() {
+            const handle = document.getElementById('role-handle').value.replace('@', '').trim();
+            const role = document.getElementById('role-value').value;
+            const secret = prompt('Enter Administrative Secret:');
+
+            const selectedPerms = Array.from(document.querySelectorAll('#permissions-toggles input:checked'))
+                .map(cb => cb.value)
+                .join(',');
+
+            if (!handle || !role || !secret) return;
+
+            try {
+                const res = await fetch('/api/admin/role', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                        'X-Admin-Secret': secret
+                    },
+                    body: JSON.stringify({ handle, role, permissions: selectedPerms })
+                });
+
+                if (res.ok) {
+                    alert(`@${handle} updated with role ${role} and permissions: ${selectedPerms || 'none'}.`);
+                    document.getElementById('role-handle').value = '';
+                    loadUserRoles();
+                    loadAuditLogs();
+                } else {
+                    alert('Role update failed: ' + await res.text());
                 }
             } catch (e) { alert('Network error.'); }
         }
