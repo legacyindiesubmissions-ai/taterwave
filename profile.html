@@ -138,6 +138,16 @@
         const token = localStorage.getItem('tater_token');
         if (!token) window.location.href = 'cortex.html';
 
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
         function timeAgo(dateParam) {
             if (!dateParam) return null;
             const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
@@ -162,7 +172,7 @@
                 if (res.ok) {
                     const logs = await res.json();
                     const logBox = document.getElementById('audit-log');
-                    logBox.innerHTML = logs.map(l => `[${l.timestamp}] ${l.action}: ${l.actor} → ${l.target}`).join('<br>');
+                    logBox.innerHTML = logs.map(l => `${escapeHTML(l.timestamp)} ${escapeHTML(l.action)}: ${escapeHTML(l.actor)} to ${escapeHTML(l.target)}`).join('<br>');
                 }
             } catch (e) { console.error('Audit log failed', e); }
         }
@@ -177,8 +187,8 @@
                     const list = document.getElementById('user-role-list');
                     list.innerHTML = users.map(u => {
                         const banned = u.is_banned ? ' [BANNED]' : '';
-                        const perms = u.permissions ? ` (${u.permissions})` : '';
-                        return `@${u.handle} — ${u.role}${perms}${banned}`;
+                        const perms = u.permissions ? ` (${escapeHTML(u.permissions)})` : '';
+                        return `@${escapeHTML(u.handle)} - ${escapeHTML(u.role)}${perms}${banned}`;
                     }).join('<br>');
                 }
             } catch (e) { console.error('User role load failed', e); }
@@ -231,7 +241,7 @@
                 } else {
                     container.innerHTML = posts.map(p => {
                         const avatarSrc = p.avatar ? (p.avatar.startsWith('/') ? '/api' + p.avatar : p.avatar) : '';
-                        const avatarHtml = avatarSrc ? `<img src="${avatarSrc}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
+                        const avatarHtml = avatarSrc ? `<img src="${escapeHTML(avatarSrc)}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
                         const displayTime = timeAgo(p.created_at);
                         return `
                             <article class="synapse">
@@ -240,8 +250,8 @@
                                     <div class="synapse-header">
                                         <small style="color:var(--text-muted);" title="${new Date(p.created_at).toLocaleString()}">${displayTime}</small>
                                     </div>
-                                    <h3>${p.title}</h3>
-                                    <p>${p.content}</p>
+                                    <h3>${escapeHTML(p.title)}</h3>
+                                    <p>${escapeHTML(p.content || p.description || '')}</p>
                                 </div>
                             </article>`;
                     }).join('');
