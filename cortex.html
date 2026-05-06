@@ -492,19 +492,17 @@
             const imageHtml = imageSrc ? `<img src="${imageSrc}" class="synapse-image">` : '';
             const displayTime = timeAgo(p.created_at);
             const isAuthor = currentUserHandle && p.author_handle === currentUserHandle;
-            const isAdmin = userRole === 'admin';
             
             let menuHtml = '';
-            if (isAuthor || isAdmin) {
+            if (isAuthor) {
                 menuHtml = `
                     <div class="synapse-actions">
                         <button class="btn-meatball" onclick="toggleActions(${p.id})">
                             <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                         </button>
                         <div id="actions-${p.id}" class="actions-dropdown">
-                            ${isAuthor ? `<button onclick="editSynapse(${p.id}, '${p.content.replace(/'/g, "\\'")}')">Edit</button>` : ''}
-                            ${isAuthor ? `<button class="btn-delete" onclick="deleteSynapse(${p.id})">Delete</button>` : ''}
-                            ${isAdmin && !isAuthor ? `<button class="btn-delete" onclick="banNode('${p.author_handle}')">Ban Node</button>` : ''}
+                            <button onclick="editSynapse(${p.id}, '${p.content.replace(/'/g, "\\'")}')">Edit</button>
+                            <button class="btn-delete" onclick="deleteSynapse(${p.id})">Delete</button>
                         </div>
                     </div>`;
             }

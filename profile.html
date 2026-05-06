@@ -78,6 +78,23 @@
             </div>
         </div>
 
+        <div class="settings-section" id="admin-hub" style="display:none; border-color: var(--accent-purple);">
+            <h2 style="color: var(--accent-purple);">Administrative Command Center</h2>
+            <div class="form-group">
+                <label>Deactivate Researcher (Ban)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="ban-handle" placeholder="@handle">
+                    <button class="btn-save" style="background: var(--accent-purple);" onclick="banNode()">Execute Ban</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>System Audit Log</label>
+                <div id="audit-log" style="background:#000; padding:15px; border-radius:8px; font-size:0.8rem; color:#0f0; font-family:monospace; height:150px; overflow-y:auto;">
+                    System audits restricted to Administrator access.
+                </div>
+            </div>
+        </div>
+
         <div class="history-section">
             <h2>Synaptic History</h2>
             <div id="synapse-feed"></div>
@@ -115,11 +132,42 @@
                 if (data.bio) document.getElementById('profile-bio').value = data.bio;
                 if (data.avatar) {
                     const preview = document.getElementById('avatar-preview');
-                    // Ensure the image loads from the API proxy
                     preview.src = data.avatar.startsWith('/') ? '/api' + data.avatar : data.avatar;
                     preview.style.display = 'block';
                 }
+
+                // Show Admin Hub if authorized
+                if (data.role === 'admin') {
+                    document.getElementById('admin-hub').style.display = 'block';
+                }
             }
+        ...
+        async function banNode() {
+            const handle = document.getElementById('ban-handle').value.replace('@', '');
+            const secret = prompt('Enter Administrative Secret:');
+            if (!handle || !secret) return;
+
+            try {
+                const res = await fetch('/api/admin/ban', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                        'X-Admin-Secret': secret
+                    },
+                    body: JSON.stringify({ handle })
+                });
+
+                if (res.ok) {
+                    alert('Node deactivated.');
+                    document.getElementById('ban-handle').value = '';
+                } else {
+                    alert('Governance action failed.');
+                }
+            } catch (e) {
+                alert('Network error.');
+            }
+        }
 
             // Load synapse history
             const res = await fetch('/api/user/posts', {
