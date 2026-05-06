@@ -184,6 +184,7 @@
         <input type="text" id="auth-handle" placeholder="Handle" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
         <input type="password" id="auth-password" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
         <input type="email" id="auth-email" placeholder="Email (Register only)" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff; display:none;">
+        <p id="email-help" style="display:none; margin:-4px 0 12px; color:#888; font-size:0.75rem; line-height:1.35;">Use a real inbox. Disposable, placeholder, or malformed email domains are rejected.</p>
         <div id="auth-agreement" style="display:none; margin-bottom:15px; font-size:0.8rem; color:var(--text-muted); align-items:flex-start; gap:10px;">
             <input type="checkbox" id="tos-checkbox" style="margin-top:3px;">
             <label for="tos-checkbox">I accept the <a href="terms.html" target="_blank" style="color:var(--accent-blue);">Neural Interface Agreement</a> and laboratory protocols.</label>
@@ -246,6 +247,7 @@
         authMode = mode;
         document.getElementById('modal-title').innerText = mode.toUpperCase();
         document.getElementById('auth-email').style.display = mode === 'register' ? 'block' : 'none';
+        document.getElementById('email-help').style.display = mode === 'register' ? 'block' : 'none';
         document.getElementById('auth-agreement').style.display = mode === 'register' ? 'flex' : 'none';
         if (mode === 'register') document.getElementById('tos-checkbox').checked = false;
         document.getElementById('auth-modal').style.display = 'flex';
@@ -276,6 +278,10 @@
         
         if (!handle || !password || (authMode === 'register' && !email)) {
             alert('Please fill all fields');
+            return;
+        }
+        if (authMode === 'register' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+            alert('Please enter a valid email address.');
             return;
         }
 
