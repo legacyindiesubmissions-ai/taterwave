@@ -294,8 +294,9 @@
             document.getElementById('stream-profile-header').style.display = 'flex';
             document.getElementById('header-handle').innerText = '@' + data.handle;
             if (data.avatar) {
-                document.getElementById('header-avatar').src = data.avatar;
-                document.getElementById('header-avatar').style.display = 'block';
+                const headerAvatar = document.getElementById('header-avatar');
+                headerAvatar.src = data.avatar.startsWith('/') ? '/api' + data.avatar : data.avatar;
+                headerAvatar.style.display = 'block';
             } else {
                 document.getElementById('header-avatar').style.display = 'none';
             }

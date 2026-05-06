@@ -87,7 +87,8 @@
                 if (data.bio) document.getElementById('profile-bio').value = data.bio;
                 if (data.avatar) {
                     const preview = document.getElementById('avatar-preview');
-                    preview.src = data.avatar;
+                    // Ensure the image loads from the API proxy
+                    preview.src = data.avatar.startsWith('/') ? '/api' + data.avatar : data.avatar;
                     preview.style.display = 'block';
                 }
             }
