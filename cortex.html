@@ -38,7 +38,11 @@
     .author-name { font-weight: 700; color: #fff; }
     .synapse-content h3 { font-size: 1rem; margin-bottom: 5px; color: var(--accent-blue); }
     .synapse-content p { line-height: 1.4; color: #ccc; }
+    .nested-synapse { margin-left: 50px; border-left: 2px solid var(--border-color); }
     .synapse-image { margin-top: 10px; border-radius: 12px; border: 1px solid var(--border-color); max-width: 100%; max-height: 400px; object-fit: cover; }
+    
+    .pulse-dot { width: 8px; height: 8px; background: #ff4b2b; border-radius: 50%; display: inline-block; margin-left: 8px; box-shadow: 0 0 10px #ff4b2b; display: none; }
+    .nav-pulse.active .pulse-dot { display: inline-block; }
     
     .synapse-footer { display: flex; gap: 20px; margin-top: 15px; }
     .engagement-item { display: flex; align-items: center; gap: 5px; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; transition: color 0.2s; }
@@ -95,6 +99,9 @@
     <nav class="sidebar-left">
         <a href="index.html" class="brand">The <span>Cortex</span></a>
         <a href="#" class="nav-item active">Stream</a>
+        <button class="nav-item nav-pulse" onclick="showNotifications()">
+            Pulse <span class="pulse-dot"></span>
+        </button>
         <a href="taterwave.html" class="nav-item">TaterWave</a>
         <a href="mnemosyne.html" class="nav-item">Mnemosyne</a>
         <div id="auth-section">
@@ -136,6 +143,16 @@
             <p>Feedback: <span id="api-feedback">-</span></p>
         </div>
     </aside>
+</div>
+
+<div id="notifications-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center;">
+    <div style="background:#111; padding:30px; border-radius:16px; border:1px solid #333; width:400px; max-height:80vh; overflow-y:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="color:#fff;">Synaptic Pulse</h2>
+            <button onclick="closeNotifications()" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem;">&times;</button>
+        </div>
+        <div id="notifications-list"></div>
+    </div>
 </div>
 
 <div id="auth-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center;">
@@ -311,6 +328,7 @@
 
         const formData = new FormData();
         formData.append('content', content);
+        formData.append('parent_id', replyParentId);
         if (mediaInput.files.length > 0) {
             formData.append('media', mediaInput.files[0]);
         }
@@ -322,7 +340,7 @@
         });
         
         if (res.ok) {
-            document.getElementById('composer-text').value = '';
+            cancelReply();
             document.getElementById('synapse-media').value = '';
             document.getElementById('media-preview').style.display = 'none';
             loadPosts();
@@ -350,6 +368,26 @@
     }
 
     let currentUserHandle = '';
+    let replyParentId = 0;
+
+    function replySynapse(id, handle) {
+        replyParentId = id;
+        const composer = document.getElementById('composer-text');
+        composer.value = handle + ' ';
+        composer.focus();
+        document.getElementById('fire-synapse').innerText = 'Reply';
+        
+        // Visual indicator for replying
+        const header = document.querySelector('.feed-header h2');
+        header.innerHTML = `Replying to ${handle} <span style="font-size:0.8rem; color:var(--accent-blue); cursor:pointer;" onclick="cancelReply()">(Cancel)</span>`;
+    }
+
+    function cancelReply() {
+        replyParentId = 0;
+        document.getElementById('composer-text').value = '';
+        document.getElementById('fire-synapse').innerText = 'Fire';
+        document.querySelector('.feed-header h2').innerText = 'Synaptic Stream';
+    }
 
     async function checkSession() {
         const token = localStorage.getItem('tater_token');
@@ -392,14 +430,27 @@
             feed.innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-muted);">No synapses detected in this sector yet.</div>';
             return;
         }
-        feed.innerHTML = posts.map(p => {
+
+        const postMap = {};
+        const roots = [];
+        posts.forEach(p => {
+            postMap[p.id] = { ...p, children: [] };
+        });
+        posts.forEach(p => {
+            if (p.parent_id && postMap[p.parent_id]) {
+                postMap[p.parent_id].children.push(postMap[p.id]);
+            } else {
+                roots.push(postMap[p.id]);
+            }
+        });
+
+        function renderSynapse(p, depth = 0) {
             const avatarSrc = p.avatar ? (p.avatar.startsWith('/') ? '/api' + p.avatar : p.avatar) : '';
             const avatarHtml = avatarSrc ? `<img src="${avatarSrc}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
             const imageSrc = p.image ? (p.image.startsWith('/') ? '/api' + p.image : p.image) : '';
             const imageHtml = imageSrc ? `<img src="${imageSrc}" class="synapse-image">` : '';
             const displayTime = timeAgo(p.created_at);
             
-            // Management menu for author
             const isAuthor = currentUserHandle && p.author_handle === currentUserHandle;
             const menuHtml = isAuthor ? `
                 <div class="synapse-actions">
@@ -411,9 +462,9 @@
                         <button class="btn-delete" onclick="deleteSynapse(${p.id})">Delete</button>
                     </div>
                 </div>` : '';
-            
-            return `
-                <article class="synapse">
+
+            const synapseHtml = `
+                <article class="synapse ${depth > 0 ? 'nested-synapse' : ''}" style="${depth > 3 ? 'margin-left:20px;' : ''}">
                     ${avatarHtml}
                     <div class="synapse-content">
                         <div class="synapse-header">
@@ -431,6 +482,10 @@
                                 <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 <span>${p.resonation || 0}</span>
                             </div>
+                            <div class="engagement-item" onclick="replySynapse(${p.id}, '@${p.author_handle}')">
+                                <svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+                                <span>Reply</span>
+                            </div>
                             <div class="engagement-item" style="cursor:default;">
                                 <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                                 <span>${p.views || 0}</span>
@@ -438,7 +493,12 @@
                         </div>
                     </div>
                 </article>`;
-        }).join('');
+            
+            const childrenHtml = p.children.map(c => renderSynapse(c, depth + 1)).join('');
+            return synapseHtml + childrenHtml;
+        }
+
+        feed.innerHTML = roots.map(r => renderSynapse(r)).join('');
     }
 
     function toggleActions(id) {
@@ -532,9 +592,54 @@
         }
     }
 
+    async function showNotifications() {
+        const token = localStorage.getItem('tater_token');
+        if (!token) return;
+
+        const res = await fetch('/api/notifications', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const alerts = await res.json();
+        const container = document.getElementById('notifications-list');
+        
+        if (alerts.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-muted); text-align:center;">No new synaptic pulses.</p>';
+        } else {
+            container.innerHTML = alerts.map(a => {
+                const typeText = a.type === 'resonate' ? 'resonated with your synapse' : 'replied to you';
+                return `
+                    <div style="padding:15px 0; border-bottom:1px solid #222;">
+                        <span style="font-weight:700; color:var(--accent-blue);">@${a.source}</span> ${typeText}
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">${timeAgo(a.created_at)}</div>
+                    </div>`;
+            }).join('');
+        }
+        
+        document.getElementById('notifications-modal').style.display = 'flex';
+        document.querySelector('.nav-pulse').classList.remove('active');
+    }
+
+    function closeNotifications() {
+        document.getElementById('notifications-modal').style.display = 'none';
+    }
+
+    async function checkNotifications() {
+        const token = localStorage.getItem('tater_token');
+        if (!token) return;
+
+        const res = await fetch('/api/notifications', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const alerts = await res.json();
+        if (alerts.length > 0) {
+            document.querySelector('.nav-pulse').classList.add('active');
+        }
+    }
+
     loadPosts();
     checkSession();
     loadVitals();
+    setInterval(checkNotifications, 30000); // Check every 30s
 </script>
 </body>
 </html><!-- Build: manual -->
