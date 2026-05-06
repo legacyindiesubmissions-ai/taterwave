@@ -24,14 +24,14 @@
     .brand span { color: var(--accent-blue); }
     .nav-item { display: flex; align-items: center; padding: 15px 20px; color: var(--text-main); text-decoration: none; font-size: 1.2rem; font-weight: 600; border-radius: 30px; margin-bottom: 10px; transition: background 0.2s; cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; }
     .nav-item:hover { background: var(--hover-bg); }
-    .btn-signal { background: var(--accent-blue); color: #fff; border: none; border-radius: 30px; padding: 15px; font-weight: 700; margin-top: 20px; cursor: pointer; }
+    .btn-synapse { background: var(--accent-blue); color: #fff; border: none; border-radius: 30px; padding: 15px; font-weight: 700; margin-top: 20px; cursor: pointer; }
     
     .main-feed { flex: 1; max-width: 600px; border-right: 1px solid var(--border-color); min-height: 100vh; }
     .feed-header { padding: 20px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: rgba(5, 5, 16, 0.85); backdrop-filter: blur(10px); }
     .composer { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; }
     .composer textarea { background: transparent; border: none; color: var(--text-main); font-size: 1.1rem; outline: none; min-height: 60px; font-family: inherit; width: 100%; }
     .btn-small { background: var(--accent-blue); color: #fff; border: none; border-radius: 20px; padding: 8px 20px; font-weight: 700; cursor: pointer; align-self: flex-end; }
-    .signal { padding: 20px; border-bottom: 1px solid var(--border-color); }
+    .synapse { padding: 20px; border-bottom: 1px solid var(--border-color); }
     
     .sidebar-right { width: 320px; padding: 20px; position: sticky; top: 0; height: 100vh; }
     .vitals-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
@@ -74,10 +74,10 @@
         </div>
     </nav>
     <main class="main-feed">
-        <div class="feed-header"><h2>Global Stream</h2></div>
+        <div class="feed-header"><h2>Synaptic Stream</h2></div>
         <div class="composer">
-            <textarea id="composer-text" placeholder="Transmit a signal..."></textarea>
-            <button id="post-signal" class="btn-small">Post</button>
+            <textarea id="composer-text" placeholder="Initiate a synapse..."></textarea>
+            <button id="fire-synapse" class="btn-small">Fire</button>
         </div>
         <div id="feed"></div>
     </main>
@@ -220,7 +220,7 @@
         }
     }
 
-    async function postSignal() {
+    async function fireSynapse() {
         const content = document.getElementById('composer-text').value;
         if (!content) return;
         
@@ -231,7 +231,7 @@
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ product: 'Cortex', title: 'New Post', description: content })
+            body: JSON.stringify({ product: 'Cortex', title: 'New Synapse', description: content })
         });
         
         if (res.ok) {
@@ -242,19 +242,19 @@
         }
     }
 
-    document.getElementById('post-signal').addEventListener('click', postSignal);
+    document.getElementById('fire-synapse').addEventListener('click', fireSynapse);
 
     async function loadPosts() {
         const res = await fetch('/api/posts');
         const posts = await res.json();
         const feed = document.getElementById('feed');
         if (!posts || posts.length === 0) {
-            feed.innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-muted);">No signals detected in this sector yet.</div>';
+            feed.innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-muted);">No synapses detected in this sector yet.</div>';
             return;
         }
         feed.innerHTML = posts.map(p => `
-            <article class="signal">
-                <div class="signal-header">
+            <article class="synapse">
+                <div class="synapse-header">
                     <span class="author-name">@${p.author_handle || 'anonymous'}</span>
                 </div>
                 <h3>${p.title}</h3>

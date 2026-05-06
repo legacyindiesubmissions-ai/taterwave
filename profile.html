@@ -2,39 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Cortex | Tater Labs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognitive Settings | Tater Labs</title>
     <style>
-        body { background: #050510; color: #e0e0e0; font-family: monospace; padding: 40px; }
-        .signal { background: #111; border: 1px solid #333; padding: 20px; margin-bottom: 10px; border-radius: 8px; }
-        .header { margin-bottom: 30px; border-bottom: 1px solid #444; padding-bottom: 20px; }
+        :root {
+            --bg-color: #050510;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --accent-blue: #4285F4;
+            --hover-bg: rgba(255, 255, 255, 0.03);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 800px; padding: 40px 20px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
+        .header h1 { font-size: 1.8rem; }
+        .back-link { color: var(--accent-blue); text-decoration: none; font-weight: 600; }
+
+        .settings-section { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 30px; margin-bottom: 40px; }
+        .settings-section h2 { font-size: 1.2rem; margin-bottom: 20px; color: #fff; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; font-family: inherit; }
+        .form-group textarea { height: 100px; resize: vertical; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-blue); }
+
+        .btn-save { background: var(--accent-blue); color: #fff; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; cursor: pointer; }
+        .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .history-section h2 { font-size: 1.2rem; margin-bottom: 20px; }
+        .synapse { background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+        .synapse h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .synapse p { color: #ccc; margin-bottom: 10px; }
+        .synapse small { color: var(--text-muted); font-size: 0.8rem; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>My Signals</h1>
-        <a href="cortex.html">← Back to Stream</a>
+    <div class="container">
+        <div class="header">
+            <h1>Cognitive Settings</h1>
+            <a href="cortex.html" class="back-link">← Back to Stream</a>
+        </div>
+
+        <div class="settings-section">
+            <h2>User Profile</h2>
+            <div class="form-group">
+                <label>Handle</label>
+                <input type="text" id="profile-handle" readonly style="opacity: 0.6;">
+            </div>
+            <div class="form-group">
+                <label>Cognitive Bio</label>
+                <textarea id="profile-bio" placeholder="Describe your neural frequency..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Avatar URL</label>
+                <input type="text" id="profile-avatar" placeholder="https://...">
+            </div>
+            <button id="save-settings" class="btn-save" onclick="saveSettings()">Save Changes</button>
+        </div>
+
+        <div class="history-section">
+            <h2>Synaptic History</h2>
+            <div id="synapse-feed"></div>
+        </div>
     </div>
-    <div id="profile-feed"></div>
 
     <script>
         const token = localStorage.getItem('tater_token');
         if (!token) window.location.href = 'cortex.html';
 
-        fetch('/api/user/posts', {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-        .then(res => res.ok ? res.json() : [])
-        .then(posts => {
-            const container = document.getElementById('profile-feed');
-            posts.forEach(post => {
-                container.innerHTML += `
-                    <article class="signal">
-                        <h3>${post.title}</h3>
-                        <p>${post.content}</p>
-                        <small>${post.created_at}</small>
-                    </article>`;
+        async function loadProfile() {
+            // Load user identity
+            const meRes = await fetch('/api/me', {
+                headers: { 'Authorization': 'Bearer ' + token }
             });
-        });
+            if (meRes.ok) {
+                const data = await meRes.json();
+                document.getElementById('profile-handle').value = '@' + data.handle;
+                // Note: Bio and Avatar will come from a specialized profile endpoint soon
+                if (data.bio) document.getElementById('profile-bio').value = data.bio;
+                if (data.avatar) document.getElementById('profile-avatar').value = data.avatar;
+            }
+
+            // Load synapse history
+            const res = await fetch('/api/user/posts', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const posts = res.ok ? await res.json() : [];
+            const container = document.getElementById('synapse-feed');
+            if (posts.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted);">No synapse activity recorded.</p>';
+                return;
+            }
+            container.innerHTML = posts.map(p => `
+                <article class="synapse">
+                    <h3>${p.title}</h3>
+                    <p>${p.content}</p>
+                    <small>${new Date(p.created_at).toLocaleString()}</small>
+                </article>`).join('');
+        }
+
+        async function saveSettings() {
+            const btn = document.getElementById('save-settings');
+            const bio = document.getElementById('profile-bio').value;
+            const avatar = document.getElementById('profile-avatar').value;
+
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/profile', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token 
+                    },
+                    body: JSON.stringify({ bio, avatar })
+                });
+
+                if (res.ok) {
+                    alert('Profile updated.');
+                } else {
+                    alert('Failed to update profile.');
+                }
+            } catch (e) {
+                alert('Network error.');
+            } finally {
+                btn.innerText = 'Save Changes';
+                btn.disabled = false;
+            }
+        }
+
+        loadProfile();
     </script>
 </body>
 </html>
