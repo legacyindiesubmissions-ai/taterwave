@@ -79,6 +79,22 @@
         const token = localStorage.getItem('tater_token');
         if (!token) window.location.href = 'cortex.html';
 
+        function timeAgo(dateParam) {
+            if (!dateParam) return null;
+            const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
+            const today = new Date();
+            const seconds = Math.round((today - date) / 1000);
+            const minutes = Math.round(seconds / 60);
+            const hours = Math.round(minutes / 60);
+            const days = Math.round(hours / 24);
+
+            if (seconds < 60) return 'just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            if (days < 7) return `${days}d ago`;
+            return date.toLocaleDateString();
+        }
+
         async function loadProfile() {
             // Load user identity
             const meRes = await fetch('/api/me', {
@@ -109,12 +125,13 @@
             container.innerHTML = posts.map(p => {
                 const avatarSrc = p.avatar ? (p.avatar.startsWith('/') ? '/api' + p.avatar : p.avatar) : '';
                 const avatarHtml = avatarSrc ? `<img src="${avatarSrc}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
+                const displayTime = timeAgo(p.created_at);
                 return `
                     <article class="synapse">
                         ${avatarHtml}
                         <div class="synapse-content">
                             <div class="synapse-header">
-                                <small style="color:var(--text-muted);">${new Date(p.created_at).toLocaleString()}</small>
+                                <small style="color:var(--text-muted);" title="${new Date(p.created_at).toLocaleString()}">${displayTime}</small>
                             </div>
                             <h3>${p.title}</h3>
                             <p>${p.content}</p>
