@@ -33,6 +33,11 @@
     .btn-small { background: var(--accent-blue); color: #fff; border: none; border-radius: 20px; padding: 8px 20px; font-weight: 700; cursor: pointer; align-self: flex-end; }
     .synapse { padding: 20px; border-bottom: 1px solid var(--border-color); }
     
+    .stream-profile-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px; background: rgba(255, 255, 255, 0.01); }
+    .user-avatar-med { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-blue); background: #111; }
+    .profile-info h3 { font-size: 1.1rem; color: #fff; }
+    .profile-info p { font-size: 0.85rem; color: var(--text-muted); }
+
     .sidebar-right { width: 320px; padding: 20px; position: sticky; top: 0; height: 100vh; }
     .vitals-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
     
@@ -75,6 +80,13 @@
     </nav>
     <main class="main-feed">
         <div class="feed-header"><h2>Synaptic Stream</h2></div>
+        <div id="stream-profile-header" class="stream-profile-header" style="display:none;">
+            <img id="header-avatar" class="user-avatar-med" src="" alt="Avatar">
+            <div class="profile-info">
+                <h3 id="header-handle"></h3>
+                <p>Authorized Neural Interface</p>
+            </div>
+        </div>
         <div class="composer">
             <textarea id="composer-text" placeholder="Initiate a synapse..."></textarea>
             <button id="fire-synapse" class="btn-small">Fire</button>
@@ -264,7 +276,10 @@
 
     async function checkSession() {
         const token = localStorage.getItem('tater_token');
-        if (!token) return;
+        if (!token) {
+            document.getElementById('stream-profile-header').style.display = 'none';
+            return;
+        }
 
         const res = await fetch('/api/me', {
             headers: { 'Authorization': `Bearer ${token}` }
@@ -274,8 +289,19 @@
             document.getElementById('auth-section').style.display = 'none';
             document.getElementById('user-section').style.display = 'block';
             document.getElementById('user-handle').innerText = '@' + data.handle;
+            
+            // Update Stream Header
+            document.getElementById('stream-profile-header').style.display = 'flex';
+            document.getElementById('header-handle').innerText = '@' + data.handle;
+            if (data.avatar) {
+                document.getElementById('header-avatar').src = data.avatar;
+                document.getElementById('header-avatar').style.display = 'block';
+            } else {
+                document.getElementById('header-avatar').style.display = 'none';
+            }
         } else {
             localStorage.removeItem('tater_token');
+            document.getElementById('stream-profile-header').style.display = 'none';
         }
     }
 
