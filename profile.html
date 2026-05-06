@@ -70,6 +70,12 @@
                 <input type="file" id="profile-avatar-file" accept="image/*" onchange="previewAvatar(event)">
             </div>
             <button id="save-settings" class="btn-save" onclick="saveSettings()">Save Changes</button>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 75, 43, 0.2);">
+                <h2 style="color: #ff4b2b; font-size: 1rem;">Laboratory Deactivation</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Warning: This neural erasure is absolute. All synapses, messages, and identity data will be permanently removed.</p>
+                <button class="btn-save" style="background: #ff4b2b;" onclick="deleteAccount()">Permanently Delete Node</button>
+            </div>
         </div>
 
         <div class="history-section">
@@ -203,6 +209,27 @@
             } finally {
                 btn.innerText = 'Save Changes';
                 btn.disabled = false;
+            }
+        }
+
+        async function deleteAccount() {
+            if (!confirm('FINAL CONFIRMATION: Are you sure you want to permanently erase your node? This cannot be undone.')) return;
+            
+            try {
+                const res = await fetch('/api/account/delete', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (res.ok) {
+                    localStorage.removeItem('tater_token');
+                    alert('Node deactivated. Neural records erased.');
+                    window.location.href = 'cortex.html';
+                } else {
+                    alert('Deactivation failed.');
+                }
+            } catch (e) {
+                alert('Network error.');
             }
         }
 
