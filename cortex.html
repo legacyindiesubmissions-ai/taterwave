@@ -555,17 +555,74 @@
                 height: auto;
                 flex-direction: row;
                 flex-wrap: wrap;
+                align-items: center;
                 border-right: none;
                 border-bottom: 1px solid var(--border-subtle);
                 padding: 10px 16px;
-                gap: 4px;
+                gap: 0;
+                position: relative;
             }
-            .sidebar-left .brand { margin-bottom: 0; margin-right: 16px; }
+            .sidebar-left .brand {
+                width: auto;
+                margin-bottom: 0;
+                margin-right: auto;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 0.95rem;
+            }
+            .sidebar-left .brand img {
+                width: 32px !important;
+                height: auto !important;
+                margin-bottom: 0 !important;
+                max-width: none !important;
+            }
             .sidebar-left .brand small { display: none; }
             .sidebar-left .nav-divider { display: none; }
-            .sidebar-left .nav-item { padding: 6px 10px; font-size: 0.78rem; margin-bottom: 0; }
-            #auth-section, #user-section { display: flex; flex-wrap: wrap; gap: 4px; }
+            .sidebar-left .nav-item {
+                padding: 6px 10px;
+                font-size: 0.72rem;
+                margin-bottom: 0;
+                width: auto;
+                flex: 0 0 auto;
+            }
+            .sidebar-left #auth-section,
+            .sidebar-left #user-section {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 2px;
+                width: auto;
+                margin-left: auto;
+            }
+            .sidebar-left #auth-section .nav-item,
+            .sidebar-left #user-section .nav-item {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
             .main-feed { border-right: none; max-width: 100%; }
+            .composer { padding: 12px 16px; }
+            .composer textarea { font-size: 0.85rem; }
+            .synapse { padding: 14px 16px; }
+            .feed-header { padding: 14px 16px; }
+            .feed-header h2 { font-size: 0.78rem; }
+            #verification-banner { margin: 10px 16px; font-size: 0.75rem; }
+            .search-section { padding: 10px 16px; }
+            .stream-profile-header { padding: 12px 16px; }
+            .nested-synapse { margin-left: 24px; }
+            #auth-modal > div { width: 92% !important; max-width: 360px; }
+            #notifications-modal > div { width: 92% !important; max-width: 360px; }
+        }
+        @media (max-width: 480px) {
+            .sidebar-left { padding: 8px 10px; }
+            .sidebar-left .brand { font-size: 0.85rem; }
+            .sidebar-left .brand img { width: 26px !important; }
+            .sidebar-left .nav-item { font-size: 0.65rem; padding: 4px 6px; }
+            .composer { padding: 10px 12px; }
+            .synapse { padding: 12px 14px; gap: 10px; }
+            .synapse-avatar { width: 32px; height: 32px; }
+            .synapse-footer { gap: 14px; }
+            .engagement-item { font-size: 0.72rem; }
         }
     </style>
 </head>
