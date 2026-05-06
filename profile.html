@@ -28,6 +28,7 @@
         .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; font-family: inherit; }
         .form-group textarea { height: 100px; resize: vertical; }
+        .avatar-preview { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent-blue); margin-bottom: 20px; object-fit: cover; background: #111; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-blue); }
 
         .btn-save { background: var(--accent-blue); color: #fff; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; cursor: pointer; }
@@ -49,6 +50,7 @@
 
         <div class="settings-section">
             <h2>User Profile</h2>
+            <img id="avatar-preview" class="avatar-preview" src="" alt="Avatar Preview" style="display:none;">
             <div class="form-group">
                 <label>Handle</label>
                 <input type="text" id="profile-handle" readonly style="opacity: 0.6;">
@@ -58,8 +60,8 @@
                 <textarea id="profile-bio" placeholder="Describe your neural frequency..."></textarea>
             </div>
             <div class="form-group">
-                <label>Avatar URL</label>
-                <input type="text" id="profile-avatar" placeholder="https://...">
+                <label>Upload Avatar (Max 2MB, JPG/PNG)</label>
+                <input type="file" id="profile-avatar-file" accept="image/*" onchange="previewAvatar(event)">
             </div>
             <button id="save-settings" class="btn-save" onclick="saveSettings()">Save Changes</button>
         </div>
@@ -82,9 +84,12 @@
             if (meRes.ok) {
                 const data = await meRes.json();
                 document.getElementById('profile-handle').value = '@' + data.handle;
-                // Note: Bio and Avatar will come from a specialized profile endpoint soon
                 if (data.bio) document.getElementById('profile-bio').value = data.bio;
-                if (data.avatar) document.getElementById('profile-avatar').value = data.avatar;
+                if (data.avatar) {
+                    const preview = document.getElementById('avatar-preview');
+                    preview.src = data.avatar;
+                    preview.style.display = 'block';
+                }
             }
 
             // Load synapse history
@@ -105,28 +110,60 @@
                 </article>`).join('');
         }
 
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('avatar-preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         async function saveSettings() {
             const btn = document.getElementById('save-settings');
             const bio = document.getElementById('profile-bio').value;
-            const avatar = document.getElementById('profile-avatar').value;
+            const fileInput = document.getElementById('profile-avatar-file');
 
             btn.innerText = 'Saving...';
             btn.disabled = true;
 
             try {
-                const res = await fetch('/api/profile', {
+                // 1. Update Bio
+                const bioRes = await fetch('/api/profile', {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + token 
                     },
-                    body: JSON.stringify({ bio, avatar })
+                    body: JSON.stringify({ bio, avatar: "" }) 
                 });
 
-                if (res.ok) {
-                    alert('Profile updated.');
+                // 2. Upload Avatar if file selected
+                if (fileInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append('avatar', fileInput.files[0]);
+                    
+                    const uploadRes = await fetch('/api/upload-avatar', {
+                        method: 'POST',
+                        headers: { 'Authorization': 'Bearer ' + token },
+                        body: formData
+                    });
+                    
+                    if (!uploadRes.ok) {
+                        const err = await uploadRes.text();
+                        alert('Avatar upload failed: ' + err);
+                    }
+                }
+
+                if (bioRes.ok) {
+                    alert('Cognitive profile updated.');
+                    loadProfile(); // Reload to get fresh URLs
                 } else {
-                    alert('Failed to update profile.');
+                    alert('Failed to update bio.');
                 }
             } catch (e) {
                 alert('Network error.');
