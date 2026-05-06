@@ -115,6 +115,7 @@
         <a href="#" class="nav-item active">Stream</a>
         <a href="taterwave.html" class="nav-item">TaterWave</a>
         <a href="mnemosyne.html" class="nav-item">Mnemosyne</a>
+        <a href="terms.html" class="nav-item">Legal</a>
         <div id="auth-section">
             <button class="nav-item" onclick="showAuthModal('login')">Login</button>
             <button class="nav-item" onclick="showAuthModal('register')">Register</button>
@@ -183,6 +184,10 @@
         <input type="text" id="auth-handle" placeholder="Handle" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
         <input type="password" id="auth-password" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
         <input type="email" id="auth-email" placeholder="Email (Register only)" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff; display:none;">
+        <div id="auth-agreement" style="display:none; margin-bottom:15px; font-size:0.8rem; color:var(--text-muted); align-items:flex-start; gap:10px;">
+            <input type="checkbox" id="tos-checkbox" style="margin-top:3px;">
+            <label for="tos-checkbox">I accept the <a href="terms.html" target="_blank" style="color:var(--accent-blue);">Neural Interface Agreement</a> and laboratory protocols.</label>
+        </div>
         <button onclick="submitAuth()" style="width:100%; padding:10px; background:#4285F4; color:#fff; border:none; border-radius:8px; cursor:pointer;">Submit</button>
         <button onclick="closeModal()" style="width:100%; padding:10px; margin-top:10px; background:transparent; color:#888; border:none; cursor:pointer;">Cancel</button>
     </div>
@@ -239,6 +244,8 @@
         authMode = mode;
         document.getElementById('modal-title').innerText = mode.toUpperCase();
         document.getElementById('auth-email').style.display = mode === 'register' ? 'block' : 'none';
+        document.getElementById('auth-agreement').style.display = mode === 'register' ? 'flex' : 'none';
+        if (mode === 'register') document.getElementById('tos-checkbox').checked = false;
         document.getElementById('auth-modal').style.display = 'flex';
         loadChallenge();
     }
@@ -254,6 +261,11 @@
         
         if (!handle || !password || (authMode === 'register' && !email)) {
             alert('Please fill all fields');
+            return;
+        }
+
+        if (authMode === 'register' && !document.getElementById('tos-checkbox').checked) {
+            alert('You must accept the Neural Interface Agreement to proceed.');
             return;
         }
 
