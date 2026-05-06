@@ -34,6 +34,14 @@
 
         .btn-save { background: var(--accent-blue); color: #fff; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; cursor: pointer; }
         .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+        .dashboard-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin: -15px 0 25px; }
+        .dashboard-tab { background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border-color); border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; }
+        .dashboard-tab.active { color: #fff; border-color: var(--accent-blue); background: rgba(66,133,244,0.14); }
+        .dashboard-tab.locked { display: none; }
+        .dashboard-panel { display: none; }
+        .dashboard-panel.active { display: block; }
+        .owner-badge { display:none; margin-bottom: 18px; padding: 12px 14px; border: 1px solid rgba(168,85,247,0.45); border-radius: 12px; color: #e9d5ff; background: rgba(168,85,247,0.08); font-size: 0.9rem; }
+        .helper-text { color: var(--text-muted); font-size: 0.82rem; line-height: 1.45; margin-top: 8px; }
 
         .history-section h2 { font-size: 1.2rem; margin-bottom: 20px; }
         .synapse { background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; gap: 15px; }
@@ -43,6 +51,9 @@
         .synapse-content h3 { font-size: 1rem; margin-bottom: 5px; color: var(--accent-blue); }
         .synapse-content p { color: #ccc; margin-bottom: 10px; line-height: 1.4; }
         .synapse-content small { color: var(--text-muted); font-size: 0.8rem; }
+        @media (max-width: 700px) {
+            #ban-controls, #role-controls { grid-template-columns: 1fr !important; }
+        }
     </style>
 </head>
 <body>
@@ -55,7 +66,14 @@
             </div>
         </div>
 
-        <div class="settings-section">
+        <div class="dashboard-tabs">
+            <button class="dashboard-tab active" data-tab="profile" onclick="showPanel('profile')">Profile</button>
+            <button class="dashboard-tab locked" data-tab="staff" onclick="showPanel('staff')">Staff</button>
+            <button class="dashboard-tab locked" data-tab="audit" onclick="showPanel('audit')">Audit</button>
+            <button class="dashboard-tab" data-tab="danger" onclick="showPanel('danger')">Danger Zone</button>
+        </div>
+
+        <div class="settings-section dashboard-panel active" data-panel="profile">
             <h2>User Profile</h2>
             <img id="avatar-preview" class="avatar-preview" src="" alt="Avatar Preview" style="display:none;">
             <div class="form-group">
@@ -71,32 +89,30 @@
                 <input type="file" id="profile-avatar-file" accept="image/*" onchange="previewAvatar(event)">
             </div>
             <button id="save-settings" class="btn-save" onclick="saveSettings()">Save Changes</button>
-
-            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 75, 43, 0.2);">
-                <h2 style="color: #ff4b2b; font-size: 1rem;">Laboratory Deactivation</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Warning: This neural erasure is absolute. All synapses, messages, and identity data will be permanently removed.</p>
-                <button class="btn-save" style="background: #ff4b2b;" onclick="deleteAccount()">Permanently Delete Node</button>
-            </div>
         </div>
 
-        <div class="settings-section" id="admin-hub" style="display:none; border-color: var(--accent-purple);">
-            <h2 style="color: var(--accent-purple);">Administrative Command Center</h2>
+        <div class="settings-section dashboard-panel" id="admin-hub" data-panel="staff" style="border-color: var(--accent-purple);">
+            <div id="owner-badge" class="owner-badge">Owner Tools enabled. Only the owner account can protect ownership; staff permissions below remain selective.</div>
+            <h2 style="color: var(--accent-purple);">Staff Console</h2>
+            <p class="helper-text" style="margin-bottom:20px;">Grant the smallest set of powers each person needs. Every role or ban action requires the administrative secret and a reason.</p>
             <div class="form-group ban-permission" style="display:none;">
                 <label>Deactivate Researcher (Ban)</label>
-                <div style="display: flex; gap: 10px;">
+                <div id="ban-controls" style="display: grid; grid-template-columns: minmax(150px, 1fr) minmax(200px, 2fr) auto; gap: 10px;">
                     <input type="text" id="ban-handle" placeholder="@handle">
+                    <input type="text" id="ban-reason" placeholder="Reason required">
                     <button class="btn-save" style="background: var(--accent-purple);" onclick="banNode()">Execute Ban</button>
                 </div>
             </div>
             <div class="form-group role-permission" style="display:none;">
                 <label>Add Administrator or Moderator</label>
-                <div style="display: grid; grid-template-columns: 1fr 160px auto; gap: 10px; margin-bottom: 10px;">
+                <div id="role-controls" style="display: grid; grid-template-columns: minmax(150px, 1fr) 160px minmax(200px, 2fr) auto; gap: 10px; margin-bottom: 10px;">
                     <input type="text" id="role-handle" placeholder="@handle">
                     <select id="role-value" style="padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px;">
                         <option value="admin">Administrator</option>
                         <option value="moderator">Moderator</option>
                         <option value="user">Standard User</option>
                     </select>
+                    <input type="text" id="role-reason" placeholder="Reason required">
                     <button class="btn-save" style="background: var(--accent-purple);" onclick="setUserRole()">Grant Role</button>
                 </div>
                 <div id="permissions-toggles" style="display: flex; gap: 15px; flex-wrap: wrap; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #222;">
@@ -120,12 +136,22 @@
                     User directory restricted to Administrator access.
                 </div>
             </div>
+        </div>
+
+        <div class="settings-section dashboard-panel" id="audit-panel" data-panel="audit" style="border-color: rgba(34,197,94,0.35);">
+            <h2 style="color:#22c55e;">Staff Audit Trail</h2>
+            <p class="helper-text" style="margin-bottom:20px;">Role changes, permission edits, and bans are logged with actor, target, timestamp, and reason.</p>
             <div class="form-group audit-permission" style="display:none;">
-                <label>System Audit Log</label>
-                <div id="audit-log" style="background:#000; padding:15px; border-radius:8px; font-size:0.8rem; color:#0f0; font-family:monospace; height:150px; overflow-y:auto;">
+                <div id="audit-log" style="background:#000; padding:15px; border-radius:8px; font-size:0.8rem; color:#0f0; font-family:monospace; height:240px; overflow-y:auto;">
                     System audits restricted to Administrator access.
                 </div>
             </div>
+        </div>
+
+        <div class="settings-section dashboard-panel" data-panel="danger">
+            <h2 style="color: #ff4b2b;">Danger Zone</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Warning: This neural erasure is absolute. All synapses, messages, and identity data will be permanently removed.</p>
+            <button class="btn-save" style="background: #ff4b2b;" onclick="deleteAccount()">Permanently Delete Node</button>
         </div>
 
         <div class="history-section">
@@ -137,6 +163,23 @@
     <script>
         const token = localStorage.getItem('tater_token');
         if (!token) window.location.href = 'cortex.html';
+        const availablePanels = new Set(['profile', 'danger']);
+
+        function showPanel(panelName) {
+            if (!availablePanels.has(panelName)) return;
+            document.querySelectorAll('.dashboard-panel').forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.panel === panelName);
+            });
+            document.querySelectorAll('.dashboard-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === panelName);
+            });
+        }
+
+        function unlockPanel(panelName) {
+            availablePanels.add(panelName);
+            const tab = document.querySelector(`[data-tab="${panelName}"]`);
+            if (tab) tab.classList.remove('locked');
+        }
 
         function escapeHTML(value) {
             return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -172,7 +215,10 @@
                 if (res.ok) {
                     const logs = await res.json();
                     const logBox = document.getElementById('audit-log');
-                    logBox.innerHTML = logs.map(l => `${escapeHTML(l.timestamp)} ${escapeHTML(l.action)}: ${escapeHTML(l.actor)} to ${escapeHTML(l.target)}`).join('<br>');
+                    logBox.innerHTML = logs.map(l => {
+                        const reason = l.reason ? ` — ${escapeHTML(l.reason)}` : '';
+                        return `${escapeHTML(l.timestamp)} ${escapeHTML(l.action)}: ${escapeHTML(l.actor)} to ${escapeHTML(l.target)}${reason}`;
+                    }).join('<br>');
                 }
             } catch (e) { console.error('Audit log failed', e); }
         }
@@ -215,12 +261,16 @@
                         preview.style.display = 'block';
                     }
                     if (isStaff) {
-                        document.getElementById('admin-hub').style.display = 'block';
+                        unlockPanel('staff');
+                    }
+                    if (data.is_owner) {
+                        document.getElementById('owner-badge').style.display = 'block';
                     }
                     if (hasPerm('BAN_USERS')) {
                         document.querySelectorAll('.ban-permission').forEach(el => el.style.display = 'block');
                     }
                     if (hasPerm('VIEW_AUDIT')) {
+                        unlockPanel('audit');
                         document.querySelectorAll('.audit-permission').forEach(el => el.style.display = 'block');
                         loadAuditLogs();
                     }
@@ -260,9 +310,13 @@
         }
 
         async function banNode() {
-            const handle = document.getElementById('ban-handle').value.replace('@', '');
+            const handle = document.getElementById('ban-handle').value.replace('@', '').trim();
+            const reason = document.getElementById('ban-reason').value.trim();
             const secret = prompt('Enter Administrative Secret:');
-            if (!handle || !secret) return;
+            if (!handle || !reason || !secret) {
+                alert('Handle, reason, and administrative secret are required.');
+                return;
+            }
 
             try {
                 const res = await fetch('/api/admin/ban', {
@@ -272,15 +326,16 @@
                         'Authorization': 'Bearer ' + token,
                         'X-Admin-Secret': secret
                     },
-                    body: JSON.stringify({ handle })
+                    body: JSON.stringify({ handle, reason })
                 });
 
                 if (res.ok) {
                     alert('Node deactivated.');
                     document.getElementById('ban-handle').value = '';
+                    document.getElementById('ban-reason').value = '';
                     loadAuditLogs();
                 } else {
-                    alert('Governance action failed.');
+                    alert('Governance action failed: ' + await res.text());
                 }
             } catch (e) { alert('Network error.'); }
         }
@@ -288,13 +343,17 @@
         async function setUserRole() {
             const handle = document.getElementById('role-handle').value.replace('@', '').trim();
             const role = document.getElementById('role-value').value;
+            const reason = document.getElementById('role-reason').value.trim();
             const secret = prompt('Enter Administrative Secret:');
 
             const selectedPerms = Array.from(document.querySelectorAll('#permissions-toggles input:checked'))
                 .map(cb => cb.value)
                 .join(',');
 
-            if (!handle || !role || !secret) return;
+            if (!handle || !role || !reason || !secret) {
+                alert('Handle, role, reason, and administrative secret are required.');
+                return;
+            }
 
             try {
                 const res = await fetch('/api/admin/role', {
@@ -304,12 +363,13 @@
                         'Authorization': 'Bearer ' + token,
                         'X-Admin-Secret': secret
                     },
-                    body: JSON.stringify({ handle, role, permissions: selectedPerms })
+                    body: JSON.stringify({ handle, role, permissions: selectedPerms, reason })
                 });
 
                 if (res.ok) {
                     alert(`@${handle} updated with role ${role} and permissions: ${selectedPerms || 'none'}.`);
                     document.getElementById('role-handle').value = '';
+                    document.getElementById('role-reason').value = '';
                     loadUserRoles();
                     loadAuditLogs();
                 } else {
