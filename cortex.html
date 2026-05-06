@@ -125,6 +125,12 @@
     </nav>
     <main class="main-feed">
         <div class="feed-header"><h2>Synaptic Stream</h2></div>
+        <div style="padding: 20px 20px 0 20px;">
+            <div class="search-container">
+                <input type="text" id="neural-search" class="search-input" placeholder="Search the collective..." oninput="neuralSearch(this.value)">
+                <div id="search-results" class="search-results"></div>
+            </div>
+        </div>
         <div id="stream-profile-header" class="stream-profile-header" style="display:none;">
             <img id="header-avatar" class="user-avatar-med" src="" alt="Avatar">
             <div class="profile-info">
@@ -148,10 +154,6 @@
     </main>
     <aside class="sidebar-right">
         <div class="vitals-box">
-            <div class="search-container">
-                <input type="text" id="neural-search" class="search-input" placeholder="Search the collective..." oninput="neuralSearch(this.value)">
-                <div id="search-results" class="search-results"></div>
-            </div>
             <h3>Laboratory Vitals</h3>
             <p id="api-status">Checking...</p>
             <p>Feedback: <span id="api-feedback">-</span></p>
