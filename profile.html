@@ -11,6 +11,7 @@
             --text-main: #e0e0e0;
             --text-muted: #888;
             --accent-blue: #4285F4;
+            --accent-purple: #a855f7;
             --hover-bg: rgba(255, 255, 255, 0.03);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -122,36 +123,67 @@
         }
 
         async function loadAuditLogs() {
-            const res = await fetch('/api/admin/logs', {
-                headers: { 'Authorization': 'Bearer ' + token }
-            });
-            if (res.ok) {
-                const logs = await res.json();
-                const logBox = document.getElementById('audit-log');
-                logBox.innerHTML = logs.map(l => `[${l.timestamp}] ${l.action}: ${l.actor} → ${l.target}`).join('<br>');
-            }
-        }
-            // Load user identity
-            const meRes = await fetch('/api/me', {
-                headers: { 'Authorization': 'Bearer ' + token }
-            });
-            if (meRes.ok) {
-                const data = await meRes.json();
-                document.getElementById('profile-handle').value = '@' + data.handle;
-                if (data.bio) document.getElementById('profile-bio').value = data.bio;
-                if (data.avatar) {
-                    const preview = document.getElementById('avatar-preview');
-                    preview.src = data.avatar.startsWith('/') ? '/api' + data.avatar : data.avatar;
-                    preview.style.display = 'block';
+            try {
+                const res = await fetch('/api/admin/logs', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (res.ok) {
+                    const logs = await res.json();
+                    const logBox = document.getElementById('audit-log');
+                    logBox.innerHTML = logs.map(l => `[${l.timestamp}] ${l.action}: ${l.actor} → ${l.target}`).join('<br>');
                 }
-// Show Admin Hub if authorized
-if (data.role === 'admin') {
-    document.getElementById('admin-hub').style.display = 'block';
-    loadAuditLogs();
-}
-}
+            } catch (e) { console.error('Audit log failed', e); }
+        }
 
-// Load synapse history
+        async function loadProfile() {
+            try {
+                // Load user identity
+                const meRes = await fetch('/api/me', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (meRes.ok) {
+                    const data = await meRes.json();
+                    document.getElementById('profile-handle').value = '@' + data.handle;
+                    if (data.bio) document.getElementById('profile-bio').value = data.bio;
+                    if (data.avatar) {
+                        const preview = document.getElementById('avatar-preview');
+                        preview.src = data.avatar.startsWith('/') ? '/api' + data.avatar : data.avatar;
+                        preview.style.display = 'block';
+                    }
+                    if (data.role === 'admin') {
+                        document.getElementById('admin-hub').style.display = 'block';
+                        loadAuditLogs();
+                    }
+                }
+
+                // Load synapse history
+                const res = await fetch('/api/user/posts', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const posts = res.ok ? await res.json() : [];
+                const container = document.getElementById('synapse-feed');
+                if (posts.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-muted);">No synapse activity recorded.</p>';
+                } else {
+                    container.innerHTML = posts.map(p => {
+                        const avatarSrc = p.avatar ? (p.avatar.startsWith('/') ? '/api' + p.avatar : p.avatar) : '';
+                        const avatarHtml = avatarSrc ? `<img src="${avatarSrc}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
+                        const displayTime = timeAgo(p.created_at);
+                        return `
+                            <article class="synapse">
+                                ${avatarHtml}
+                                <div class="synapse-content">
+                                    <div class="synapse-header">
+                                        <small style="color:var(--text-muted);" title="${new Date(p.created_at).toLocaleString()}">${displayTime}</small>
+                                    </div>
+                                    <h3>${p.title}</h3>
+                                    <p>${p.content}</p>
+                                </div>
+                            </article>`;
+                    }).join('');
+                }
+            } catch (e) { console.error('Profile load failed', e); }
+        }
 
         async function banNode() {
             const handle = document.getElementById('ban-handle').value.replace('@', '');
@@ -172,40 +204,11 @@ if (data.role === 'admin') {
                 if (res.ok) {
                     alert('Node deactivated.');
                     document.getElementById('ban-handle').value = '';
+                    loadAuditLogs();
                 } else {
                     alert('Governance action failed.');
                 }
-            } catch (e) {
-                alert('Network error.');
-            }
-        }
-
-            // Load synapse history
-            const res = await fetch('/api/user/posts', {
-                headers: { 'Authorization': 'Bearer ' + token }
-            });
-            const posts = res.ok ? await res.json() : [];
-            const container = document.getElementById('synapse-feed');
-            if (posts.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted);">No synapse activity recorded.</p>';
-                return;
-            }
-            container.innerHTML = posts.map(p => {
-                const avatarSrc = p.avatar ? (p.avatar.startsWith('/') ? '/api' + p.avatar : p.avatar) : '';
-                const avatarHtml = avatarSrc ? `<img src="${avatarSrc}" class="synapse-avatar">` : `<div class="synapse-avatar"></div>`;
-                const displayTime = timeAgo(p.created_at);
-                return `
-                    <article class="synapse">
-                        ${avatarHtml}
-                        <div class="synapse-content">
-                            <div class="synapse-header">
-                                <small style="color:var(--text-muted);" title="${new Date(p.created_at).toLocaleString()}">${displayTime}</small>
-                            </div>
-                            <h3>${p.title}</h3>
-                            <p>${p.content}</p>
-                        </div>
-                    </article>`;
-            }).join('');
+            } catch (e) { alert('Network error.'); }
         }
 
         function previewAvatar(event) {
@@ -230,7 +233,6 @@ if (data.role === 'admin') {
             btn.disabled = true;
 
             try {
-                // 1. Update Bio
                 const bioRes = await fetch('/api/profile', {
                     method: 'POST',
                     headers: { 
@@ -240,56 +242,43 @@ if (data.role === 'admin') {
                     body: JSON.stringify({ bio, avatar: "" }) 
                 });
 
-                // 2. Upload Avatar if file selected
                 if (fileInput.files.length > 0) {
                     const formData = new FormData();
                     formData.append('avatar', fileInput.files[0]);
-                    
                     const uploadRes = await fetch('/api/upload-avatar', {
                         method: 'POST',
                         headers: { 'Authorization': 'Bearer ' + token },
                         body: formData
                     });
-                    
-                    if (!uploadRes.ok) {
-                        const err = await uploadRes.text();
-                        alert('Avatar upload failed: ' + err);
-                    }
+                    if (!uploadRes.ok) alert('Avatar upload failed.');
                 }
 
                 if (bioRes.ok) {
                     alert('Cognitive profile updated.');
-                    loadProfile(); // Reload to get fresh URLs
+                    loadProfile();
                 } else {
                     alert('Failed to update bio.');
                 }
-            } catch (e) {
-                alert('Network error.');
-            } finally {
+            } catch (e) { alert('Network error.'); }
+            finally {
                 btn.innerText = 'Save Changes';
                 btn.disabled = false;
             }
         }
 
         async function deleteAccount() {
-            if (!confirm('FINAL CONFIRMATION: Are you sure you want to permanently erase your node? This cannot be undone.')) return;
-            
+            if (!confirm('FINAL CONFIRMATION: Are you sure you want to permanently erase your node?')) return;
             try {
                 const res = await fetch('/api/account/delete', {
                     method: 'POST',
                     headers: { 'Authorization': 'Bearer ' + token }
                 });
-
                 if (res.ok) {
                     localStorage.removeItem('tater_token');
-                    alert('Node deactivated. Neural records erased.');
+                    alert('Node deactivated.');
                     window.location.href = 'cortex.html';
-                } else {
-                    alert('Deactivation failed.');
-                }
-            } catch (e) {
-                alert('Network error.');
-            }
+                } else alert('Deactivation failed.');
+            } catch (e) { alert('Network error.'); }
         }
 
         loadProfile();
