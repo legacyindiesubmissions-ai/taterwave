@@ -4,57 +4,193 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Private Synapses | Tater Labs</title>
-<style>
-    :root {
-        --bg-color: #050510;
-        --border-color: rgba(255, 255, 255, 0.1);
-        --text-main: #e0e0e0;
-        --text-muted: #888;
-        --accent-blue: #4285F4;
-        --hover-bg: rgba(255, 255, 255, 0.03);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-    .cortex-container { display: flex; width: 100%; max-width: 1200px; height: 100%; }
-    
-    .sidebar-left { width: 275px; padding: 20px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
-    .brand { font-size: 1.5rem; font-weight: 900; color: #fff; text-decoration: none; margin-bottom: 40px; }
-    .brand span { color: var(--accent-blue); }
-    .nav-item { display: flex; align-items: center; padding: 15px 20px; color: var(--text-main); text-decoration: none; font-size: 1.2rem; font-weight: 600; border-radius: 30px; margin-bottom: 10px; transition: background 0.2s; cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; }
-    .nav-item:hover { background: var(--hover-bg); }
-    .nav-item.active { color: var(--accent-blue); }
+    <style>
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-panel: #111118;
+            --bg-surface: #16161e;
+            --border-glow: rgba(0, 255, 136, 0.15);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --text-bright: #e8e8f0;
+            --text-main: #b0b0c0;
+            --text-dim: #686878;
+            --accent-green: #00ff88;
+            --accent-cyan: #00ccff;
+            --accent-amber: #ffb347;
+            --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            --font-ui: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-ui);
+            background: var(--bg-deep);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body > * { position: relative; z-index: 1; }
 
-    .messenger-container { flex: 1; display: flex; height: 100%; }
-    
-    .inbox-list { width: 350px; border-right: 1px solid var(--border-color); overflow-y: auto; }
-    .inbox-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
-    .inbox-item { padding: 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 12px; }
-    .inbox-item:hover { background: var(--hover-bg); }
-    .inbox-item.active { background: rgba(66, 133, 244, 0.1); border-right: 3px solid var(--accent-blue); }
-    .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #111; border: 1px solid var(--border-color); }
+        .cortex-container { display: flex; width: 100%; max-width: 1100px; margin: 0 auto; height: 100%; }
 
-    .chat-window { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.01); }
-    .chat-header { padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
-    
-    .messages-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-    .msg { max-width: 70%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.4; }
-    .msg.sent { align-self: flex-end; background: var(--accent-blue); color: #fff; border-bottom-right-radius: 4px; }
-    .msg.received { align-self: flex-start; background: #222; color: #eee; border-bottom-left-radius: 4px; }
-    .msg-time { font-size: 0.7rem; opacity: 0.7; margin-top: 5px; display: block; text-align: right; }
+        .sidebar-left {
+            width: 220px;
+            padding: 24px 12px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+        .brand {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-decoration: none;
+            margin-bottom: 32px;
+            padding: 0 12px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+        }
+        .brand span { color: var(--text-bright); }
+        .brand small { display: block; font-size: 0.6rem; color: var(--text-dim); font-weight: 400; margin-top: 2px; letter-spacing: 0.5px; }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            margin-bottom: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-mono);
+            letter-spacing: 0.2px;
+        }
+        .nav-item:hover { color: var(--text-bright); background: rgba(0, 255, 136, 0.04); }
+        .nav-item.active { color: var(--accent-green); background: rgba(0, 255, 136, 0.06); text-shadow: 0 0 20px rgba(0, 255, 136, 0.15); }
 
-    .chat-input-area { padding: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
-    .chat-input { flex: 1; background: #111; border: 1px solid #333; border-radius: 24px; padding: 12px 20px; color: #fff; outline: none; }
-    .chat-input:focus { border-color: var(--accent-blue); }
-    .btn-send { background: var(--accent-blue); color: #fff; border: none; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-</style>
+        .messenger-container { flex: 1; display: flex; height: 100%; }
+
+        .inbox-list { width: 320px; border-right: 1px solid var(--border-subtle); overflow-y: auto; }
+        .inbox-header { padding: 20px; border-bottom: 1px solid var(--border-subtle); }
+        .inbox-header h2 { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
+        .inbox-header h2::before { content: '> '; color: var(--accent-green); }
+        .inbox-item { padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 12px; }
+        .inbox-item:hover { background: rgba(0, 255, 136, 0.02); }
+        .inbox-item.active { background: rgba(0, 255, 136, 0.06); border-right: 2px solid var(--accent-green); }
+        .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--bg-surface); border: 1px solid var(--border-subtle); flex-shrink: 0; }
+
+        .chat-window { flex: 1; display: flex; flex-direction: column; background: rgba(0, 255, 136, 0.005); }
+        .chat-header { padding: 14px 20px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 12px; }
+        .chat-header h3 { font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-bright); }
+
+        .messages-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .msg { max-width: 70%; padding: 10px 16px; border-radius: var(--radius-sm); font-size: 0.88rem; line-height: 1.45; }
+        .msg.sent {
+            align-self: flex-end;
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--text-bright);
+        }
+        .msg.received {
+            align-self: flex-start;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+        }
+        .msg-time { font-size: 0.65rem; opacity: 0.5; margin-top: 5px; display: block; text-align: right; font-family: var(--font-mono); }
+
+        .chat-input-area { padding: 16px 20px; border-top: 1px solid var(--border-subtle); display: flex; gap: 10px; }
+        .chat-input {
+            flex: 1;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            color: var(--text-bright);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .chat-input:focus { border-color: var(--accent-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.15); }
+        .btn-send {
+            background: transparent;
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            border-radius: var(--radius-sm);
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-send:hover { background: rgba(0, 255, 136, 0.08); box-shadow: 0 0 20px rgba(0, 255, 136, 0.15); }
+        .btn-send svg { width: 18px; height: 18px; fill: currentColor; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+        @media (max-width: 768px) {
+            .cortex-container { flex-direction: column; }
+            .sidebar-left {
+                width: 100%; height: auto;
+                flex-direction: row; align-items: center;
+                border-right: none;
+                border-bottom: 1px solid var(--border-subtle);
+                padding: 10px 16px;
+            }
+            .sidebar-left .brand {
+                width: auto; margin-bottom: 0; margin-right: auto;
+                padding: 0; font-size: 0.9rem;
+                display: flex; align-items: center; gap: 6px;
+            }
+            .sidebar-left .brand small { display: none; }
+            .sidebar-left .nav-item {
+                padding: 6px 10px; font-size: 0.7rem;
+                margin-bottom: 0; width: auto;
+            }
+            .messenger-container { flex-direction: column; }
+            .inbox-list { width: 100%; max-height: 40vh; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .inbox-item { padding: 12px 16px; }
+            .msg { max-width: 85%; }
+            .chat-window { height: 100%; }
+        }
+    </style>
 </head>
 <body>
 <div class="cortex-container">
     <nav class="sidebar-left">
-        <a href="index.html" class="brand">The <span>Cortex</span></a>
-        <a href="cortex.html" class="nav-item">Stream</a>
-        <a href="#" class="nav-item active">Messages</a>
-        <a href="profile.html" class="nav-item">Profile</a>
+        <a href="index.html" class="brand"><img src="cortex-logo.png" alt="" style="width:100%; max-width:160px; display:block; margin-bottom:8px;">The <span>Cortex</span> <small>v0.4 · NEURAL INTERFACE</small></a>
+        <a href="cortex.html" class="nav-item">≡ STREAM</a>
+        <a href="#" class="nav-item active">∎ MESSAGES</a>
+        <a href="profile.html" class="nav-item">◎ PROFILE</a>
     </nav>
     
     <main class="messenger-container">
@@ -70,7 +206,7 @@
             </div>
             
             <div id="messages" class="messages-area">
-                <div style="margin: auto; color: var(--text-muted); text-align: center;">
+                <div style="margin: auto; color: #686878; text-align: center; font-family: monospace; font-size: 0.85rem;">
                     Select a connection to begin private transmission.
                 </div>
             </div>
@@ -129,7 +265,7 @@
 
         const container = document.getElementById('contacts');
         if (contacts.length === 0) {
-            container.innerHTML = '<div style="padding:20px; color:var(--text-muted);">No active synaptic channels.</div>';
+            container.innerHTML = '<div style="padding:20px; color:#686878;">No active synaptic channels.</div>';
             return;
         }
 
@@ -138,7 +274,7 @@
                 <div class="user-avatar"></div>
                 <div style="flex:1;">
                     <div style="font-weight:700;">@${escapeHTML(h)}</div>
-                    <div style="font-size:0.8rem; color:var(--text-muted);">Active interface</div>
+                    <div style="font-size:0.8rem; color:#686878;">Active interface</div>
                 </div>
             </div>
         `).join('');
