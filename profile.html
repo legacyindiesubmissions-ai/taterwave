@@ -121,7 +121,16 @@
             return date.toLocaleDateString();
         }
 
-        async function loadProfile() {
+        async function loadAuditLogs() {
+            const res = await fetch('/api/admin/logs', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (res.ok) {
+                const logs = await res.json();
+                const logBox = document.getElementById('audit-log');
+                logBox.innerHTML = logs.map(l => `[${l.timestamp}] ${l.action}: ${l.actor} → ${l.target}`).join('<br>');
+            }
+        }
             // Load user identity
             const meRes = await fetch('/api/me', {
                 headers: { 'Authorization': 'Bearer ' + token }
@@ -135,13 +144,15 @@
                     preview.src = data.avatar.startsWith('/') ? '/api' + data.avatar : data.avatar;
                     preview.style.display = 'block';
                 }
+// Show Admin Hub if authorized
+if (data.role === 'admin') {
+    document.getElementById('admin-hub').style.display = 'block';
+    loadAuditLogs();
+}
+}
 
-                // Show Admin Hub if authorized
-                if (data.role === 'admin') {
-                    document.getElementById('admin-hub').style.display = 'block';
-                }
-            }
-        ...
+// Load synapse history
+
         async function banNode() {
             const handle = document.getElementById('ban-handle').value.replace('@', '');
             const secret = prompt('Enter Administrative Secret:');
