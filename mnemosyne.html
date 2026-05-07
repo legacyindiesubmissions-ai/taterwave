@@ -38,6 +38,34 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0d0d1
 .code-block{background:#000;padding:24px;border-radius:12px;font-family:monospace;color:#4CAF50;text-align:left;max-width:600px;margin:40px auto;border:1px solid #333;overflow-x:auto;}
 
 footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-top:1px solid rgba(255,255,255,.03)}
+
+@media(max-width:768px){
+  body{padding-top:60px}
+  .global-nav{padding:12px 16px}
+  .nav-links{gap:12px}
+  .nav-links a{font-size:0.8rem}
+  .hero{padding:60px 16px 40px}
+  .feature-box{padding:24px;min-width:auto}
+  .comparison-container{margin:40px auto}
+  .comparison-table th,.comparison-table td{padding:12px 10px;font-size:0.85rem}
+  .code-block{padding:16px;margin:24px 16px;font-size:0.85rem}
+  .email-capture{padding:24px 16px;margin:40px 16px}
+  .email-form{flex-direction:column}
+  .launch-banner{top:60px;font-size:0.8rem;padding:8px;flex-wrap:wrap}
+  .faq-section{margin:40px auto}
+  .download-group{gap:12px}
+  .btn{padding:14px 24px;font-size:1rem}
+}
+
+@media(max-width:480px){
+  .nav-links a{font-size:0.72rem}
+  .hero h1{font-size:2rem}
+  .hero .tagline{font-size:1rem}
+  .btn{padding:12px 20px;font-size:0.9rem;width:100%}
+  .download-group .btn{width:100%}
+  .pricing-table{font-size:0.75rem}
+  .pricing-table th,.pricing-table td{padding:6px 4px}
+}
 </style>
 </head>
 <body>
