@@ -1117,7 +1117,7 @@
                             <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                         </button>
                         <div id="actions-${p.id}" class="actions-dropdown">
-                            <button onclick="editSynapse(${p.id}, ${jsString(p.content)})">Edit</button>
+                            <button onclick="editSynapse(${p.id})">Edit</button>
                             <button class="btn-delete" onclick="deleteSynapse(${p.id})">Delete</button>
                         </div>
                     </div>`;
@@ -1188,7 +1188,10 @@
         if (res.ok) loadPosts();
     }
 
-    async function editSynapse(id, oldContent) {
+    async function editSynapse(id) {
+        const contentEl = document.getElementById('content-' + id);
+        if (!contentEl) return;
+        const oldContent = contentEl.textContent || '';
         const newContent = prompt('Edit synapse:', oldContent);
         if (newContent === null || newContent === oldContent) return;
         const token = localStorage.getItem('tater_token');
