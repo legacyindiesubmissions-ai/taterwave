@@ -1190,7 +1190,7 @@
 
     async function editSynapse(id) {
         const contentEl = document.getElementById('content-' + id);
-        if (!contentEl) return;
+        if (!contentEl) { alert('Could not find post content'); return; }
         const oldContent = contentEl.textContent || '';
         const newContent = prompt('Edit synapse:', oldContent);
         if (newContent === null || newContent === oldContent) return;
