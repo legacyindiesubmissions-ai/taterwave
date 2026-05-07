@@ -811,12 +811,11 @@
     }
 
     function escapeHTML(value) {
-        return String(value ?? '').replace(/[&<>"']/g, char => ({
+        return String(value ?? '').replace(/[&<>"]/g, char => ({
             '&': '&amp;',
             '<': '&lt;',
             '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;'
+            '"': '&quot;'
         }[char]));
     }
 
@@ -1189,19 +1188,67 @@
     }
 
     async function editSynapse(id) {
+        const synapseEl = document.getElementById('synapse-' + id);
         const contentEl = document.getElementById('content-' + id);
-        if (!contentEl) { alert('Could not find post content'); return; }
+        if (!contentEl || !synapseEl) { alert('Could not find post content'); return; }
         const oldContent = contentEl.textContent || '';
-        const newContent = prompt('Edit synapse:', oldContent);
-        if (newContent === null || newContent === oldContent) return;
-        const token = localStorage.getItem('tater_token');
-        const res = await fetch('/api/synapse/edit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ id, content: newContent })
-        });
-        if (res.ok) loadPosts();
-        else alert('Edit failed: ' + await res.text());
+
+        // Replace content area with an inline textarea
+        const textarea = document.createElement('textarea');
+        textarea.value = oldContent;
+        textarea.style.width = '100%';
+        textarea.style.minHeight = '80px';
+        textarea.style.background = 'var(--bg-surface)';
+        textarea.style.border = '1px solid var(--accent-green)';
+        textarea.style.borderRadius = 'var(--radius-sm)';
+        textarea.style.color = 'var(--text-bright)';
+        textarea.style.fontFamily = 'var(--font-mono)';
+        textarea.style.fontSize = '0.88rem';
+        textarea.style.padding = '10px';
+        textarea.style.outline = 'none';
+        textarea.style.resize = 'vertical';
+
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Save';
+        saveBtn.style.cssText = 'background:transparent; color:var(--accent-green); border:1px solid var(--accent-green); border-radius:var(--radius-sm); padding:6px 16px; cursor:pointer; font-family:var(--font-mono); font-size:0.82rem; margin-top:8px; transition:all 0.2s;';
+        saveBtn.onmouseover = () => { saveBtn.style.background = 'rgba(0,255,136,0.08)'; saveBtn.style.boxShadow = 'var(--glow-green)'; };
+        saveBtn.onmouseout = () => { saveBtn.style.background = 'transparent'; saveBtn.style.boxShadow = 'none'; };
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = 'Cancel';
+        cancelBtn.style.cssText = 'background:transparent; color:var(--text-dim); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:6px 16px; cursor:pointer; font-family:var(--font-mono); font-size:0.82rem; margin-top:8px; margin-left:8px;';
+
+        const btnWrap = document.createElement('div');
+        btnWrap.style.display = 'flex';
+        btnWrap.appendChild(saveBtn);
+        btnWrap.appendChild(cancelBtn);
+
+        const editorWrap = document.createElement('div');
+        editorWrap.appendChild(textarea);
+        editorWrap.appendChild(btnWrap);
+        contentEl.parentNode.replaceChild(editorWrap, contentEl);
+
+        cancelBtn.onclick = () => {
+            const p = document.createElement('p');
+            p.id = 'content-' + id;
+            p.innerHTML = parseHashtags(oldContent);
+            editorWrap.parentNode.replaceChild(p, editorWrap);
+        };
+
+        saveBtn.onclick = async () => {
+            const newContent = textarea.value.trim();
+            if (!newContent || newContent === oldContent) { cancelBtn.click(); return; }
+            const token = localStorage.getItem('tater_token');
+            saveBtn.textContent = 'Saving...';
+            saveBtn.disabled = true;
+            const res = await fetch('/api/synapse/edit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ id, content: newContent })
+            });
+            if (res.ok) loadPosts();
+            else { alert('Edit failed: ' + await res.text()); saveBtn.textContent = 'Save'; saveBtn.disabled = false; }
+        };
     }
 
     function logout() { localStorage.removeItem('tater_token'); location.reload(); }
