@@ -1198,6 +1198,7 @@
             body: JSON.stringify({ id, content: newContent })
         });
         if (res.ok) loadPosts();
+        else alert('Edit failed: ' + await res.text());
     }
 
     function logout() { localStorage.removeItem('tater_token'); location.reload(); }
