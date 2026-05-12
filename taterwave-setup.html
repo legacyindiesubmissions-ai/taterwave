@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaterWave AI — Setup & Operation Manual</title>
+<meta name="description" content="Official setup and operation guide for TaterWave AI radio automation software. From installation to going live.">
+<link rel="canonical" href="https://taterlabs.shop/taterwave-setup.html">
+
+<style>
+:root {
+  --bg: #050510;
+  --panel: #0d0d1a;
+  --accent: #4CAF50;
+  --text: #e0e0e0;
+  --text-dim: #999;
+  --border: rgba(255,255,255,0.05);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:80px;}
+
+/* === NAVIGATION === */
+.global-nav{position:fixed;top:0;width:100%;background:rgba(5,5,16,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:999;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+.nav-brand{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:1px;}
+.nav-brand span{color:var(--accent);}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-weight:600;font-size:0.95rem;transition:color 0.3s;}
+.nav-links a:hover{color:#fff;}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 24px; color: var(--accent); }
+h2 { font-size: 1.8rem; margin: 40px 0 20px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+h3 { font-size: 1.3rem; margin: 24px 0 12px; color: #fff; }
+p { margin-bottom: 16px; color: var(--text-dim); }
+ol, ul { margin-bottom: 24px; padding-left: 20px; color: var(--text-dim); }
+li { margin-bottom: 12px; }
+
+.highlight-box {
+  background: rgba(76,175,80,0.05);
+  border: 1px solid rgba(76,175,80,0.2);
+  padding: 24px;
+  border-radius: 12px;
+  margin: 32px 0;
+}
+.highlight-box h3 { color: var(--accent); margin-top: 0; }
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+footer{text-align:center;padding:80px 20px;color:#444;font-size:.85rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <a href="index.html" class="nav-brand">🥔 Tater<span>Labs</span></a>
+  <div class="nav-links">
+    <a href="taterwave.html">TaterWave AI</a>
+    <a href="mnemosyne.html">Mnemosyne MCP</a>
+    <a href="docs.html">Docs</a>
+    <a href="cortex.html">The Cortex</a>
+    <a href="portfolio.html">Portfolio</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>TaterWave Setup & Operation</h1>
+  <p>TaterWave AI is a professional radio automation ecosystem that runs entirely on your local hardware. This guide will take you from installation to your first live broadcast.</p>
+
+  <h2>1. Installation</h2>
+  <ol>
+    <li>Download the installer for your OS:
+      <br><a href="https://download.taterlabs.shop/TaterWave_AI_Setup.exe" class="btn">Download Windows (.exe)</a>
+    </li>
+    <li>Run the setup wizard and follow the prompts.</li>
+    <li>Launch TaterWave AI from your desktop.</li>
+  </ol>
+
+  <h2>2. First-Run Configuration</h2>
+  <p>When you first launch the app, the <strong>Cold Start Wizard</strong> will guide you through the essentials:</p>
+  <ul>
+    <li><strong>Station Identity:</strong> Set your station name, tagline, and genre. This helps the AI DJ understand your "vibe."</li>
+    <li><strong>Music Ingestion:</strong> Point TaterWave at your local music folders. It will scan and analyze your library for mood, energy, and timbre.</li>
+    <li><strong>AI DJ Selection:</strong> Choose from our library of cloned voices or upload a 30-second clip of your own voice to create a custom AI personality.</li>
+  </ul>
+
+  <div class="highlight-box">
+    <h3>Pro Tip: Library Organization</h3>
+    <p>TaterWave uses AI to "hear" your music, so you don't need to manually tag every file. However, keeping your files organized by genre in folders will help the smart scheduler build more cohesive blocks.</p>
+  </div>
+
+  <h2>3. Going Live</h2>
+  <p>TaterWave handles the entire broadcast chain in one app:</p>
+  <ul>
+    <li><strong>Streaming:</strong> Enter your Icecast or SHOUTcast server details in the "Broadcast" tab.</li>
+    <li><strong>Public URL:</strong> If you don't have a server, enable <strong>Tailscale Integration</strong> to generate a free, secure public URL for your station instantly.</li>
+    <li><strong>Social Auto-Post:</strong> Connect your X (Twitter) or Discord account to automatically announce new tracks and DJ segments.</li>
+  </ul>
+
+  <h2>4. Troubleshooting</h2>
+  <h3>"No Audio Output"</h3>
+  <p>Check the "Audio Settings" tab and ensure the correct output device (or virtual cable) is selected. TaterWave supports ASIO for low-latency professional workflows.</p>
+
+  <h3>"AI DJ is Silent"</h3>
+  <p>Ensure you have an active internet connection for the initial voice model load, or check that you haven't muted the "Voice" channel in the mixer.</p>
+</div>
+
+<footer>
+  <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>
+</footer>
+
+</body>
+</html>

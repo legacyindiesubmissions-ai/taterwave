@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mnemosyne MCP — Technical Overview & Architecture</title>
+<meta name="description" content="Detailed technical overview of Mnemosyne MCP: Hebbian dynamics, spreading activation, and associative memory graph architecture.">
+<link rel="canonical" href="https://taterlabs.shop/mnemosyne-about.html">
+
+<style>
+:root {
+  --bg: #050510;
+  --panel: #0d0d1a;
+  --accent: #BB86FC;
+  --text: #e0e0e0;
+  --text-dim: #999;
+  --border: rgba(255,255,255,0.05);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:80px;}
+
+/* === NAVIGATION === */
+.global-nav{position:fixed;top:0;width:100%;background:rgba(5,5,16,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:999;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+.nav-brand{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:1px;}
+.nav-brand span{color:#4CAF50;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-weight:600;font-size:0.95rem;transition:color 0.3s;}
+.nav-links a:hover{color:#fff;}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 24px; color: var(--accent); }
+h2 { font-size: 1.8rem; margin: 40px 0 20px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+h3 { font-size: 1.3rem; margin: 24px 0 12px; color: #fff; }
+p { margin-bottom: 16px; color: var(--text-dim); }
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+.feature-card {
+  background: var(--panel);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.feature-card h3 { color: var(--accent); margin-top: 0; }
+
+.arch-box {
+  background: #000;
+  border: 1px solid #333;
+  padding: 32px;
+  border-radius: 16px;
+  font-family: 'Consolas', monospace;
+  color: #4CAF50;
+  margin: 40px 0;
+  text-align: center;
+}
+
+footer{text-align:center;padding:80px 20px;color:#444;font-size:.85rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <a href="index.html" class="nav-brand">🥔 Tater<span>Labs</span></a>
+  <div class="nav-links">
+    <a href="taterwave.html">TaterWave AI</a>
+    <a href="mnemosyne.html">Mnemosyne MCP</a>
+    <a href="docs.html">Docs</a>
+    <a href="cortex.html">The Cortex</a>
+    <a href="portfolio.html">Portfolio</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Inside Mnemosyne</h1>
+  <p>Mnemosyne is not a standard vector database. It is a biologically-inspired associative memory layer designed to give LLMs a persistent sense of history and context.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3>Hebbian Dynamics</h3>
+      <p>Memories that are frequently retrieved together grow stronger. Unused trivia naturally decays over time, mimicking the biological process of forgetting.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Spreading Activation</h3>
+      <p>Mnemosyne traverses a localized SQLite graph. A query for one topic "lights up" related nodes, surfacing associative echoes that pure text search misses.</p>
+    </div>
+    <div class="feature-card">
+      <h3>100% Local</h3>
+      <p>Your history, associations, and self-model never leave your machine. No cloud APIs, no data leaks, no subscriptions.</p>
+    </div>
+  </div>
+
+  <h2>The Architecture</h2>
+  <div class="arch-box">
+    Layer 3 — SELF-MODEL & ENTITIES<br>
+    ↑<br>
+    Layer 2 — EPISODES (Salience-scored threads)<br>
+    ↑<br>
+    Layer 1 — MESSAGES + HEBBIAN WEIGHTS<br>
+    ↑<br>
+    Layer 0 — TRANSCRIPT SUBSTRATE (SQLite FTS5)
+  </div>
+
+  <h2>How It Works</h2>
+  <h3>LTP & LTD</h3>
+  <p>Long-Term Potentiation (LTP) strengthens memory weights when a tool like <code>memory_cite</code> is called. Long-Term Depression (LTD) occurs during the "sleep" consolidation pass, where weak edges are pruned to maintain efficiency.</p>
+
+  <h3>Episode Extraction</h3>
+  <p>Mnemosyne doesn't just store raw text. It identifies "episodes"—significant moments like decisions, first-time meetings, or project milestones—and assigns them salience scores to ensure the most important context stays at the surface.</p>
+
+  <h3>Synaptic Scaling</h3>
+  <p>To prevent weights from bloating and overwhelming the system, Mnemosyne performs synaptic scaling, normalizing the total weight across the graph so retrieval remains balanced and fast.</p>
+</div>
+
+<footer>
+  <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>
+</footer>
+
+</body>
+</html>
