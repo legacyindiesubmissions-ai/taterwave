@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mnemosyne MCP — License & Setup Guide</title>
+<meta name="description" content="Step-by-step guide to activating and configuring Mnemosyne MCP for Claude Desktop, Cursor, and Windsurf.">
+<link rel="canonical" href="https://taterlabs.shop/mnemosyne-setup.html">
+
+<style>
+:root {
+  --bg: #050510;
+  --panel: #0d0d1a;
+  --accent: #BB86FC;
+  --text: #e0e0e0;
+  --text-dim: #999;
+  --border: rgba(255,255,255,0.05);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:80px;}
+
+/* === NAVIGATION === */
+.global-nav{position:fixed;top:0;width:100%;background:rgba(5,5,16,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:999;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+.nav-brand{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:1px;}
+.nav-brand span{color:#4CAF50;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-weight:600;font-size:0.95rem;transition:color 0.3s;}
+.nav-links a:hover{color:#fff;}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 24px; color: var(--accent); }
+h2 { font-size: 1.8rem; margin: 40px 0 20px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+h3 { font-size: 1.3rem; margin: 24px 0 12px; color: #fff; }
+p { margin-bottom: 16px; color: var(--text-dim); }
+ul { margin-bottom: 24px; padding-left: 20px; color: var(--text-dim); }
+li { margin-bottom: 8px; }
+
+.code-block {
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 24px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.95rem;
+  color: #4CAF50;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.note {
+  background: rgba(187,134,252,0.1);
+  border-left: 4px solid var(--accent);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 32px 0;
+}
+.note strong { color: var(--accent); }
+
+.download-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+}
+.download-link:hover { text-decoration: underline; }
+
+footer{text-align:center;padding:80px 20px;color:#444;font-size:.85rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <a href="index.html" class="nav-brand">🥔 Tater<span>Labs</span></a>
+  <div class="nav-links">
+    <a href="taterwave.html">TaterWave AI</a>
+    <a href="mnemosyne.html">Mnemosyne MCP</a>
+    <a href="docs.html">Docs</a>
+    <a href="cortex.html">The Cortex</a>
+    <a href="portfolio.html">Portfolio</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Mnemosyne Setup Guide</h1>
+  <p>This guide will help you activate your Mnemosyne license and connect it to your AI client (Claude Desktop, Cursor, or Windsurf).</p>
+
+  <h2>1. Download & Place Binary</h2>
+  <p>First, download the server binary for your operating system:</p>
+  <ul>
+    <li>Windows: <a href="https://download.taterlabs.shop/Mnemosyne.Server.exe" class="download-link">Mnemosyne.Server.exe</a></li>
+    <li>Linux: <a href="https://download.taterlabs.shop/Mnemosyne.Server" class="download-link">Mnemosyne.Server</a></li>
+  </ul>
+  <div class="note">
+    <strong>Important:</strong> Move the file to a permanent folder (e.g., <code>C:\Tools\</code> or <code>/home/user/bin/</code>). If you leave it in your Downloads folder and delete it later, Mnemosyne will stop working.
+  </div>
+
+  <h2>2. Configuration (Claude Desktop)</h2>
+  <p>You need to edit your <code>claude_desktop_config.json</code> file.</p>
+  
+  <h3>File Locations:</h3>
+  <ul>
+    <li><strong>Windows:</strong> <code>%APPDATA%\Claude\claude_desktop_config.json</code></li>
+    <li><strong>Mac:</strong> <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+  </ul>
+
+  <h3>Windows Setup:</h3>
+  <p>Windows paths MUST use double backslashes <code>\\</code>.</p>
+  <div class="code-block">
+{
+  "mcpServers": {
+    "mnemosyne": {
+      "command": "C:\\Tools\\Mnemosyne.Server.exe",
+      "args": [
+        "--license-key", 
+        "MNEM-YOUR-KEY-HERE"
+      ]
+    }
+  }
+}
+  </div>
+
+  <h3>Mac / Linux Setup:</h3>
+  <div class="code-block">
+{
+  "mcpServers": {
+    "mnemosyne": {
+      "command": "/home/username/bin/Mnemosyne.Server",
+      "args": [
+        "--license-key", 
+        "MNEM-YOUR-KEY-HERE"
+      ]
+    }
+  }
+}
+  </div>
+
+  <h2>3. Configuration (Cursor)</h2>
+  <ul>
+    <li>Open Cursor Settings (<strong>Ctrl+Shift+J</strong>).</li>
+    <li>Go to <strong>Models</strong> -> <strong>MCP</strong>.</li>
+    <li>Click <strong>+ Add New MCP Server</strong>.</li>
+    <li><strong>Name:</strong> <code>mnemosyne</code></li>
+    <li><strong>Type:</strong> <code>command</code></li>
+    <li><strong>Command:</strong> <code>C:\Tools\Mnemosyne.Server.exe --license-key MNEM-YOUR-KEY-HERE</code></li>
+  </ul>
+
+  <h2>4. Troubleshooting</h2>
+  <h3>"Invalid license key"</h3>
+  <p>Ensure your key starts with <code>MNEM-</code>. Check for trailing spaces if you copy-pasted.</p>
+
+  <h3>"Command not found" or "Pipe closed"</h3>
+  <p>This usually means the path in your config is wrong. Windows users, double check the <code>\\</code> characters.</p>
+
+  <h3>How do I know it's working?</h3>
+  <p>Restart your AI client and ask it: <em>"Can you check your Mnemosyne memory state?"</em></p>
+</div>
+
+<footer>
+  <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>
+</footer>
+
+</body>
+</html>
