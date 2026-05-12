@@ -4,192 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Documentation — Tater Labs</title>
-<meta name="description" content="Official documentation and setup guides for Tater Labs tools, including TaterWave AI and Mnemosyne MCP.">
-<link rel="canonical" href="https://taterlabs.shop/docs.html">
-
 <style>
-:root {
-  --bg: #050510;
-  --panel: #0d0d1a;
-  --accent: #4CAF50;
-  --accent-alt: #BB86FC;
-  --text: #e0e0e0;
-  --text-dim: #999;
-  --border: rgba(255,255,255,0.05);
-}
-
+:root { --bg: #050510; --panel: #0d0d1a; --accent-tw: #4CAF50; --accent-mn: #BB86FC; --text: #e0e0e0; --text-dim: #999; --border: rgba(255,255,255,0.05); }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:80px;}
-
-/* === NAVIGATION === */
 .global-nav{position:fixed;top:0;width:100%;background:rgba(5,5,16,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:999;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
-.nav-brand{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:1px;}
-.nav-brand span{color:var(--accent);}
-.nav-links{display:flex;gap:24px;align-items:center;}
-.nav-links a{color:var(--text-dim);text-decoration:none;font-weight:600;font-size:0.95rem;transition:color 0.3s;}
-.nav-links a:hover{color:#fff;}
-.nav-links a.active{color:var(--accent);}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 60px 20px;
-}
-
-.hero {
-  text-align: center;
-  margin-bottom: 80px;
-}
-.hero h1 {
-  font-size: 3rem;
-  margin-bottom: 16px;
-  color: #fff;
-}
-.hero p {
-  color: var(--text-dim);
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.docs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 40px;
-}
-
-.doc-section {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 40px;
-  transition: border-color 0.3s;
-}
-.doc-section:hover {
-  border-color: var(--accent);
-}
-.doc-section.mnemo:hover {
-  border-color: var(--accent-alt);
-}
-
-.doc-section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 24px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.doc-section ul {
-  list-style: none;
-}
-.doc-section li {
-  margin-bottom: 12px;
-}
-.doc-section a {
-  color: var(--text-dim);
-  text-decoration: none;
-  font-size: 1.05rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: color 0.2s;
-}
-.doc-section a:hover {
-  color: #fff;
-}
-.doc-section a .tag {
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-footer{text-align:center;padding:80px 20px;color:#444;font-size:.85rem;border-top:1px solid var(--border)}
-
-@media(max-width:768px){
-  .hero h1 { font-size: 2.5rem; }
-  .docs-grid { grid-template-columns: 1fr; }
-}
+.nav-brand{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-weight:600;font-size:0.95rem;margin-left:24px;}
+.container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+.hero { text-align: center; margin-bottom: 80px; }
+.docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+.doc-section { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 40px; }
+.doc-section h2 { font-size: 1.8rem; margin-bottom: 24px; }
+.doc-section ul { list-style: none; }
+.doc-section li { margin-bottom: 12px; }
+.doc-section a { color: var(--text-dim); text-decoration: none; display: flex; justify-content: space-between; align-items: center; }
+.doc-section a:hover { color: #fff; }
+.tag { font-size: 0.7rem; padding: 2px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; }
+footer{text-align:center;padding:80px 20px;color:#444;border-top:1px solid var(--border)}
 </style>
 </head>
 <body>
-
 <nav class="global-nav">
-  <a href="index.html" class="nav-brand">🥔 Tater<span>Labs</span></a>
+  <a href="index.html" class="nav-brand">🥔 TaterLabs</a>
   <div class="nav-links">
-    <a href="taterwave.html">TaterWave AI</a>
-    <a href="mnemosyne.html">Mnemosyne MCP</a>
-    <a href="docs.html" class="active">Docs</a>
-    <a href="cortex.html">The Cortex</a>
-    <a href="portfolio.html">Portfolio</a>
+    <a href="taterwave.html">TaterWave</a>
+    <a href="mnemosyne.html">Mnemosyne</a>
+    <a href="docs.html">Docs</a>
+    <a href="cortex.html">Cortex</a>
   </div>
 </nav>
-
 <div class="container">
-  <div class="hero">
-    <h1>Documentation</h1>
-    <p>Everything you need to set up, configure, and master the Tater Labs ecosystem.</p>
-  </div>
-
+  <div class="hero"><h1>Laboratory Documentation</h1></div>
   <div class="docs-grid">
-    <!-- MNEMOSYNE SECTION -->
-    <div class="doc-section mnemo">
-      <h2 style="color:var(--accent-alt);">Mnemosyne MCP</h2>
+    <div class="doc-section">
+      <h2 style="color:var(--accent-mn);">Mnemosyne MCP</h2>
       <ul>
-        <li>
-          <a href="mnemosyne-setup.html">
-            <span>License & Activation Guide</span>
-            <span class="tag">START HERE</span>
-          </a>
-        </li>
-        <li>
-          <a href="mnemosyne-about.html">
-            <span>Technical Architecture</span>
-            <span class="tag">HOW IT WORKS</span>
-          </a>
-        </li>
-        <li>
-          <a href="mnemosyne.html#faq">
-            <span>Frequently Asked Questions</span>
-            <span class="tag">FAQ</span>
-          </a>
-        </li>
+        <li><a href="mnemosyne-setup.html"><span>Activation Guide</span><span class="tag">START HERE</span></a></li>
+        <li><a href="mnemosyne-about.html"><span>How It Works</span><span class="tag">TECHNICAL</span></a></li>
+        <li><a href="legal/mnemosyne.html"><span>License Agreement</span><span class="tag">LEGAL</span></a></li>
       </ul>
     </div>
-
-    <!-- TATERWAVE SECTION -->
     <div class="doc-section">
-      <h2 style="color:var(--accent);">TaterWave AI</h2>
+      <h2 style="color:var(--accent-tw);">TaterWave AI</h2>
       <ul>
-        <li>
-          <a href="taterwave-setup.html">
-            <span>Setup & Operation Manual</span>
-            <span class="tag">GUIDE</span>
-          </a>
-        </li>
-        <li>
-          <a href="blog/how-to-start-internet-radio-station.html">
-            <span>The 5-Minute Cold Start</span>
-            <span class="tag">TUTORIAL</span>
-          </a>
-        </li>
-        <li>
-          <a href="terms.html">
-            <span>License Agreement</span>
-            <span class="tag">LEGAL</span>
-          </a>
-        </li>
+        <li><a href="taterwave-setup.html"><span>Setup Manual</span><span class="tag">GUIDE</span></a></li>
+        <li><a href="taterwave-about.html"><span>Technical Specs</span><span class="tag">ARCHITECTURE</span></a></li>
+        <li><a href="legal/taterwave.html"><span>License Agreement</span><span class="tag">LEGAL</span></a></li>
       </ul>
     </div>
   </div>
 </div>
-
-<footer>
-  <p>&copy; 2026 Tater Labs LLC. Built independently in Forest City, IA.</p>
-</footer>
-
+<footer>&copy; 2026 Tater Labs LLC</footer>
 </body>
 </html>

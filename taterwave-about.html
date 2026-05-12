@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaterWave AI — Technical Architecture</title>
+<style>
+    :root { --bg: #050510; --text: #e0e0e0; --accent: #4CAF50; --border: rgba(255, 255, 255, 0.1); }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 40px 20px; display: flex; justify-content: center; }
+    .container { max-width: 900px; width: 100%; }
+    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 40px; }
+    h2 { margin-top: 30px; color: #fff; }
+    .arch-box { background: #000; border: 1px solid #333; padding: 32px; border-radius: 16px; font-family: monospace; color: var(--accent); margin: 40px 0; text-align: center; line-height: 1.4; }
+    footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.85rem; color: #888; text-align: center; }
+</style>
+</head>
+<body>
+<div class="container">
+    <a href="docs.html" style="color: var(--accent); text-decoration: none; font-weight: 600;">← Back to Documentation</a>
+    <h1>Inside TaterWave AI</h1>
+    <p>TaterWave is built on a high-performance C#/.NET 8 core designed for deterministic, 24/7 broadcast stability.</p>
+
+    <div class="arch-box">
+        [ USER INTERFACE / MIXER ]<br>
+        ↓<br>
+        [ MULTI-AGENT ORCHESTRATOR ] ← (AI DJ & Scheduling Logic)<br>
+        ↓<br>
+        [ AUDIO ENGINE / DSP CHAIN ] ← (ASIO / WASAPI Support)<br>
+        ↓<br>
+        [ BROADCAST ENCODER ] → (Icecast / SHOUTcast / Tailscale)
+    </div>
+
+    <h2>Core Components</h2>
+    <h3>Mechanistic AI DJ</h3>
+    <p>Uses a proprietary inference engine to analyze tracks for timbre and energy, generating DJ segments that are contextually aware of the current music block.</p>
+    <h3>Smart Scheduler</h3>
+    <p>A non-random selection algorithm that maintains station "flow" by mapping energy transitions between tracks.</p>
+</div>
+<footer>&copy; 2026 Tater Labs LLC</footer>
+</body>
+</html>
