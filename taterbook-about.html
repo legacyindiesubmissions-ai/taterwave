@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technical Specs — TaterBookBuilder</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;background:#050510;color:#e0e0e0;line-height:1.6;padding:40px 20px;}
+.container{max-width:800px;margin:0 auto;}
+.back-link{color:#FFD700;text-decoration:none;font-weight:700;}
+h1{color:#fff;margin-bottom:20px;}
+p{margin-bottom:15px;}
+</style>
+</head>
+<body>
+<div class="container">
+    <a href="docs.html" class="back-link">&larr; Back to Documentation</a>
+    <h1>Technical Architecture</h1>
+    <p>TaterBookBuilder is an AST-aware compilation pipeline for technical documentation.</p>
+    <p><b>Pipeline stages:</b> Ingestion (Physical dependency mapping), Analysis (Boundary classification/Hot paths), Drafting (Context-aware LLM), and Assembly (Monolithic EPUB generation).</p>
+    <p>The system uses deterministic evidence mapping, linking every architectural claim back to specific source code line ranges, ensuring that all generated content is verifiable.</p>
+</div>
+</body>
+</html>
