@@ -8,38 +8,83 @@
 <link rel="canonical" href="https://taterlabs.shop/taterbook.html">
 
 <style>
+/* === CORE STYLES (Matching TaterLabs Laboratory) === */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#050510;color:#e0e0e0;line-height:1.6;overflow-x:hidden;cursor:default;padding-top:80px;}
 
-/* === NAVIGATION === */
+/* === NAVIGATION (Global Style) === */
 .global-nav{position:fixed;top:0;width:100%;background:rgba(5,5,16,0.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.05);z-index:999;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
 .nav-brand{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:1px;}
-.nav-brand span{color:#4CAF50;}
+.nav-brand span{color:#FFD700;}
 .nav-links{display:flex;gap:24px;align-items:center;}
 .nav-links a{color:#999;text-decoration:none;font-weight:600;font-size:0.95rem;transition:color 0.3s;}
 .nav-links a:hover{color:#fff;}
 
-.hero{padding: 120px 20px; text-align: center; max-width: 900px; margin: 0 auto;}
-.hero h1{font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1; font-weight: 900;}
-.hero p{font-size: 1.2rem; color: #bbb; margin-bottom: 40px;}
+/* === HERO SECTION === */
+.hero{padding: 120px 20px; text-align: center; max-width: 1000px; margin: 0 auto; position: relative;}
+.hero h1{font-size: clamp(3rem, 8vw, 5rem); margin-bottom: 20px; line-height: 1.1; font-weight: 900; background: linear-gradient(135deg, #fff 0%, #FFD700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+.hero p{font-size: clamp(1.1rem, 2vw, 1.4rem); color: #999; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;}
 
+/* === ANIMATED LOGO CONTAINER === */
+.logo-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 40px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.logo-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+/* === PRICING GRID === */
 .pricing-grid{display:flex; justify-content:center; gap:30px; flex-wrap:wrap; max-width: 1200px; margin: 60px auto; padding: 0 20px;}
-.tier{background:rgba(255,255,255,0.02); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); width: 350px; text-align: left; position: relative;}
-.tier.popular{background:rgba(255,215,0,0.05); border: 1px solid #FFD700; transform: scale(1.05); box-shadow: 0 10px 30px rgba(255,215,0,0.1);}
+.tier{background:rgba(255,255,255,0.02); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); width: 350px; text-align: left; position: relative; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+.tier:hover{transform: translateY(-10px); border-color: rgba(255,215,0,0.3); background: rgba(255,255,255,0.04);}
+.tier.popular{background:rgba(255,215,0,0.05); border: 1px solid #FFD700; transform: scale(1.05); box-shadow: 0 20px 40px rgba(255,215,0,0.1);}
+.tier.popular:hover{transform: scale(1.08) translateY(-10px);}
 .tier-badge{position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:#FFD700; color:#000; padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:bold;}
-.tier h3{font-size: 1.4rem; color: #fff;}
+.tier h3{font-size: 1.4rem; color: #fff; margin-bottom: 10px;}
 .price{font-size: 2.5rem; color: #fff; margin: 20px 0; font-weight: bold;}
 .price span{font-size: 0.9rem; color: #888; font-weight: normal;}
-.tier p{color: #888; font-size: 0.9rem; margin-bottom: 30px;}
+.tier p{color: #888; font-size: 0.9rem; margin-bottom: 30px; min-height: 50px;}
 .tier ul{color: #bbb; font-size: 0.95rem; line-height: 1.8; margin-bottom: 30px; padding-left: 20px;}
-.btn-primary{display:block; text-align:center; padding: 15px; background: #FFD700; color: #000; text-decoration: none; font-weight: bold; border-radius: 8px; transition: 0.2s;}
-.btn-primary:hover{background: #e6c200;}
-.btn-secondary{display:block; text-align:center; padding: 15px; background: transparent; border: 1px solid #FFD700; color: #FFD700; text-decoration: none; font-weight: bold; border-radius: 8px; transition: 0.2s;}
+.tier ul li::marker{color: #FFD700;}
+
+.btn{display:block; text-align:center; padding: 15px; text-decoration: none; font-weight: bold; border-radius: 8px; transition: 0.2s;}
+.btn-primary{background: #FFD700; color: #000;}
+.btn-primary:hover{background: #fff; box-shadow: 0 0 20px rgba(255,215,0,0.4);}
+.btn-secondary{background: transparent; border: 1px solid #FFD700; color: #FFD700;}
 .btn-secondary:hover{background: rgba(255,215,0,0.1);}
 
-.download-section{text-align: center; padding: 60px 20px; border-top: 1px solid rgba(255,255,255,0.05);}
-.btn-download{display:inline-block; padding: 15px 30px; background: #333; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.2s; border: 1px solid rgba(255,255,255,0.1);}
-.btn-download:hover{background: #444; border-color: #555;}
+/* === FEATURE HIGHLIGHTS === */
+.features-section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.05); }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 60px; }
+.feature-item h3 { color: #FFD700; margin-bottom: 12px; font-size: 1.4rem; }
+.feature-item p { color: #999; }
+
+/* === DOWNLOAD SECTION === */
+.download-section{text-align: center; padding: 100px 20px; border-top: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, transparent, rgba(255,215,0,0.02));}
+.btn-download{display:inline-block; padding: 18px 40px; background: #1a1a1a; color: #fff; text-decoration: none; border-radius: 12px; font-weight: bold; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); font-size: 1.1rem;}
+.btn-download:hover{background: #FFD700; color: #000; border-color: #FFD700; transform: scale(1.05);}
+
+/* === EULA / LEGAL === */
+.eula-container { max-width: 800px; margin: 100px auto; padding: 40px; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; color: #666; height: 300px; overflow-y: scroll; text-align: left; }
+.eula-container h4 { color: #999; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+.eula-container p { margin-bottom: 15px; }
+
+footer{text-align:center;padding:48px 20px;color:#444;font-size:.85rem;border-top:1px solid rgba(255,255,255,.03)}
 </style>
 </head>
 <body>
@@ -57,23 +102,46 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#05051
 </nav>
 
 <div class="hero">
-    <h1>TaterBook<span style="color:#FFD700;">Builder</span></h1>
+    <div class="logo-container">
+        <!-- Using a high-quality potato icon placeholder that floats -->
+        <img src="https://r2.taterlabs.shop/taterbook-logo.png" class="logo-image" alt="TaterBook Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3593/3593539.png'">
+    </div>
+    <h1>TaterBook<span>Builder</span></h1>
     <p>Stop copy-pasting your codebase into ChatGPT to write docs. TaterBookBuilder parses your local AST, maps physical dependencies, and compiles production-ready technical books in seconds. No cloud, no subscriptions, no data leaks. <b>Just local power.</b></p>
 </div>
+
+<section class="features-section">
+    <h2 style="text-align: center; font-size: 2.5rem; font-weight: 900;">Deterministic <span>Documentation</span></h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>AST-Aware Ingestion</h3>
+            <p>Unlike generic LLM wrappers, TaterBookBuilder performs a full static analysis pass. It understands your C namespaces, Assembly includes, and C# class hierarchies before the first prompt is ever drafted.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Verified Evidence Maps</h3>
+            <p>Every claim generated by the engine is cross-referenced in an Evidence Map appendix. The book literally proves itself by pointing to exact line ranges in your repository.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Interactive Workbench</h3>
+            <p>Curate your narrative structure with our custom Avalonia-based UI. Edit chapter focuses, reorder the flow, and inspect raw chunks before committing to a generation pass.</p>
+        </div>
+    </div>
+</section>
 
 <div class="pricing-grid">
     <!-- Indie Tier -->
     <div class="tier">
         <h3>Indie Hacker</h3>
         <div class="price">$59 <span>/ perpetual</span></div>
-        <p>For independent engineers and solo authors. Includes 1 year of updates.</p>
+        <p>For independent engineers and solo hackers. Includes 1 year of updates.</p>
         <ul>
             <li>Single-user local installation</li>
             <li>Interactive Workbench UI</li>
             <li>AST Dependency Graphing</li>
             <li>Monolithic EPUB Compilation</li>
+            <li>12 Months of Maintenance</li>
         </ul>
-        <a href="#" class="btn-primary">Buy Indie License</a>
+        <a href="https://buy.stripe.com/eVq00jeUSf3y2VsfbgaR206" class="btn btn-secondary">Buy Indie License</a>
     </div>
 
     <!-- Commercial Tier -->
@@ -81,14 +149,15 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#05051
         <div class="tier-badge">MOST POPULAR</div>
         <h3>Commercial Team</h3>
         <div class="price">$249 <span>/ perpetual</span></div>
-        <p>For dev teams documenting internal codebases. Flat pack of 5 seats.</p>
+        <p>For dev teams documenting internal codebases. Pack of 5 seats.</p>
         <ul>
             <li>5 Commercial User Seats</li>
             <li>Full Workbench Access</li>
             <li>Priority Issue Tracking</li>
+            <li>Source-backed Endnotes</li>
             <li>1 Year of Major Updates</li>
         </ul>
-        <a href="#" class="btn-primary">Buy Team License</a>
+        <a href="https://buy.stripe.com/00w5kD3cabRmfIe4wCaR207" class="btn btn-primary">Buy Team License</a>
     </div>
 
     <!-- Enterprise Tier -->
@@ -101,17 +170,31 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#05051
             <li>Custom Ingestion Rules</li>
             <li>Compliance-heavy Tracking</li>
             <li>Source-code Access (NDA)</li>
+            <li>Dedicated Support Slack</li>
         </ul>
-        <a href="#" class="btn-secondary">Contact Sales</a>
+        <a href="https://buy.stripe.com/28E6oHh30cVqcw22ouaR208" class="btn btn-secondary">Contact Sales</a>
     </div>
 </div>
 
 <div class="download-section">
     <h2 style="margin-bottom: 20px; color: #fff;">Try Before You Buy</h2>
-    <p style="color: #999; margin-bottom: 30px;">Download the free trial. Fully functional UI, limited to small codebases.</p>
+    <p style="color: #999; margin-bottom: 30px;">Download the free trial. Fully functional UI, limited to 5-file ingestion.</p>
     <a href="https://r2.taterlabs.shop/TaterBookBuilder-x86_64.AppImage" class="btn-download">⬇ Download Linux AppImage (x64)</a>
-    <p style="margin-top: 15px; font-size: 0.8rem; color: #555;">v1.0.0 — 77MB — Requires execution permissions (chmod +x)</p>
+    <p style="margin-top: 15px; font-size: 0.8rem; color: #444;">v1.0.0 — 77MB — Requires execution permissions (chmod +x)</p>
 </div>
+
+<div class="eula-container">
+    <h4>End User License Agreement (EULA)</h4>
+    <p><b>1. License Grant:</b> Zackery Michael Sayers / TaterLabs LLC grants you a non-exclusive, non-transferable license to use TaterBookBuilder for the purpose of analyzing and documenting software source code to which you have legal rights of access.</p>
+    <p><b>2. Prohibited Uses:</b> You shall not use TaterBookBuilder to perform automated analysis, decompilation, or narrative generation of proprietary third-party binaries or source code without explicit authorization from the copyright holder. You agree not to use the tool to facilitate copyright infringement or the creation of derivative works that violate intellectual property laws.</p>
+    <p><b>3. Limitation of Liability:</b> TaterBookBuilder is provided "as is" without warranty of any kind. TaterLabs LLC shall not be liable for any damages arising from the use or inability to use the software, including but not limited to damages for loss of profits, data leaks from provider APIs, or unauthorized documentation of sensitive intellectual property.</p>
+    <p><b>4. Data Privacy:</b> TaterBookBuilder operates locally. However, the use of LLM Providers (OpenAI, Gemini, Anthropic, OpenRouter) involves sending source code chunks to external servers. You are solely responsible for ensuring your use of these providers complies with your organizational security policies and non-disclosure agreements.</p>
+    <p><b>5. Ethics:</b> By using this software, you agree to respect the labor of independent engineers. TaterBookBuilder is a tool for understanding and education, not for the mass-exfiltration of intellectual property.</p>
+</div>
+
+<footer>
+    &copy; 2026 TaterLabs LLC. All Rights Reserved. Built for the Bare-Metal.
+</footer>
 
 </body>
 </html>
