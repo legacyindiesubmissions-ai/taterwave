@@ -25,6 +25,29 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#05051
 .hero h1 span{color:#FFD700;}
 .hero .tagline{font-size:clamp(1.1rem,2vw,1.5rem);color:#aaa;max-width:700px;margin:0 auto 40px;}
 
+/* === ANIMATED LOGO CONTAINER === */
+.logo-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 40px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.logo-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+}
+
 /* === PRICING GRID === */
 .pricing-grid{display:flex; justify-content:center; gap:30px; flex-wrap:wrap; max-width: 1200px; margin: 60px auto; padding: 0 20px;}
 .tier{background:rgba(255,255,255,0.02); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); width: 350px; text-align: left; position: relative; transition: all 0.3s;}
@@ -62,8 +85,11 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#05051
 </nav>
 
 <section class="hero">
-  <h1>TaterBook<span>Builder</span></h1>
-  <p class="tagline">Stop copy-pasting your codebase into ChatGPT to write docs. TaterBookBuilder parses your local AST, maps dependencies, and compiles production-ready technical books in seconds.</p>
+    <div class="logo-container">
+        <img src="https://r2.taterlabs.shop/taterbook-logo.png" class="logo-image" alt="TaterBook Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3593/3593539.png'">
+    </div>
+    <h1>TaterBook<span>Builder</span></h1>
+    <p class="tagline">Stop copy-pasting your codebase into ChatGPT to write docs. TaterBookBuilder parses your local AST, maps physical dependencies, and compiles production-ready technical books in seconds.</p>
 </section>
 
 <div class="pricing-grid">
